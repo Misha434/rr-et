@@ -15,7 +15,7 @@ class CreateScriptsTable extends Migration
     {
         Schema::create('scripts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('content, 100');
+            $table->string('content', 100);
             $table->timestamps();
         });
     }
