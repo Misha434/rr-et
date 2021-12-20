@@ -15,11 +15,13 @@
       </div>
     </div>
   @endif
+
   <div class="row">
     <div class="col-12">
       <h1 class="my-2">あるあるを投稿しましょう!</h1>
     </div>
   </div>
+
   <div class="row">
     <div class="col-12">
       <form action="{{ route('scripts.store') }}" method="post">
@@ -34,6 +36,7 @@
       </form>
     </div>
   </div>
+  
 </div>
 
 @endsection
