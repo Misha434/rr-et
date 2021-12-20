@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Script;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateScript;
 
 class ScriptController extends Controller
 {
@@ -28,7 +29,7 @@ class ScriptController extends Controller
      */
     public function create()
     {
-        //
+        return view('scripts/create');
     }
 
     /**
@@ -37,9 +38,13 @@ class ScriptController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateScript $request)
     {
-        //
+        $script = new Script();
+        $script->content = $request->content;
+        $script->save();
+
+        return redirect()->route('scripts.index');
     }
 
     /**
