@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Script;
 use Illuminate\Http\Request;
 
 class ScriptController extends Controller
@@ -13,7 +14,11 @@ class ScriptController extends Controller
      */
     public function index()
     {
-        //
+        $scripts = Script::all();
+
+        return view('scripts/index', [
+            "scripts" => $scripts,
+        ]);
     }
 
     /**
