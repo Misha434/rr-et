@@ -2,6 +2,19 @@
 
 @section('content')
 <div class="container">
+  @if($errors->any())
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-danger mt-2">
+          <ul>
+            @foreach($errors->all() as $message)
+              <li>{{ $message }}</li>
+            @endforeach
+          </ul>
+        </div>
+      </div>
+    </div>
+  @endif
   <div class="row">
     <div class="col-12">
       <h1 class="my-2">あるあるを投稿しましょう!</h1>
