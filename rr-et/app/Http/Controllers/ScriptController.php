@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Script;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateScript;
+use App\Http\Requests\EditScript;
 
 class ScriptController extends Controller
 {
@@ -84,9 +85,14 @@ class ScriptController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditScript $request, $id)
     {
-        //
+        $script = Script::find($id);
+
+        $script->content = $request->content;
+        $script->save();
+
+        return redirect()->route('scripts.index');
     }
 
     /**
