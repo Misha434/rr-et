@@ -68,9 +68,13 @@ class ScriptController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        //
+        $script = Script::find($id);
+
+        return view('scripts/edit', [
+            'script' => $script,
+        ]);
     }
 
     /**
