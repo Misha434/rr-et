@@ -14,13 +14,19 @@ class ScriptController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $scripts = Script::all();
+        $keyword = $request->input('keyword');
 
-        return view('scripts/index', [
-            "scripts" => $scripts,
-        ]);
+        $query = Script::query();
+
+        if (!empty($keyword)) {
+            $query->where('content', 'LIKE', "%{$keyword}%");
+        }
+
+        $scripts = $query->get();
+
+        return view('scripts.index', compact('scripts', 'keyword'));
     }
 
     /**
