@@ -29,6 +29,13 @@
               >
             </form>
             <!-- 削除ボタン End -->
+
+            <!-- 編集ボタン Start -->
+            <a href="{{ route('scripts.edit', $script->id) }}"
+               class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2">
+               編集
+            </a>
+            <!-- 編集ボタン End -->
             </div>
           </div>
         </div>
