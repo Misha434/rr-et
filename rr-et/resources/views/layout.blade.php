@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RR-ET</title>
   <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+  <script src="{{ asset('js/app.js') }}" ></script>
 </head>
 <body>
   <header>
@@ -29,6 +30,7 @@
   <main>
     @yield('content')
   </main>
+  <script></script>
   @yield('scripts')
 </body>
 </html>
