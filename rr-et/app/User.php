@@ -10,6 +10,11 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    public function scripts()
+    {
+        return $this->hasMany('App\Script');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
