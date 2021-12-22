@@ -15,10 +15,16 @@ class CreateScriptsTable extends Migration
     {
         Schema::create('scripts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned();
             $table->string('content', 100);
             $table->timestamps();
         });
+
+        Schema::table('scripts', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
+        });
     }
+
 
     /**
      * Reverse the migrations.
@@ -27,6 +33,7 @@ class CreateScriptsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('users');
         Schema::dropIfExists('scripts');
     }
 }
