@@ -2,15 +2,13 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Script;
+use App\Category;
 use Faker\Generator as Faker;
 use Illuminate\Support\Carbon;
 
-$factory->define(Script::class, function (Faker $faker) {
+$factory->define(Category::class, function (Faker $faker) {
     return [
-        'content' => $faker->realText(90),
-        'user_id' => 1,
-        'category_id' => 1,
+        'name' => $faker->countryCode(),
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];
