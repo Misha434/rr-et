@@ -27,8 +27,8 @@
       <form action="{{ route('categories.store') }}" method="post">
         @csrf
         <div class="form-group">
-          <label for="content">カテゴリー</label>
-          <textarea class="form-control" id="content" rows="3" name="content"></textarea>
+          <label for="name">カテゴリー</label>
+          <textarea class="form-control" id="name" rows="3" name="name"></textarea>
           <div class="text-right my-2">
             <button type="submit" class="btn btn-primary">送信</button>
           </div>
