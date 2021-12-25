@@ -56,7 +56,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
-        $scripts = $category->scripts()->get();
+        $scripts = $category->scripts()->with('user')->get();
 
         return view('categories.show', compact('category', 'scripts'));
     }
