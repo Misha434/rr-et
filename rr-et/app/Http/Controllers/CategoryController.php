@@ -35,9 +35,14 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCategory $request)
     {
-        //
+        $category = new Category();
+
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('categories.index');
     }
 
     /**
