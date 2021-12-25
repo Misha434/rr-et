@@ -32,8 +32,7 @@
           <label for="content">編集画面</label>
           <textarea class="form-control" id="content"
                     rows="3" name="content"
-                    value="{{ old('content') ?? $script->content }}">
-          </textarea>
+          >{{ old('content') ?? $script->content }}</textarea>
           <div class="text-right my-2">
             <button type="submit" class="btn btn-primary">送信</button>
           </div>

@@ -31,8 +31,7 @@
           <label for="name">カテゴリー名</label>
           <textarea class="form-control" id="name"
                     rows="3" name="name"
-                    value="{{ old('name') ?? $category->name }}">
-          </textarea>
+          >{{ old('name') ?? $category->name }}</textarea>
           <div class="text-right my-2">
             <button type="submit" class="btn btn-primary">送信</button>
           </div>
