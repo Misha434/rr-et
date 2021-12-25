@@ -34,7 +34,7 @@ class ScriptController extends Controller
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
 
-        $scripts = $query->get();
+        $scripts = $query->with('user')->with('category')->get();
 
         return view('scripts.index', compact('scripts', 'keyword'));
     }
