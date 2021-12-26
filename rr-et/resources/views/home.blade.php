@@ -5,6 +5,7 @@
   <div class="container">
     <h1 class="display-5 text-center">あるある、</h1>
     <h1 class="display-5 text-center">早く言いたい</h1>
+    @guest
     <div class="row">
       <div class="col-12 text-center col-md-6 text-md-right mt-3">
         <button class="btn btn-outline-primary">ログイン</button>
@@ -18,6 +19,7 @@
         <button class="btn btn-outline-success">ゲストログイン</button>
       </div>
     </div>
+    @endguest
   </div>
 </div>
 <div class="container">
