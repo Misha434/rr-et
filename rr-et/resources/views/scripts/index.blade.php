@@ -41,6 +41,7 @@
                   <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $script->created_at }}</p>
                 </div>
               </div>
+              @if ($script->user->id === auth()->user()->id)
               <div class="float-right">
                 <!-- 削除ボタン Start -->
                 <form action="{{ route('scripts.destroy', $script->id) }}"
