@@ -16,32 +16,36 @@
     <div class="row">
       @foreach($categories as $category) 
         <div class="col-6">
-          <div class="card mt-2 px-3 pt-3">
-            <h4 class="text-center">{{ $category->name }}</h4>
-            <div class="d-block">
-              <div class="float-right">
-                <!-- 削除ボタン Start -->
-                <form action="{{ route('categories.destroy', $category->id) }}"
-                method="post" class="float-right mt-1 mb-3"
-                >
-                @csrf
-                @method('delete')
-                <input type="submit" value="削除" 
-                       class="btn btn-danger btn-sm" 
-                       onclick='return confirm("削除しますか？");'
-                >
+          <a href="{{ route('categories.show', $category->id) }}" class="text-dark">
+            <div class="card mt-2 px-3 pt-3">
+              <h4 class="text-center">{{ $category->name }}</h4>
+              @can('admin')
+              <div class="d-block">
+                <div class="float-right">
+                  <!-- 削除ボタン Start -->
+                  <form action="{{ route('categories.destroy', $category->id) }}"
+                  method="post" class="float-right mt-1 mb-3"
+                  >
+                  @csrf
+                  @method('delete')
+                  <input type="submit" value="削除" 
+                  class="btn btn-danger btn-sm" 
+                  onclick='return confirm("削除しますか？");'
+                  >
                 </form>
                 <!-- 削除ボタン End -->
-              
+                
                 <!-- 編集ボタン Start -->
                 <a href="{{ route('categories.edit', $category->id) }}"
-                   class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2"
+                class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2"
                 >
                 編集
-                </a>
-                <!-- 編集ボタン End -->
-              </div>
+              </a>
+              <!-- 編集ボタン End -->
             </div>
+          </a>
+          </div>
+          @endcan
           </div>
         </div>
       @endforeach
