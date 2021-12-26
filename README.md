@@ -24,17 +24,45 @@ AWS(EC2, RDS Route53, ALB) Docker
 <a id="anchor1"></a>
 
 ## プロジェクトの概要説明
+日常のあるあるを投稿をみることで、ちょっとした笑いや業界知識に対して「へ〜」という気持ちになれるアプリです。
 
-WIP
+あるあるネタのことを以下から「ネタ」と表記します。
 
 <a id="anchor2"></a>
 
 ## 実装機能 一覧
-WIP
 
+### 機能概要
 |  機能  |  概要 | 
 | ---- | ---- |
+| ネタ関連機能 | 投稿・編集・削除機能 |
+| カテゴリ関連機能 | ネタに関連するカテゴリーを登録する機能 |
 | - | - |
+
+### アクション実行権限 一覧
+- ログインユーザー・管理者に関して、特記なき場合はログインをしているユーザー自身が行なった投稿に対してのみ実行できることとします。
+
+|記号|意味|
+| ---- | ---- |
+| o | 実行可能 |
+| - | 該当アクションなし|
+| x | 実行不可 | 
+#### ネタ関連(ScriptTable)
+| ユーザー \ アクション | index | show | create | store | edit | update | destroy |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 未ログイン | x | - | x | x | x | x | x |
+| ログインユーザー | o | - | o | o | o | o | o |
+| 管理者 | o | - | o | o | o | o | (1) |
+
+- (1) ログインユーザー自身と管理者が実行可能
+
+#### カテゴリー関連(CategoryTable)
+| ユーザー \ アクション | index | show | create | store | edit | update | destroy |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 未ログイン | x | x | x | x | x | x | x |
+| ログインユーザー | o | o | x | x | x | x | x |
+| 管理者 | o | o | o | o | o | o | o |
+
 
 <a id="anchor3"></a>
 
@@ -72,12 +100,12 @@ WIP
 ### 意識したポイント
 
 - 「リーダブルコード」を読んだ知見を生かし、「意図がわかりやすい変数の命名」を意識してコーディングしました。
-- アプリ内のパフォーマンスを意識して、N + 1 問題が発生しないよう考慮しながらコーディングしました。
+- パフォーマンスを意識して、N+1問題が発生しないよう考慮しながらコーディングしました。
 
 ### バックエンド
 
-- PHP 
-- Laravel 6.
+- PHP7.4
+- Laravel 6.x
 - MySQL
 
 #### 使用した composer
@@ -102,32 +130,15 @@ WIP
 | ELB (ALB) | 負荷分散機能 | - |
 | Certificate Manager | SSL証明書 サービス | - |
 
-### CI/CD：CircleCI
-#### git push 等 実行時の挙動
-
-| branch | アクション |  |
-| --- | --- | --- |
-| local -> remote-branch | push | 自動テスト (RSpec, Rubocop) |
-| remote-branch -> remote master | merge | 自動テスト (RSpec, Rubocop) |
-|  |  | 自動デプロイ(Capistrano) |
 
 ### 開発環境
 - Docker 20.10.8
 - Docker-compose 1.29.2
-#### ex.
-- AWS Cloud9 (Ubuntu)
-- Vagrant (CentOS 7)
+
 
 ### その他
 WIP
 
-#### インフラ使用技術 選定での背景
-当初は Heroku へのデプロイでのリリースを検討していましたが以下の理由で AWS 導入することにしました。
-
-- 可能な限り無料枠を利用・低予算で開発したかった
-- Heroku(無料枠) 
-  - サーバー起動時間がかかる
-  - MySQLのアドオンは容量1GB以上だと有料であること
 
 <a id="anchor5"></a>
 
@@ -151,7 +162,7 @@ WIP
 
 #### 共通
 ```
-$ git clone https://github.com/Misha434/smar-003.git
+$ git clone https://github.com/Misha434/rr-et.git
 $ cd smar-003
 ```
 
@@ -159,24 +170,6 @@ $ cd smar-003
 ```
 $ docker-compose up -d
 ```
-
-#### Docker 未使用の場合
-
-```
-$ yarn install --check-file
-$ bundle install --without production
-$ rails db:create
-$ rails db:migrate
-$ rails db:seed
-
-### unique varidation に引っかかった場合
-$ rails db:migrate:reset
-$ rails db:migrate:seed
-
-### 開発環境のサーバー起動
-$ foreman start
-```
-
 
 ### テスト方法
 
