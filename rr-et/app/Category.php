@@ -11,4 +11,13 @@ class Category extends Model
     {
         return $this->hasMany('App\Script');
     }
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
 }
