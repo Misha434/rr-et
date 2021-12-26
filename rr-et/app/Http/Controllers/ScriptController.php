@@ -143,7 +143,7 @@ class ScriptController extends Controller
         $script = Script::find($id);
 
         $loggedInUser = Auth::user();
-        if ($script->user_id !== $loggedInUser->id) {
+        if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== 1)) {
             return redirect()->route('scripts.index');
         }
 
