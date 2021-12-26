@@ -19,7 +19,13 @@ use Illuminate\Support\Facades\Auth;
 // });
 
 Auth::routes();
-
 Route::get('/', 'HomeController@index')->name('home');
-Route::resource('scripts', 'ScriptController');
-Route::resource('categories', 'categoryController');
+
+Route::group(['middleware' => ['auth', 'can:general-user']], function () {
+  Route::resource('scripts', 'ScriptController');
+  Route::resource('categories', 'CategoryController', ['only' => ['index','show']]);
+});
+
+Route::group(['middleware' => ['auth', 'can:admin']], function () {
+  Route::resource('categories', 'CategoryController', ['only' => ['create','store', 'edit', 'update', 'destroy']]);
+});
