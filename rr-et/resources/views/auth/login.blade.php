@@ -56,13 +56,16 @@
                 <button type="submit" class="btn btn-primary">
                   {{ __('ログイン') }}
                 </button>
-
-                @if (Route::has('password.request'))
-                  <a class="btn btn-link" href="{{ route('password.request') }}">
-                    {{ __('パスワード再設定') }}
-                  </a>
-                @endif
+                
+                <a href="/login/guest" class="btn btn-outline-success ml-2">ゲストログイン</a>
               </div>
+
+              @if (Route::has('password.request'))
+              <a class="btn btn-link" href="{{ route('password.request') }}">
+                {{ __('パスワード再設定') }}
+              </a>
+              @endif
+  
             </div>
           </form>
         </div>

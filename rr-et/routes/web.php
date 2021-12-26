@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/login/guest', 'Auth\LoginController@guestLogin');
 
 Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::resource('scripts', 'ScriptController');
