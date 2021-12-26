@@ -60,9 +60,10 @@
                  class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2"
               >
               編集
-            </a>
-            <!-- 編集ボタン End -->
-          </div>
+              </a>
+              <!-- 編集ボタン End -->
+              </div>
+              @endif
           </div>
         </div>
       </div>

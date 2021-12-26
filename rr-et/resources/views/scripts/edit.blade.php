@@ -29,7 +29,16 @@
         @method('PUT')
         @csrf
         <div class="form-group">
-          <label for="content">編集画面</label>
+          <label for="category_id">カテゴリー</label>
+          <small class="text-red">※必須</small>
+          <select type="text" class="form-control" name="category_id" required>
+            <option disabled style='display:none;' @if (empty($script->category_id)) selected @endif>選択してください</option>
+            @foreach($categories as $category)
+            <option value="{{ $category->id }}" @if (isset($script->category_id) && ($script->category_id === $category->id)) selected @endif>{{ $category->name }}</option>
+            @endforeach
+          </select>
+
+          <label for="content">編集フォーム</label>
           <textarea class="form-control" id="content"
                     rows="3" name="content"
           >{{ old('content') ?? $script->content }}</textarea>

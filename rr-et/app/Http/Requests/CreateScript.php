@@ -24,6 +24,7 @@ class CreateScript extends FormRequest
     public function rules()
     {
         return [
+            'category_id' => 'required',
             'content' => 'required|max:100'
         ];
     }
