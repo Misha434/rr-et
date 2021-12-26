@@ -147,6 +147,7 @@ return [
 
     'attributes' => [
         'content' => '投稿ネタ',
+        'category_id' => 'カテゴリー',
     ],
 
 ];

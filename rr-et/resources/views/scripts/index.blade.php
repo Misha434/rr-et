@@ -41,6 +41,7 @@
                   <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $script->created_at }}</p>
                 </div>
               </div>
+              @if ($script->user->id === auth()->user()->id)
               <div class="float-right">
                 <!-- 削除ボタン Start -->
                 <form action="{{ route('scripts.destroy', $script->id) }}"
@@ -60,9 +61,10 @@
                  class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2"
               >
               編集
-            </a>
-            <!-- 編集ボタン End -->
-          </div>
+              </a>
+              <!-- 編集ボタン End -->
+              </div>
+              @endif
           </div>
         </div>
       </div>
