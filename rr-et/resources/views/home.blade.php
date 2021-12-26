@@ -16,7 +16,7 @@
     </div>
     <div class="row mt-3">
       <div class="col-12 text-center text-md-center">
-        <button class="btn btn-outline-success">ゲストログイン</button>
+        <a href="/login/guest" class="btn btn-outline-success">ゲストログイン</a>
       </div>
     </div>
     @endguest
