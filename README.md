@@ -143,16 +143,13 @@ WIP
 <a id="anchor5"></a>
 
 ## ER図
-WIP
-
-![ER_diagram_210927](https://user-images.githubusercontent.com/61964919/134922029-41632c1a-3e61-495c-897b-40981918761f.png)
+![ER_diagram_211227](https://user-images.githubusercontent.com/61964919/147424112-95d274cc-f396-44ac-8018-b2e851d56ca2.jpg)
 
 <a id="anchor6"></a>
 
 ## システム構成図
 
-WIP
-![Infrastracture_Diagram_20210906](https://user-images.githubusercontent.com/61964919/132186932-927de9f5-a5f3-48fb-9fc7-d59ab98fad67.png)
+![Infrastracture_Diagram_20211227](https://user-images.githubusercontent.com/61964919/147424115-313326c3-55c0-4717-a018-600c48a9530a.jpg)
 
 <a id="anchor7"></a>
 
