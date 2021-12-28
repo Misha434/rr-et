@@ -24,7 +24,7 @@ Route::get('/login/guest', 'Auth\LoginController@guestLogin');
 
 Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::resource('scripts', 'ScriptController');
-  Route::resource('categories', 'CategoryController', ['only' => ['index','show']]);
+  Route::resource('categories', 'CategoryController');
 });
 
 Route::group(['middleware' => ['auth', 'can:admin']], function () {
