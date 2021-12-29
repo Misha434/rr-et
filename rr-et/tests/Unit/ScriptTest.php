@@ -129,7 +129,7 @@ class ScriptTest extends TestCase
     }
 
     /**
-     * カテゴリー未選択の場合はバリデーションエラー
+     * 最後に登録されたカテゴリーを選択の場合は投稿できること
      * @test
      */
     public function script_is_available_with_last_of_category(): void
