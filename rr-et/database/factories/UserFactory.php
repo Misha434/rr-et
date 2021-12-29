@@ -31,6 +31,6 @@ $factory->state(User::class, 'FeatureTestUser',function () {
     return [
         'name' => 'Jone Doe',
         'email' => 'john@example.com',
-        'password' => bcrypt('secret'),
+        'password' => bcrypt('password'),
     ];
 });
