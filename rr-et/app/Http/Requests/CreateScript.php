@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Category;
+use Illuminate\Validation\Rule;
 
 class CreateScript extends FormRequest
 {
@@ -23,8 +25,10 @@ class CreateScript extends FormRequest
      */
     public function rules()
     {
+        $invaild_category_id = Category::getAllCategoryId();
+        $category_id_rule = Rule::in($invaild_category_id);
         return [
-            'category_id' => 'required',
+            'category_id' => 'required|'.$category_id_rule,
             'content' => 'required|max:100'
         ];
     }

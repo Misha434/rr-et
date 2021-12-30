@@ -11,7 +11,12 @@ class Category extends Model
     {
         return $this->hasMany('App\Script');
     }
-    
+
+    public static function getAllCategoryId()
+    {
+        return Category::pluck('id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

@@ -155,7 +155,7 @@ class ScriptTest extends TestCase
     {
         $data = [
             'content' => 'Linuxチョットデキル',
-            'category_id' => 5,
+            'category_id' => 1000,
         ];
         $request = new CreateScript();
         $rules = $request->rules();
@@ -164,8 +164,9 @@ class ScriptTest extends TestCase
 
         $result = $validator->passes();
         $this->assertFalse($result);
+
         $expectedFailed = [
-            'category_id' => [],
+            'category_id' => ['In' => [1,2,3,4],],
         ];
         $this->assertEquals($expectedFailed, $validator->failed());
     }
