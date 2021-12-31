@@ -24,5 +24,14 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+  e2e-chrome:
+    profiles: ["test"]
+    image: "cypress/included:4.1.0"
+    environment:
+      - CYPRESS_baseUrl=http://web
+    command: "--browser chrome"
+    volumes:
+      - ./cypress:/cypress
+      - ./cypress.json:/cypress.json
 volumes:
   mysql-data:

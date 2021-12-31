@@ -3,7 +3,7 @@
 @section('content')
 <div class="jumbotron jumbotron-fluid py-3">
   <div class="container">
-    <h1 class="display-5 text-center">あるある、</h1>
+    <h1 id="lead-message" class="display-5 text-center">あるある、</h1>
     <h1 class="display-5 text-center">早く言いたい</h1>
     @guest
     <div class="row">
