@@ -6,6 +6,8 @@ services:
       - "8000:80"
     depends_on:
       - app
+    environment:
+      CYPRESS_CACHE_FOLDER: '~/.cache/Cypress'
     volumes:
       - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
       - .:/var/www/html
@@ -24,14 +26,5 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-  e2e-chrome:
-    profiles: ["test"]
-    image: "cypress/included:4.1.0"
-    environment:
-      - CYPRESS_baseUrl=http://web
-    command: "--browser chrome"
-    volumes:
-      - ./cypress:/cypress
-      - ./cypress.json:/cypress.json
 volumes:
   mysql-data:
