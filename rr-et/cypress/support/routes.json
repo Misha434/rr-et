@@ -1,0 +1,347 @@
+{
+  "ignition.healthCheck": {
+    "name": "ignition.healthCheck",
+    "domain": null,
+    "action": "Facade\\Ignition\\Http\\Controllers\\HealthCheckController",
+    "uri": "_ignition/health-check",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.executeSolution": {
+    "name": "ignition.executeSolution",
+    "domain": null,
+    "action": "Facade\\Ignition\\Http\\Controllers\\ExecuteSolutionController",
+    "uri": "_ignition/execute-solution",
+    "method": [
+      "POST"
+    ]
+  },
+  "ignition.shareReport": {
+    "name": "ignition.shareReport",
+    "domain": null,
+    "action": "Facade\\Ignition\\Http\\Controllers\\ShareReportController",
+    "uri": "_ignition/share-report",
+    "method": [
+      "POST"
+    ]
+  },
+  "ignition.scripts": {
+    "name": "ignition.scripts",
+    "domain": null,
+    "action": "Facade\\Ignition\\Http\\Controllers\\ScriptController",
+    "uri": "_ignition/scripts/{script}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "ignition.styles": {
+    "name": "ignition.styles",
+    "domain": null,
+    "action": "Facade\\Ignition\\Http\\Controllers\\StyleController",
+    "uri": "_ignition/styles/{style}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.factory": {
+    "name": "cypress.factory",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@factory",
+    "uri": "__cypress__/factory",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.login": {
+    "name": "cypress.login",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@login",
+    "uri": "__cypress__/login",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.logout": {
+    "name": "cypress.logout",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@logout",
+    "uri": "__cypress__/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.artisan": {
+    "name": "cypress.artisan",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@artisan",
+    "uri": "__cypress__/artisan",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.run-php": {
+    "name": "cypress.run-php",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@runPhp",
+    "uri": "__cypress__/run-php",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.csrf-token": {
+    "name": "cypress.csrf-token",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@csrfToken",
+    "uri": "__cypress__/csrf_token",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.routes": {
+    "name": "cypress.routes",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@routes",
+    "uri": "__cypress__/routes",
+    "method": [
+      "POST"
+    ]
+  },
+  "": {
+    "name": null,
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\LoginController@guestLogin",
+    "uri": "login/guest",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "login": {
+    "name": "login",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\LoginController@showLoginForm",
+    "uri": "login",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "logout": {
+    "name": "logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\LoginController@logout",
+    "uri": "logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "register": {
+    "name": "register",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\RegisterController@showRegistrationForm",
+    "uri": "register",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.request": {
+    "name": "password.request",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ForgotPasswordController@showLinkRequestForm",
+    "uri": "password/reset",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.email": {
+    "name": "password.email",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ForgotPasswordController@sendResetLinkEmail",
+    "uri": "password/email",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.reset": {
+    "name": "password.reset",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ResetPasswordController@showResetForm",
+    "uri": "password/reset/{token}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.update": {
+    "name": "password.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ResetPasswordController@reset",
+    "uri": "password/reset",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.confirm": {
+    "name": "password.confirm",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\ConfirmPasswordController@showConfirmForm",
+    "uri": "password/confirm",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "home": {
+    "name": "home",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\HomeController@index",
+    "uri": "/",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "scripts.index": {
+    "name": "scripts.index",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@index",
+    "uri": "scripts",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "scripts.create": {
+    "name": "scripts.create",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@create",
+    "uri": "scripts/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "scripts.store": {
+    "name": "scripts.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@store",
+    "uri": "scripts",
+    "method": [
+      "POST"
+    ]
+  },
+  "scripts.show": {
+    "name": "scripts.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@show",
+    "uri": "scripts/{script}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "scripts.edit": {
+    "name": "scripts.edit",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@edit",
+    "uri": "scripts/{script}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "scripts.update": {
+    "name": "scripts.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@update",
+    "uri": "scripts/{script}",
+    "method": [
+      "PUT",
+      "PATCH"
+    ]
+  },
+  "scripts.destroy": {
+    "name": "scripts.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ScriptController@destroy",
+    "uri": "scripts/{script}",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "categories.index": {
+    "name": "categories.index",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@index",
+    "uri": "categories",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "categories.create": {
+    "name": "categories.create",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@create",
+    "uri": "categories/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "categories.store": {
+    "name": "categories.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@store",
+    "uri": "categories",
+    "method": [
+      "POST"
+    ]
+  },
+  "categories.show": {
+    "name": "categories.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@show",
+    "uri": "categories/{category}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "categories.edit": {
+    "name": "categories.edit",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@edit",
+    "uri": "categories/{category}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "categories.update": {
+    "name": "categories.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@update",
+    "uri": "categories/{category}",
+    "method": [
+      "PUT",
+      "PATCH"
+    ]
+  },
+  "categories.destroy": {
+    "name": "categories.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CategoryController@destroy",
+    "uri": "categories/{category}",
+    "method": [
+      "DELETE"
+    ]
+  }
+}
