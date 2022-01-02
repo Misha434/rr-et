@@ -25,13 +25,28 @@ describe('HomeController:', () => {
     cy.get('#lead-message').should('have.text', 'あるある、');
   });
 
-  it('Available Login page', () => {
+  it('Registratable on register page', () => {
+    cy.get('.container').contains('新規登録').click()
+    cy.get('.card-header').should('have.text','新規登録')
+    cy.get('[data-e2e="name-input"]').type('佐藤B作')
+    cy.get('[data-e2e="email-input"]').type('satoh-besaku@example.com')
+    cy.get('[data-e2e="password-input"]').type('password')
+    cy.get('[data-e2e="password-comfirm-input"]').type('password')
+    cy.get('[data-e2e="submit"]').contains('登録').click();
+    cy.get('h1').should('have.text', 'ネタ一覧')
+  });
+
+  it('Available to Login', () => {
     cy.get('.container').contains('ログイン').click()
     cy.get('.card-header').should('have.text','ログイン')
   });
-
-  it('Available Signup page', () => {
-    cy.get('.container').contains('新規登録').click()
-    cy.get('.card-header').should('have.text','新規登録')
-  });
 })
+
+function registration_user() {
+  cy.get('.container').contains('新規登録').click()
+  cy.get('[data-e2e="name-input"]').type('佐藤B作')
+  cy.get('[data-e2e="email-input"]').type('satoh-besaku@example.com')
+  cy.get('[data-e2e="password-input"]').type('password')
+  cy.get('[data-e2e="password-comfirm-input"]').type('password')
+  cy.get('[data-e2e="submit"]').contains('登録').click();
+}

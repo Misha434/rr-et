@@ -11,7 +11,7 @@
         <a href="{{ route('login') }}" class="btn btn-outline-primary">ログイン</a>
       </div>
       <div class="col-12 text-center text-md-left col-md-6 mt-3">
-        <button class="btn btn-outline-secondary">新規登録</button>
+        <a href="{{ route('register') }}" class="btn btn-outline-secondary">新規登録</a>
       </div>
     </div>
     <div class="row mt-3">
