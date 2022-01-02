@@ -12,6 +12,7 @@
 /rr-et/yarn-error.log
 
 /rr-et/cypress/videos/**/*
+/rr-et/cypress/screenshots/**/*
 
 /terraform/id_rsa_terraform
 /terraform/id_rsa_terraform.pub

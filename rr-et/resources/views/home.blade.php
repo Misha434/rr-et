@@ -8,7 +8,7 @@
     @guest
     <div class="row">
       <div class="col-12 text-center col-md-6 text-md-right mt-3">
-        <button class="btn btn-outline-primary">ログイン</button>
+        <a href="{{ route('login') }}" class="btn btn-outline-primary">ログイン</a>
       </div>
       <div class="col-12 text-center text-md-left col-md-6 mt-3">
         <button class="btn btn-outline-secondary">新規登録</button>
