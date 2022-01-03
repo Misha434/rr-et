@@ -14,11 +14,11 @@
     @if($categories->count())
     
     <div class="row">
-      @foreach($categories as $category) 
+      @foreach($categories as $key => $category) 
         <div class="col-6">
           <a href="{{ route('categories.show', $category->id) }}" class="text-dark">
             <div class="card mt-2 px-3 pt-3">
-              <h4 class="text-center">{{ $category->name }}</h4>
+              <h4 class="text-center" data-e2e="category-{{ $key }}">{{ $category->name }}</h4>
               @can('admin')
               <div class="d-block">
                 <div class="float-right">
@@ -29,7 +29,7 @@
                   @csrf
                   @method('delete')
                   <input type="submit" value="削除" 
-                  class="btn btn-danger btn-sm" 
+                  class="btn btn-danger btn-sm" data-e2e="category-{{ $key }}-delete"
                   onclick='return confirm("削除しますか？");'
                   >
                 </form>

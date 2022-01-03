@@ -14,10 +14,10 @@
     @if($scripts->count())
     
     <div class="row">
-      @foreach($scripts as $script) 
+      @foreach($scripts as $key => $script) 
         <div class="col-6">
           <div class="card mt-2 px-3 pt-3">
-            <p class="text-center">{{ $script->content }}</p>
+            <p class="text-center" data-e2e="script-{{ $key }}">{{ $script->content }}</p>
           </div>
         </div>
       @endforeach
