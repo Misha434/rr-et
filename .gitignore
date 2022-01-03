@@ -11,6 +11,7 @@
 /rr-et/npm-debug.log
 /rr-et/yarn-error.log
 
+/rr-et/cypress/.DS*
 /rr-et/cypress/videos/**/*
 /rr-et/cypress/screenshots/**/*
 
