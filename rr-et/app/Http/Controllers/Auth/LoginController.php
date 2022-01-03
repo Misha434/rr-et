@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -44,10 +45,18 @@ class LoginController extends Controller
         $email = "guest-user@example.com";
         $password = "AwRto3CFzREx7g";
 
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            return redirect()->route('home');
+        if ($guestUser = User::where('email', $email)->first()) {
+            Auth::loginUsingID($guestUser->id, true);
+            return redirect()->route('scripts.index');
+        } else {
+            $createdGuestUser = User::create([
+                'name' => "Guest",
+                'email' => $email,
+                'password' => $password,
+            ]);
+
+            Auth::loginUsingID($createdGuestUser->id, true);
+            return redirect()->route('scripts.index');
         }
-    
-        return redirect('/');
     }
 }
