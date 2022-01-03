@@ -41,7 +41,7 @@
           <span class="badge badge-danger pt-1">※必須</span>
           <textarea class="form-control" id="content" rows="3" name="content"></textarea>
           <div class="text-right my-2">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <button type="submit" class="btn btn-primary" data-e2e="submit">送信</button>
           </div>
         </div>
       </form>

@@ -43,7 +43,7 @@
                     rows="3" name="content"
           >{{ old('content') ?? $script->content }}</textarea>
           <div class="text-right my-2">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <button type="submit" class="btn btn-primary" data-e2e="submit">送信</button>
           </div>
         </div>
       </form>
