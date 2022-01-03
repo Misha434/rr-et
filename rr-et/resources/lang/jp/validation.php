@@ -30,7 +30,7 @@ return [
         'array'   => ':attributeは、:min個から:max個の間で入力してください。',
     ],
     'boolean'              => ':attributeは、trueかfalseを入力してください。',
-    'confirmed'            => ':attributeと、確認フィールドとが、一致していません。',
+    'confirmed'            => ':attributeと、再入力フィールドが、一致していません。',
     'date'                 => ':attributeには有効な日付を入力してください。',
     'date_equals'          => ':attributeには、:dateと同じ日付けを入力してください。',
     'date_format'          => ':attributeは:format形式で入力してください。',
@@ -94,7 +94,7 @@ return [
     'not_regex'            => ':attributeの形式が正しくありません。',
     'numeric'              => ':attributeには、数字を入力してください。',
     'present'              => ':attributeが存在していません。',
-    'regex'                => ':attributeに正しい形式を入力してください。',
+    'regex'                => ':attributeは正しい形式で入力してください。',
     'required'             => ':attributeは必ず入力してください。',
     'required_if'          => ':otherが:valueの場合、:attributeも入力してください。',
     'required_unless'      => ':otherが:valuesでない場合、:attributeを入力してください。',
@@ -146,6 +146,8 @@ return [
     */
 
     'attributes' => [
+        'name' => '名前',
+        'password' => 'パスワード',
         'content' => '投稿ネタ',
         'category_id' => 'カテゴリー',
     ],

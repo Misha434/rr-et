@@ -1,3 +1,4 @@
 {
-  "baseUrl": "http://web"
+  "baseUrl": "http://web",
+  "video": false
 }

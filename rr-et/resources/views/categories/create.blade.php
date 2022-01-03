@@ -28,9 +28,9 @@
         @csrf
         <div class="form-group">
           <label for="name">カテゴリー</label>
-          <textarea class="form-control" id="name" rows="3" name="name"></textarea>
+          <textarea class="form-control" id="name" rows="3" name="name" data-e2e="category-input"></textarea>
           <div class="text-right my-2">
-            <button type="submit" class="btn btn-primary">送信</button>
+            <button type="submit" class="btn btn-primary" data-e2e="submit">送信</button>
           </div>
         </div>
       </form>

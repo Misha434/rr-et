@@ -47,7 +47,7 @@
         </div>
         <div class="col-3 col-lg-2 order-lg-2">
           @guest
-            <div class="dropdown mr-3">
+            <div class="dropdown mr-3" data-e2e="user-dropdown">
               <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Not login yet
               </a>
@@ -56,19 +56,22 @@
                   aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="{{ route('login') }}">{{ __('ログイン') }}</a>
                 @if (Route::has('register'))
-                  <a class="dropdown-item" href="{{ route('register') }}">{{ __('新規登録') }}</a>
+                <a class="dropdown-item" href="{{ route('register') }}">{{ __('新規登録') }}</a>
                 @endif
+                <a class="dropdown-item" href="/login/guest">{{ __('ゲストログイン') }}</a>
               </div>
             </div>
           @else
-            <div class="dropdown">
+            <div class="dropdown" data-e2e="user-dropdown">
               <a class="btn btn-dark dropdown-toggle" href="#" role="button"
                 id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false"
+                data-e2e="auth-status"
               >{{ Auth::user()->name }}</a>
 
               <div class="dropdown-menu dropdown-menu-right"
                   aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="{{ route('scripts.create') }}">{{ __('ネタ新規投稿') }}</a>
                 <a class="dropdown-item" href="{{ route('logout') }}"
                   onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();"

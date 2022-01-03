@@ -19,7 +19,7 @@
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong data-e2e="name-validate-message">{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
@@ -47,7 +47,7 @@
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong data-e2e="password-validate-message">{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
@@ -57,13 +57,13 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('パスワード再入力') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" data-e2e="password-comfirm-input">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" data-e2e="password-confirm-input">
                             </div>
                         </div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary" data-e2e="submit">
+                                <button id="register-submit" type="submit" class="btn btn-primary" data-e2e="submit">
                                     {{ __('登録') }}
                                 </button>
                             </div>
