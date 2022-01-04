@@ -82,7 +82,7 @@ class ScriptController extends Controller
      */
     public function show(int $id)
     {
-        $script = Script::find($id);
+        $script = Script::findOrFail($id);
 
         return view('scripts/show', [
             'script' => $script,
@@ -97,7 +97,7 @@ class ScriptController extends Controller
      */
     public function edit(int $id)
     {
-        $script = Script::find($id);
+        $script = Script::findOrFail($id);
 
         $loggedInUser = Auth::user();
         if ($script->user_id !== $loggedInUser->id) {
@@ -106,7 +106,7 @@ class ScriptController extends Controller
 
         $categories = Category::all();
 
-        return view('scripts/edit', compact('script', 'categories'));
+        return view('scripts.edit', compact('script', 'categories'));
     }
 
     /**
@@ -118,7 +118,7 @@ class ScriptController extends Controller
      */
     public function update(EditScript $request, int $id)
     {
-        $script = Script::find($id);
+        $script = Script::findOrFail($id);
 
         $loggedInUser = Auth::user();
         if ($script->user_id !== $loggedInUser->id) {
@@ -140,7 +140,7 @@ class ScriptController extends Controller
      */
     public function destroy(int $id)
     {
-        $script = Script::find($id);
+        $script = Script::findOrFail($id);
 
         $loggedInUser = Auth::user();
         if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== 1)) {

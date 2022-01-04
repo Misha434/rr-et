@@ -90,7 +90,17 @@ describe('ScriptController:', () => {
       cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
     })
 
-    it('can delete the category in scripts#index page', () => {
+    it('cannot access to scripts#edit page by other user', () => {
+      cy.seed('UsersTableSeeder');
+      cy.seed('CategoriesTableSeeder');
+      cy.seed('ScriptsTableSeeder');
+      registration_user()
+      
+      cy.visit('/scripts/1/edit')
+      cy.get("h1").should("contain", "ネタ一覧")
+    })
+
+    it('can delete the script in scripts#index page', () => {
       registration_user()
       cy.create('App\\Category', { name: 'IT' })
       cy.create('App\\Script', { 
@@ -109,6 +119,55 @@ describe('ScriptController:', () => {
 
       cy.get('[data-e2e="script-0"]').not('have.text', 'Linuxチョットワカル')
       cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
+    })
+
+    it('can search the script in scripts#index page', () => {
+      registration_user()
+      cy.create('App\\Category', { name: 'IT' })
+      cy.create('App\\Script', { 
+        content: 'Linuxチョットワカル',
+        category_id: 1,
+        user_id: 1,
+      })
+      cy.create('App\\Script', { 
+        content: 'Linux完全に理解した',
+        category_id: 1,
+        user_id: 1,
+      })
+      cy.create('App\\Script', { 
+        content: 'GitHub落ちたから仕事にならん',
+        category_id: 1,
+        user_id: 1,
+      })
+      cy.create('App\\Script', { 
+        content: '大量のRedbullの差し入れ',
+        category_id: 1,
+        user_id: 1,
+      })
+      
+      cy.get('header').contains('ネタ一覧').click()
+      cy.get('[data-e2e="script-search-form"]').type('Linux')
+      cy.get('[data-e2e="script-search-submit"]').click()
+      
+      cy.get('[data-e2e="script-search-count"]').should('have.text', '2 件')
+      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linux完全に理解した')
+    })
+
+    it('can search the script but showing not found', () => {
+      registration_user()
+      cy.create('App\\Category', { name: 'IT' })
+      cy.create('App\\Script', { 
+        content: 'Linuxチョットワカル',
+        category_id: 1,
+        user_id: 1,
+      })
+
+      cy.get('header').contains('ネタ一覧').click()
+      cy.get('[data-e2e="script-search-form"]').type('Ubuntu')
+      cy.get('[data-e2e="script-search-submit"]').click()
+      
+      cy.get('[data-e2e="script-search-not-found"]').should('have.text', '見つかりませんでした。')
     })
   })
   
