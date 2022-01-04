@@ -90,6 +90,16 @@ describe('ScriptController:', () => {
       cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
     })
 
+    it('cannot access to scripts#edit page by other user', () => {
+      cy.seed('UsersTableSeeder');
+      cy.seed('CategoriesTableSeeder');
+      cy.seed('ScriptsTableSeeder');
+      registration_user()
+      
+      cy.visit('/scripts/1/edit')
+      cy.get("h1").should("contain", "ネタ一覧")
+    })
+
     it('can delete the script in scripts#index page', () => {
       registration_user()
       cy.create('App\\Category', { name: 'IT' })
