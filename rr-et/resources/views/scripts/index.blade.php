@@ -14,18 +14,16 @@
     <form action="{{ route('scripts.index') }}" method="GET">
       @csrf
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="ネタを検索" aria-label="ネタを検索" name="keyword" value="{{ $keyword }}">
+        <input type="text" class="form-control" placeholder="ネタを検索" aria-label="ネタを検索" name="keyword" value="{{ $keyword }}" data-e2e="script-search-form">
         <div class="input-group-append">
-          <input class="btn btn-outline-secondary" type="submit" value="検索">
+          <input class="btn btn-outline-secondary" type="submit" value="検索" data-e2e="script-search-submit">
         </div>
       </div>
     </form>
     <!-- Search Form End -->
     
     @if($scripts->count())
-    <p>
-      {{ $scripts->count() }} 件
-    </p>
+    <p data-e2e="script-search-count">{{ $scripts->count() }} 件</p>
     
     <!-- Script Start -->
     <div class="row">
@@ -94,7 +92,7 @@
     <!-- Script End -->
     
     @else
-      <p>見つかりませんでした。</p>
+      <p data-e2e="script-search-not-found">見つかりませんでした。</p>
     @endif
 
   </div>
