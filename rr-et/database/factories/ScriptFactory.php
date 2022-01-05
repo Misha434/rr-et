@@ -9,8 +9,8 @@ use Illuminate\Support\Carbon;
 $factory->define(Script::class, function (Faker $faker) {
     return [
         'content' => $faker->realText(90),
-        'user_id' => 1,
-        'category_id' => 1,
+        'user_id' => rand(1, 21),
+        'category_id' => rand(1, 4),
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];

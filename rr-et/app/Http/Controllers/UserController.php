@@ -20,6 +20,13 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function show(int $id)
+    {
+        $user = User::findOrFail($id);
+        $scripts = $user->scripts()->with('category')->get();
+        return view('users.show', compact('user', 'scripts'));
+    }
+
     public function edit(int $id)
     {
         $selectedUser = User::findOrFail($id);

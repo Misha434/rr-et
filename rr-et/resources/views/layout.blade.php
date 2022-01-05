@@ -71,6 +71,7 @@
 
               <div class="dropdown-menu dropdown-menu-right"
                   aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id ) }}">{{ __('プロフィール') }}</a>
                 <a class="dropdown-item" href="{{ route('scripts.create') }}">{{ __('ネタ新規投稿') }}</a>
                 @if(Auth::user()->email !== 'guest-user@example.com')
                   <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">{{ __('ユーザー編集') }}</a>
