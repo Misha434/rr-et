@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::resource('scripts', 'ScriptController');
   Route::resource('categories', 'CategoryController');
   Route::get('/users/{id}/edit', 'UserController@edit')->name('users.edit');
-  Route::patch('/users/{id}/edit', 'UserController@update')->name('users.update');
+  Route::put('/users/{id}', 'UserController@update')->name('users.update');
 });
 
 Route::group(['middleware' => ['auth', 'can:admin']], function () {
