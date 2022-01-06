@@ -23,71 +23,74 @@
     <!-- Search Form End -->
     
     @if($scripts->count())
-    <p data-e2e="script-search-count">{{ $scripts->count() }} 件</p>
+    <p data-e2e="script-search-count">{{ $scripts_count }} 件</p>
     
     <!-- Script Start -->
     <div class="row">
-      @foreach($scripts as $key => $script) 
-        <div class="col-12">
-          <div class="card mt-2 px-3 pt-3">
-            <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
-            <span class="border"></span>
-            <div class="d-block">
-              <div class="float-left">
-                <div class="d-flex">
-                  <a href="{{ route('users.show', $script->user->id) }}" class="mt-2" data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</a>
-                  <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $script->created_at }}</p>
+      <div class="infinite-scroll">
+        @foreach($scripts as $key => $script) 
+          <div class="col-12">
+            <div class="card mt-2 px-3 pt-3">
+              <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+              <span class="border"></span>
+              <div class="d-block">
+                <div class="float-left">
+                  <div class="d-flex">
+                    <a href="{{ route('users.show', $script->user->id) }}" class="mt-2" data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</a>
+                    <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $script->created_at }}</p>
+                  </div>
                 </div>
-              </div>
-              @can('general-user')
-                @if ($script->user_id === auth()->user()->id)
+                @can('general-user')
+                  @if ($script->user_id === auth()->user()->id)
+                  <div class="float-right">
+                    <!-- 削除ボタン Start -->
+                    <form action="{{ route('scripts.destroy', $script->id) }}"
+                    method="post" class="float-right mt-1 mb-3"
+                    >
+                    @csrf
+                    @method('delete')
+                    <input type="submit" value="削除" 
+                          class="btn btn-danger btn-sm" 
+                          onclick='return confirm("削除しますか？");'
+                          data-e2e="script-{{ $key }}-delete"
+                    >
+                  </form>
+                  <!-- 削除ボタン End -->
+                  
+                  <!-- 編集ボタン Start -->
+                  <a href="{{ route('scripts.edit', $script->id) }}"
+                    class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2" data-e2e="script-{{ $key }}-edit"
+                  >
+                  編集
+                  </a>
+                  <!-- 編集ボタン End -->
+                  </div>
+                @endif
+                @endcan
+                  
+                @can('admin')
                 <div class="float-right">
                   <!-- 削除ボタン Start -->
                   <form action="{{ route('scripts.destroy', $script->id) }}"
                   method="post" class="float-right mt-1 mb-3"
+                  data-e2e="script-{{ $key }}-delete"
                   >
                   @csrf
                   @method('delete')
                   <input type="submit" value="削除" 
                         class="btn btn-danger btn-sm" 
                         onclick='return confirm("削除しますか？");'
-                        data-e2e="script-{{ $key }}-delete"
                   >
                 </form>
                 <!-- 削除ボタン End -->
-                
-                <!-- 編集ボタン Start -->
-                <a href="{{ route('scripts.edit', $script->id) }}"
-                  class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2" data-e2e="script-{{ $key }}-edit"
-                >
-                編集
-                </a>
-                <!-- 編集ボタン End -->
                 </div>
-              @endif
-              @endcan
-                
-              @can('admin')
-              <div class="float-right">
-                <!-- 削除ボタン Start -->
-                <form action="{{ route('scripts.destroy', $script->id) }}"
-                method="post" class="float-right mt-1 mb-3"
-                data-e2e="script-{{ $key }}-delete"
-                >
-                @csrf
-                @method('delete')
-                <input type="submit" value="削除" 
-                      class="btn btn-danger btn-sm" 
-                      onclick='return confirm("削除しますか？");'
-                >
-              </form>
-              <!-- 削除ボタン End -->
+                @endcan
               </div>
-              @endcan
-            </div>
+          </div>
         </div>
+        @endforeach
+        <div class="text-center mt-2">{{ $scripts->links() }}</div>    
       </div>
-      @endforeach
     </div>
     <!-- Script End -->
     
@@ -95,5 +98,22 @@
       <p data-e2e="script-search-not-found">見つかりませんでした。</p>
     @endif
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
+    <script type="text/javascript">
+      $('ul.pagination').hide();
+      $(function() {
+        $('.infinite-scroll').jscroll({
+          loadingHtml: '<div class="d-flex justify-content-center  text-secondary"><strong>Loading...</strong><div class="spinner-grow ml-auto" role="status"></div></div>',
+          autoTrigger: true,
+          padding: 0,
+          nextSelector: '.pagination li.active + li a',
+          contentSelector: 'div.infinite-scroll',
+          callback: function() {
+            $('ul.pagination').remove();
+          }
+        });
+      });
+    </script>
   </div>
 @endsection
