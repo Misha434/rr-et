@@ -5,27 +5,13 @@
     <!-- Title Start -->
     <div class="row">
       <div class="col-12">
-        <h1 class="text-center my-3">ネタ一覧</h1>
+        <h1 class="text-center my-3">{{ $user->name }}</h1>
       </div>
     </div>
     <!-- Title End -->
     
-    <!-- Search Form Start --> 
-    <form action="{{ route('scripts.index') }}" method="GET">
-      @csrf
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="ネタを検索" aria-label="ネタを検索" name="keyword" value="{{ $keyword }}" data-e2e="script-search-form">
-        <div class="input-group-append">
-          <input class="btn btn-outline-secondary" type="submit" value="検索" data-e2e="script-search-submit">
-        </div>
-      </div>
-    </form>
-    <!-- Search Form End -->
-    
-    @if($scripts->count())
-    <p data-e2e="script-search-count">{{ $scripts->count() }} 件</p>
-    
     <!-- Script Start -->
+    @if($scripts->count())    
     <div class="row">
       @foreach($scripts as $key => $script) 
         <div class="col-12">
@@ -35,12 +21,12 @@
             <div class="d-block">
               <div class="float-left">
                 <div class="d-flex">
-                  <a href="{{ route('users.show', $script->user->id) }}" class="mt-2" data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</a>
+                  <p class="mt-2" data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</p>
                   <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $script->created_at }}</p>
                 </div>
               </div>
               @can('general-user')
-                @if ($script->user_id === auth()->user()->id)
+                @if (($script->user_id === auth()->user()->id) || $script->user->role === 1)
                 <div class="float-right">
                   <!-- 削除ボタン Start -->
                   <form action="{{ route('scripts.destroy', $script->id) }}"
@@ -65,24 +51,6 @@
                 <!-- 編集ボタン End -->
                 </div>
               @endif
-              @endcan
-                
-              @can('admin')
-              <div class="float-right">
-                <!-- 削除ボタン Start -->
-                <form action="{{ route('scripts.destroy', $script->id) }}"
-                method="post" class="float-right mt-1 mb-3"
-                data-e2e="script-{{ $key }}-delete"
-                >
-                @csrf
-                @method('delete')
-                <input type="submit" value="削除" 
-                      class="btn btn-danger btn-sm" 
-                      onclick='return confirm("削除しますか？");'
-                >
-              </form>
-              <!-- 削除ボタン End -->
-              </div>
               @endcan
             </div>
         </div>
