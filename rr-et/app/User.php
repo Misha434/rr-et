@@ -15,6 +15,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Script');
     }
 
+    public function scriptLikes()
+    {
+        return $this->hasMany('App\ScriptLike');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

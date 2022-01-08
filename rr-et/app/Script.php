@@ -16,6 +16,11 @@ class Script extends Model
         return $this->belongsTo('App\Category');
     }
     
+    public function ScriptLikes()
+    {
+        return $this->hasMany('App\ScriptLike');
+    }
+    
     /**
      * The attributes that are mass assignable.
      *
