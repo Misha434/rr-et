@@ -72,7 +72,7 @@ class ScriptController extends Controller
         $script->category_id = $request->category_id;
         $script->save();
 
-        return redirect()->route('scripts.index');
+        return redirect()->route('scripts.index')->with('status', '投稿しました。');
     }
 
     /**
@@ -130,7 +130,7 @@ class ScriptController extends Controller
         $script->category_id = $request->category_id;
         $script->save();
 
-        return redirect()->route('scripts.index');
+        return redirect()->route('scripts.index')->with('status', '編集完了しました。');
     }
 
     /**
@@ -149,6 +149,6 @@ class ScriptController extends Controller
         }
 
         $script->delete();
-        return redirect(route('scripts.index'));
+        return redirect()->route('scripts.index')->with('status', '削除しました。');
     }
 }

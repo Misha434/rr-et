@@ -62,7 +62,7 @@ class UserController extends Controller
     
             $loggedInUser->save();
     
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('status', '変更しました。');
         }
     }
 }
