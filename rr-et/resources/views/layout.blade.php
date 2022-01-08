@@ -39,7 +39,7 @@
         <div class="col-6 col-lg-2 order-lg-0">
           <nav class="navbar-dark">
             <div class="container d-flex align-items-center">
-              <a href="#" class="navbar-brand">
+              <a href="{{ url('/') }}" class="navbar-brand">
                 RR-ET
               </a>
             </div>
@@ -92,6 +92,11 @@
     </div>
   </header>
   <main>
+    @if (session('status'))
+      <div class="alert alert-success" role="alert">
+        {{ session('status') }}
+      </div>
+    @endif
     @yield('content')
   </main>
   <script></script>

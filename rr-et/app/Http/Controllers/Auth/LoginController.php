@@ -31,6 +31,14 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
+     * ログアウトしたときの画面遷移先
+     */
+    protected function loggedOut(\Illuminate\Http\Request $request)
+    {
+        return redirect()->route('home')->with('status', 'ログアウトしました。');
+    }
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -56,7 +64,7 @@ class LoginController extends Controller
             ]);
 
             Auth::loginUsingID($createdGuestUser->id, true);
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('status', 'ゲストユーザーとしてログインしました。');
         }
     }
 }

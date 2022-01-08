@@ -343,5 +343,34 @@
     "method": [
       "DELETE"
     ]
+  },
+  "users.show": {
+    "name": "users.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@show",
+    "uri": "users/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "users.edit": {
+    "name": "users.edit",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@edit",
+    "uri": "users/{id}/edit",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "users.update": {
+    "name": "users.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@update",
+    "uri": "users/{id}",
+    "method": [
+      "PUT"
+    ]
   }
 }

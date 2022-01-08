@@ -80,7 +80,10 @@ return [
     |
     */
 
-    'locale' => 'jp',
+    'timezone' => 'Asia/Tokyo',
+    'locale' => 'ja',
+    'fallback_locale' => 'en',
+    'faker_locale' => 'ja_JP',
 
     /*
     |--------------------------------------------------------------------------

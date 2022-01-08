@@ -1,18 +1,18 @@
-@extends('layouts.app')
+@extends('layout')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-4">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
+                    <!-- @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                    @endif
+                    @endif -->
 
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
