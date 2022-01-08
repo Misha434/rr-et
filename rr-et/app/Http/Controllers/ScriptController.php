@@ -37,7 +37,10 @@ class ScriptController extends Controller
         }
 
         $scripts_count = $query->count();
-        $scripts = $query->with('user')->with('category')->paginate(10);
+
+        $filteredScripts = $query->with('user')->with('category');
+        $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
+        $scripts = $sortedScripts->paginate(10);
 
         return view('scripts.index', compact('scripts', 'keyword', 'scripts_count'));
     }
@@ -85,9 +88,7 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        return view('scripts/show', [
-            'script' => $script,
-        ]);
+        return view('scripts.show', compact('script'));
     }
 
     /**

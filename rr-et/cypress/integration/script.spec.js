@@ -117,8 +117,8 @@ describe('ScriptController:', () => {
       cy.get('header').contains('ネタ一覧').click()
       cy.get('[data-e2e="script-0-delete"]').click()
 
-      cy.get('[data-e2e="script-0"]').not('have.text', 'Linuxチョットワカル')
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').not('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
     })
 
     it('can search the script in scripts#index page', () => {
@@ -150,8 +150,8 @@ describe('ScriptController:', () => {
       cy.get('[data-e2e="script-search-submit"]').click()
       
       cy.get('[data-e2e="script-search-count"]').should('have.text', '2 件')
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
-      cy.get('[data-e2e="script-1"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linuxチョットワカル')
     })
 
     it('can search the script but showing not found', () => {
@@ -194,12 +194,12 @@ describe('ScriptController:', () => {
       cy.get('[data-e2e="password-input"]').type(adminPassword)
       cy.get('[data-e2e="submit"]').contains('ログイン').click()
 
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
-      cy.get('[data-e2e="script-1"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linuxチョットワカル')
       
       cy.get('[data-e2e="script-0-delete"]').click()
-      cy.get('[data-e2e="script-0"]').not('have.text', 'Linuxチョットワカル')
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').not('have.text', 'Linux完全に理解した')
+      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
     })
   })
     
