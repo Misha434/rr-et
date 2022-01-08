@@ -32,6 +32,20 @@
           <div class="col-12">
             <div class="card mt-2 px-3 pt-3">
               <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+              @if($like_model->isLiked(Auth::user()->id, $script->id))
+                <script type="text">
+                  
+                </script>
+                <p class="like-mark">
+                  <a class="js-like-toggle liked" href="" data-scriptid="{{ $script->id }}">いいね済 数:</a>
+                  <span class="likesCount">{{ $script->likes_count }}</span>
+                </p>
+              @else
+                <p class="like-mark">
+                  <a class="js-like-toggle" href="" data-scriptid="{{ $script->id }}">いいね 数:</a>
+                  <span class="likesCount">{{ $script->likes_count }}</span>
+                </p>
+              @endif
               <span class="border"></span>
               <div class="d-block">
                 <div class="float-left">

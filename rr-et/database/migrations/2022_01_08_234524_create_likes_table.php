@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLikeScriptsTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLikeScriptsTable extends Migration
      */
     public function up()
     {
-        Schema::create('like_scripts', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('script_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -30,7 +30,7 @@ class CreateLikeScriptsTable extends Migration
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      *
@@ -38,6 +38,6 @@ class CreateLikeScriptsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('like_scripts');
+        Schema::dropIfExists('likes');
     }
 }

@@ -16,9 +16,9 @@ class Script extends Model
         return $this->belongsTo('App\Category');
     }
     
-    public function ScriptLikes()
+    public function likes()
     {
-        return $this->hasMany('App\ScriptLike');
+        return $this->hasMany('App\Like');
     }
     
     /**

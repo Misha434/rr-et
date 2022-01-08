@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LikeScript extends Model
+class Like extends Model
 {
     public function script()
     {
@@ -18,7 +18,7 @@ class LikeScript extends Model
 
     public function isLiked(int $id, int $scriptId)
     {
-        $likedScript = LikeScript::where('user_id', $id)->where('script_id', $scriptId)->get();
+        $likedScript = Like::where('user_id', $id)->where('script_id', $scriptId)->get();
 
         return $likedScript->isEmpty() ? false : true;
     }

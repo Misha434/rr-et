@@ -17,7 +17,7 @@ class User extends Authenticatable
 
     public function scriptLikes()
     {
-        return $this->hasMany('App\ScriptLike');
+        return $this->hasMany('App\Like');
     }
 
     /**

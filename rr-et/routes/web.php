@@ -24,6 +24,7 @@ Route::get('/login/guest', 'Auth\LoginController@guestLogin');
 
 Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::resource('scripts', 'ScriptController');
+  Route::post('ajaxlike', 'ScriptController@ajaxlike')->name('scripts.ajaxlike');
   Route::resource('categories', 'CategoryController');
   Route::get('/users/{id}', 'UserController@show')->name('users.show');
   Route::get('/users/{id}/edit', 'UserController@edit')->name('users.edit');
