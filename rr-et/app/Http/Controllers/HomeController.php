@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $scripts = Script::with('user')->with('category')->get();
+        $scripts = Script::with('user')->with('category')->take(4)->get();
 
         return view('home', compact('scripts'));
     }
