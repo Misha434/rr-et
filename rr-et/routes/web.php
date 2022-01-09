@@ -35,6 +35,11 @@ Route::group(['middleware' => ['auth', 'can:general-user']], function () {
     Route::post('/like/store','likeController@store')->name('likes.store');
     Route::get('/like/store','likeController@destroy');
     Route::delete('/like/destroy','likeController@destroy')->name('likes.destroy');
+
+    Route::get('/comments/store','CommentController@store');
+    Route::post('/comments/store','CommentController@store')->name('comments.store');
+    Route::get('/comments/destroy','CommentController@destroy');
+    Route::delete('/comments/destroy','CommentController@destroy')->name('comments.destroy');
   });
 });
 
