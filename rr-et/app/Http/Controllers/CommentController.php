@@ -35,8 +35,8 @@ class CommentController extends Controller
     
     public function destroy(int $id)
     {
-        $loggedInUser = Auth::user();
-        $comment = Comment::where('user_id', $loggedInUser->id)->where('script_id', $id)->first();
+        $comment = Comment::findOrfail($id);
+
         $comment->delete();
 
         session()->regenerateToken();
