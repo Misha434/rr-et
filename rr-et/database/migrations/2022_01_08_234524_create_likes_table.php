@@ -27,6 +27,9 @@ class CreateLikesTable extends Migration
             ->on('users')
             ->onDelete('cascade');
 
+            $table->unique(['id','user_id']);
+            $table->unique(['user_id','script_id']);
+
             $table->timestamps();
         });
     }
