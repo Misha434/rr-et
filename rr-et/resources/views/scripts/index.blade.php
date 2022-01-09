@@ -32,6 +32,43 @@
           <div class="col-12">
             <div class="card mt-2 px-3 pt-3">
               <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+              @if($script->isLiked($script->id, Auth::user()->id))
+                <p class="like-mark">
+                  <form action="{{ route('likes.destroy', ['id' => $script->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger btn-sm" id="destroyLike-disable" type="submit">いいね解除
+                      <span class="likesCount">{{ $script->likes->count() }}</span>
+                    </button>
+                    <script>
+                      $(function () {
+                        $('button#destroyLike-disable').on('click',function () {
+                          $(this).click(function () {
+                            $(this).prop('disabled', true);
+                          })
+                        })
+                      })
+                    </script>
+                  </form>
+                </p>
+              @else
+                <p class="like-mark">
+                  <form action="{{ route('likes.store', ['id' => $script->id]) }}" method="POST">
+                    @csrf
+                    <button id="like-disable" class="btn btn-outline-secondary  btn-sm" type="submit">いいね<span class="likesCount ml-2">{{ $script->likes->count() }}</span>
+                    </button>
+                    <script>
+                      $(function () {
+                        $('button#like-disable').on('click',function () {
+                          $(this).click(function () {
+                            $(this).prop('disabled', true);
+                          })
+                        })
+                      })
+                    </script>
+                  </form>
+                </p>
+              @endif
               <span class="border"></span>
               <div class="d-block">
                 <div class="float-left">

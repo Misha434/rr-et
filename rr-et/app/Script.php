@@ -16,6 +16,18 @@ class Script extends Model
         return $this->belongsTo('App\Category');
     }
     
+    public function likes()
+    {
+        return $this->hasMany('App\Like');
+    }
+    
+    public function isLiked(int $scriptId, int $userId)
+    {
+        $likedScript = Like::where('user_id', $userId)->where('script_id', $scriptId)->get();
+
+        return $likedScript->isEmpty() ? false : true;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

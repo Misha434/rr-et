@@ -7,6 +7,7 @@ use App\Script;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateScript;
 use App\Http\Requests\EditScript;
+use App\Like;
 use Illuminate\Support\Facades\Auth;
 
 class ScriptController extends Controller
@@ -38,7 +39,7 @@ class ScriptController extends Controller
 
         $scripts_count = $query->count();
 
-        $filteredScripts = $query->with('user')->with('category');
+        $filteredScripts = $query->withCount('likes')->with('user')->with('category');
         $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
         $scripts = $sortedScripts->paginate(10);
 
@@ -151,5 +152,30 @@ class ScriptController extends Controller
 
         $script->delete();
         return redirect()->route('scripts.index')->with('status', '削除しました。');
+    }
+
+    public function ajaxlike(Request $request)
+    {
+        $postUserId = Auth::user()->id;
+        $scriptId = $request->script_id;
+        $like = new Like;
+        $script = Script::findOrFail($scriptId);
+
+        if ($like->idLiked($postUserId, $scriptId)){
+            $like = Like::where('script_id', $scriptId)->where('user_id', $postUserId)->delete();
+        } else {
+            $like = new Like;
+            $like->script_id = $request->script_id;
+            $like->user_id = Auth::user()->id;
+            $like->save();
+        }
+
+        $scriptLikesCount = $script->loadCount('likes')->likes_count;
+
+        $json = [
+            'scriptLikesCount' => $scriptLikesCount,
+        ];
+
+        return response()->json($json);
     }
 }

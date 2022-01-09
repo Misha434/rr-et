@@ -37261,6 +37261,42 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/js/_ajaxlike.js":
+/*!***********************************!*\
+  !*** ./resources/js/_ajaxlike.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(function () {
+  var like = $('.js-like-toggle');
+  var likeScriptId;
+  like.on('click', function () {
+    var $this = $(this);
+    likeScriptId = $this.data('scriptid');
+    $.ajax({
+      Headers: {
+        'X-CSRF-TOKEN': $('META[name="csrf-token"]').attr('content')
+      },
+      url: '/scripts/ajaxlike',
+      type: 'POST',
+      data: {
+        'script_id': likeScriptId
+      }
+    }).done(function (data) {
+      $this.toggleClass('liked');
+      $this.next('.likesCount').html(data.scriptLikesCount);
+    }).fail(function (data, xhr, err) {
+      console.log('エラー');
+      console.log(err);
+      console.log(xhr);
+    });
+    return false;
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -37269,6 +37305,8 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+__webpack_require__(/*! ./_ajaxlike.js */ "./resources/js/_ajaxlike.js");
 
 /***/ }),
 
