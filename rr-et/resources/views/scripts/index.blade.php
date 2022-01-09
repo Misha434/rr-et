@@ -32,6 +32,7 @@
           <div class="col-12">
             <div class="card mt-2 px-3 pt-3">
               <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+              <div class="d-flex my-2">
               @if($script->isLiked($script->id, Auth::user()->id))
                 <p class="like-mark">
                   <form action="{{ route('likes.destroy', ['id' => $script->id]) }}" method="POST">
@@ -69,6 +70,56 @@
                   </form>
                 </p>
               @endif
+
+              <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#collapseComments-{{ $key }}" aria-expanded="false" aria-controls="collapseComments">
+                コメント {{ $script->comments->count() }}
+              </button>
+              </div>
+
+              <div class="collapse" id="collapseComments-{{ $key }}">
+                <form action="{{ route('comments.store', ['id' => $script->id]) }}" method="POST">
+                  @csrf
+                  <div class="form-group-{{ $key }}">
+                    <label for="content">コメント</label>
+                    <textarea class="form-control" id="content" rows="2" name="content"></textarea>
+                    <div class="float-right">
+                      <button type="submit" class="btn btn-primary mt-2" data-e2e="submit">送信</button>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="comments mt-4">
+                  @foreach($script->comments as $commentOrder => $comment)
+                    <div class="border-top">
+                      <p>{{$comment->content}}</p>
+                      <div class="d-flex">
+                        <p>{{$comment->user->name}}</p>
+
+                          @if((Auth::user()->id === $comment->user->id )|| Auth::user()->role === 1)
+                          <form action="{{ route('comments.destroy', ['id' => $comment->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm" id="destroyComment-disable" type="submit" onclick='return confirm("削除しますか？");'
+                          data-e2e="comment-{{ $commentOrder }}-delete">削除
+                            </button>
+                            <script>
+                              $(function () {
+                                $('button#destroyComment-disable').on('click',function () {
+                                  $(this).click(function () {
+                                    $(this).prop('disabled', true);
+                                  })
+                                })
+                              })
+                            </script>
+                          </form>
+                          @endif
+
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+              </div>
+
               <span class="border"></span>
               <div class="d-block">
                 <div class="float-left">
