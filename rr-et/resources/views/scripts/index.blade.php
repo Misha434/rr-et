@@ -32,18 +32,41 @@
           <div class="col-12">
             <div class="card mt-2 px-3 pt-3">
               <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
-              @if($like_model->isLiked(Auth::user()->id, $script->id))
-                <script type="text">
-                  
-                </script>
+              @if($script->isLiked($script->id, Auth::user()->id))
                 <p class="like-mark">
-                  <a class="js-like-toggle liked" href="" data-scriptid="{{ $script->id }}">いいね済 数:</a>
-                  <span class="likesCount">{{ $script->likes_count }}</span>
+                  <form action="{{ route('likes.destroy', ['id' => $script->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger btn-sm" id="destroyLike-disable" type="submit">いいね解除
+                      <span class="likesCount">{{ $script->likes->count() }}</span>
+                    </button>
+                    <script>
+                      $(function () {
+                        $('button#destroyLike-disable').on('click',function () {
+                          $(this).click(function () {
+                            $(this).prop('disabled', true);
+                          })
+                        })
+                      })
+                    </script>
+                  </form>
                 </p>
               @else
                 <p class="like-mark">
-                  <a class="js-like-toggle" href="" data-scriptid="{{ $script->id }}">いいね 数:</a>
-                  <span class="likesCount">{{ $script->likes_count }}</span>
+                  <form action="{{ route('likes.store', ['id' => $script->id]) }}" method="POST">
+                    @csrf
+                    <button id="like-disable" class="btn btn-outline-secondary  btn-sm" type="submit">いいね<span class="likesCount ml-2">{{ $script->likes->count() }}</span>
+                    </button>
+                    <script>
+                      $(function () {
+                        $('button#like-disable').on('click',function () {
+                          $(this).click(function () {
+                            $(this).prop('disabled', true);
+                          })
+                        })
+                      })
+                    </script>
+                  </form>
                 </p>
               @endif
               <span class="border"></span>
