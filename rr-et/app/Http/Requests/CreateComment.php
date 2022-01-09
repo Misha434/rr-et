@@ -24,8 +24,6 @@ class CreateComment extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer',
-            'script_id' => 'required|integer',
             'content' => 'required|string|max:250',
         ];
     }
