@@ -43,9 +43,7 @@ class ScriptController extends Controller
         $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
         $scripts = $sortedScripts->paginate(10);
 
-        $like_model = new Like;
-
-        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'like_model'));
+        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count'));
     }
 
     /**
