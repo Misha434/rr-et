@@ -8,12 +8,12 @@ class Comment extends Model
 {
     public function script()
     {
-        $this->belongsTo('\App\Script');
+        return $this->belongsTo('\App\Script');
     }
 
     public function user()
     {
-        $this->belongsTo('\App\User');
+        return $this->belongsTo('\App\User');
     }
 
     /**
