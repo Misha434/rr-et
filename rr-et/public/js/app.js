@@ -37274,11 +37274,11 @@ $(function () {
   like.on('click', function () {
     var $this = $(this);
     likeScriptId = $this.data('scriptid');
-    $ajax({
+    $.ajax({
       Headers: {
         'X-CSRF-TOKEN': $('META[name="csrf-token"]').attr('content')
       },
-      url: '/ajaxlike',
+      url: '/scripts/ajaxlike',
       type: 'POST',
       data: {
         'script_id': likeScriptId
