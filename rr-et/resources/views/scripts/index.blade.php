@@ -32,6 +32,7 @@
           <div class="col-12">
             <div class="card mt-2 px-3 pt-3">
               <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+              <div class="d-flex my-2">
               @if($script->isLiked($script->id, Auth::user()->id))
                 <p class="like-mark">
                   <form action="{{ route('likes.destroy', ['id' => $script->id]) }}" method="POST">
@@ -69,6 +70,29 @@
                   </form>
                 </p>
               @endif
+
+              <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#collapseComments-{{ $key }}" aria-expanded="false" aria-controls="collapseComments">
+                コメント
+              </button>
+              </div>
+
+              <div class="collapse" id="collapseComments-{{ $key }}">
+                <form action="#">
+                  <div class="form-group">
+                    <label for="content">Example textarea</label>
+                    <textarea class="form-control" id="content" rows="2"></textarea>
+                    <div class="float-right">
+                      <button type="#" class="btn btn-primary mt-2">送信</button>
+                    </div>
+                  </div>
+                </form>
+
+                @foreach($script->comments as $commentOrder => $comment)
+                  <span class="border"></span>
+                  <p>{{$comment->content}}</p>
+                @endforeach
+              </div>
+
               <span class="border"></span>
               <div class="d-block">
                 <div class="float-left">
