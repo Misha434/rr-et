@@ -19,11 +19,11 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(CreateComment $request)
+    public function store(CreateComment $request, int $id)
     {
         $comment = new Comment;
         $comment->user_id = Auth::user()->id;
-        $comment->script_id = $request->script->id;
+        $comment->script_id = $id;
         $comment->content = $request->content;
         $comment->save();
 
