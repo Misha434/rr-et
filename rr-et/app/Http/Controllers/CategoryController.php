@@ -56,7 +56,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
-        $scripts = $category->scripts()->with('user')->get();
+        $scripts = $category->scripts()->with('user')->with('likes')->with('comments')->paginate(10);
 
         return view('categories.show', compact('category', 'scripts'));
     }

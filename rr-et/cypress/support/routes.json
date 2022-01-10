@@ -114,8 +114,8 @@
   "": {
     "name": null,
     "domain": null,
-    "action": "App\\Http\\Controllers\\Auth\\LoginController@guestLogin",
-    "uri": "login/guest",
+    "action": "App\\Http\\Controllers\\CommentController@destroy",
+    "uri": "scripts/{id}/comments/destroy",
     "method": [
       "GET",
       "HEAD"
@@ -371,6 +371,42 @@
     "uri": "users/{id}",
     "method": [
       "PUT"
+    ]
+  },
+  "likes.store": {
+    "name": "likes.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\likeController@store",
+    "uri": "scripts/{id}/like/store",
+    "method": [
+      "POST"
+    ]
+  },
+  "likes.destroy": {
+    "name": "likes.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\likeController@destroy",
+    "uri": "scripts/{id}/like/destroy",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "comments.store": {
+    "name": "comments.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CommentController@store",
+    "uri": "scripts/{id}/comments/store",
+    "method": [
+      "POST"
+    ]
+  },
+  "comments.destroy": {
+    "name": "comments.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\CommentController@destroy",
+    "uri": "scripts/{id}/comments/destroy",
+    "method": [
+      "DELETE"
     ]
   }
 }

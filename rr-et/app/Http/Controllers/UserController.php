@@ -23,7 +23,7 @@ class UserController extends Controller
     public function show(int $id)
     {
         $user = User::findOrFail($id);
-        $postedScripts = $user->scripts()->with('category')->get();
+        $postedScripts = $user->scripts()->with('category')->withCount('likes')->withCount('comments')->get();
 
         $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
         $likedScripts = array();
@@ -66,9 +66,9 @@ class UserController extends Controller
             $loggedInUser->name = $request->name;
             $loggedInUser->email = $request->email;
             $loggedInUser->password = $request->password;
-    
+
             $loggedInUser->save();
-    
+
             return redirect()->route('scripts.index')->with('status', '変更しました。');
         }
     }
