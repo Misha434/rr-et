@@ -12,10 +12,11 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('ユーザー名') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('ユーザー名') }}<span class="badge badge-danger ml-2 pt-1">※必須</span></label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus data-e2e="name-input">
+                                <small id="nameHelp" class="form-text text-muted">・文字数: 255文字以下</small>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -26,7 +27,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Emailアドレス') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Emailアドレス') }}<span class="badge badge-danger ml-2 pt-1">※必須</span></label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" data-e2e="email-input">
@@ -40,10 +41,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('パスワード') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('パスワード') }}<span class="badge badge-danger ml-2 pt-1">※必須</span></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" data-e2e="password-input">
+
+                                <small id="passwordHelp" class="form-text text-muted">・文字数: 8〜255文字</small>
+                                <small id="passwordHelp" class="form-text text-muted">・使用可能文字: 英大小文字・数字</small>
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -54,7 +58,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('パスワード再入力') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('パスワード再入力') }}<span class="badge badge-danger ml-2 pt-1">※必須</span></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" data-e2e="password-confirm-input">
