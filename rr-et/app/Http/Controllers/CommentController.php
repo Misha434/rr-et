@@ -35,9 +35,9 @@ class CommentController extends Controller
     
     public function destroy(int $id)
     {
-        $comment = Comment::findOrfail($id)->with('user')->with('script');
+        $comment = Comment::where('id', $id)->with('user')->with('script')->first();
 
-        if (($comment->user_id !== Auth::user()->id) || Auth::user()->role === 1) {
+        if (($comment->user->id !== Auth::user()->id) && (Auth::user()->role !== 1 )) {
             return redirect()->route('scripts.index')->with('errors', 'ユーザーが不正です。');
         }
 
