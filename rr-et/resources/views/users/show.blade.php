@@ -76,7 +76,7 @@
 
       <div class="tab-pane fade" id="like" role="tabpanel" aria-labelledby="like-tab">
         <!-- Script Start -->
-        @if(count($likedScripts))
+        @if(count($likedScripts[0]))
         <div class="row">
           @foreach($likedScripts[0] as $key => $likedScript)
             <div class="col-12">
@@ -125,7 +125,9 @@
         <!-- Script End -->
 
         @else
-          <p data-e2e="script-search-not-found">見つかりませんでした。</p>
+          <div class="col-12">
+            <p data-e2e="script-search-not-found">見つかりませんでした。</p>
+          </div>
         @endif
       </div>
     </div>
