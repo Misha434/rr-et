@@ -31,6 +31,10 @@
           </div>
         </div>
       @endforeach
+    <div class="row">
+      <div class="col-12 col-md-12">
+        <a href="{{ route('scripts.index') }}" class="text-dark text-center"><u>続きを見る</u></a>
+      </div>
     </div>
   </div>
 </div>

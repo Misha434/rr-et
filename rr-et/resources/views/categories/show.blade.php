@@ -3,29 +3,25 @@
 @section('content')
   <div class="container">
     <!-- Title Start -->
-    <div class="row">
-      <div class="col-12">
-        <h1 class="text-center my-3">{{ $category->name }}</h1>
+      <div class="row">
+        <div class="col-12 offset-md-1 col-md-10 offset-md-1">
+          <h1 class="text-center my-3">{{ $category->name }}</h1>
+        </div>
       </div>
-    </div>
     <!-- Title End -->
-
-    <!-- Category Start -->
-    @if($scripts->count())
     
-    <div class="row">
-      @foreach($scripts as $key => $script) 
-        <div class="col-6">
-          <div class="card mt-2 px-3 pt-3">
-            <p class="text-center" data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+    @if($scripts->count())
+      <div class="row">
+        <div class="col-12 offset-md-1 col-md-10 offset-md-1">
+          <div class="infinite-scroll">
+            @include('share.script_part')
+            <div class="text-center mt-2">{{ $scripts->links() }}</div>
           </div>
         </div>
-      @endforeach
-    </div>
-
+      </div>
     @else
       <p>Comming soon</p>
     @endif
-    <!-- Category End -->
   </div>
+  @include('share.infinite_scroll_js')
 @endsection

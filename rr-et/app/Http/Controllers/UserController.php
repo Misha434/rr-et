@@ -23,8 +23,15 @@ class UserController extends Controller
     public function show(int $id)
     {
         $user = User::findOrFail($id);
-        $scripts = $user->scripts()->with('category')->get();
-        return view('users.show', compact('user', 'scripts'));
+        $postedScripts = $user->scripts()->with('category')->withCount('likes')->withCount('comments')->get();
+
+        $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
+        $likedScripts = array();
+        for($i = 0; $i < count($pickingLikedScriptIds); $i++){
+            array_push($likedScripts, Script::find($pickingLikedScriptIds[$i]));
+        }
+
+        return view('users.show', compact('user', 'postedScripts', 'likedScripts'));
     }
 
     public function edit(int $id)
@@ -59,9 +66,9 @@ class UserController extends Controller
             $loggedInUser->name = $request->name;
             $loggedInUser->email = $request->email;
             $loggedInUser->password = $request->password;
-    
+
             $loggedInUser->save();
-    
+
             return redirect()->route('scripts.index')->with('status', '変更しました。');
         }
     }
