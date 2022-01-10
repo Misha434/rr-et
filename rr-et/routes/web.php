@@ -31,10 +31,10 @@ Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::get('/users/{id}/edit', 'UserController@edit')->name('users.edit');
   Route::put('/users/{id}', 'UserController@update')->name('users.update');
   Route::group(['prefix'=>'scripts/{id}'],function(){
-    Route::get('/like/store','likeController@store');
-    Route::post('/like/store','likeController@store')->name('likes.store');
-    Route::get('/like/store','likeController@destroy');
-    Route::delete('/like/destroy','likeController@destroy')->name('likes.destroy');
+    Route::get('/like/store','LikeController@store');
+    Route::post('/like/store','LikeController@store')->name('likes.store');
+    Route::get('/like/store','LikeController@destroy');
+    Route::delete('/like/destroy','LikeController@destroy')->name('likes.destroy');
 
     Route::get('/comments/store','CommentController@store');
     Route::post('/comments/store','CommentController@store')->name('comments.store');
