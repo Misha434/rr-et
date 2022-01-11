@@ -11,6 +11,6 @@ class ScriptsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Script::class, 20)->create();
+        factory(App\Script::class, 160)->create();
     }
 }

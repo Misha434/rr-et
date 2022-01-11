@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RR-ET</title>
   <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+  <link rel="shortcut icon"  type="image/x-icon" href="{{ asset('/favicon.ico') }}">
   <script src="{{ asset('js/app.js') }}" ></script>
 </head>
 <body>
@@ -36,16 +37,16 @@
           </div>
         </div>
         </div>
-        <div class="col-6 col-lg-2 order-lg-0">
+        <div class="col-5 col-lg-2 order-lg-0">
           <nav class="navbar-dark">
             <div class="container d-flex align-items-center">
               <a href="{{ url('/') }}" class="navbar-brand">
-                RR-ET
+              <img src="{{ asset('images/rr-et_logo_210111.png') }}" width="50px" height="30px">
               </a>
             </div>
           </nav>
         </div>
-        <div class="col-3 col-lg-2 order-lg-2">
+        <div class="col-4 col-lg-2 order-lg-2">
           @guest
             <div class="dropdown mr-3" data-e2e="user-dropdown">
               <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
