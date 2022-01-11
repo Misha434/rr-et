@@ -1,13 +1,11 @@
 # rr-et
-WIP
-![logo_with_margin](https://user-images.githubusercontent.com/61964919/130588238-21854f7a-0496-4b89-b59a-94c7b2d6ab93.png)
+![rr-et_logo_readme](https://user-images.githubusercontent.com/61964919/148886040-e4b31a58-529d-4ef9-a9cd-64e763251a97.png)
 
-<h2 style="text-align: center"> 「あるある」を投稿する、RR-ET(アルアル・イーティー)</h2>
+<h2 style="text-align: center"> 「あるある」でつながる、</h2>
+<h2 style="text-align: center"> RR-ET(アルアル・イーティー)</h2>
 
-![service_summary_image_210906](https://user-images.githubusercontent.com/61964919/132218158-f9f9ce9d-3fb8-4888-972b-1718bbdb6fee.png)
+![rr-et_service_summary_220111](https://user-images.githubusercontent.com/61964919/148910478-cccb546b-e2fd-4327-bcd5-5259222c06a2.png)
 
-Laravel6 PHP MySQL Bootstrap4
-AWS(EC2, RDS Route53, ALB) Docker
 
 ## 目次
 - [プロジェクトの概要説明](#anchor1)
@@ -35,9 +33,11 @@ AWS(EC2, RDS Route53, ALB) Docker
 ### 機能概要
 |  機能  |  概要 | 
 | ---- | ---- |
-| ネタ関連機能 | 投稿・編集・削除機能 |
-| カテゴリ関連機能 | ネタに関連するカテゴリーを登録する機能 |
-| - | - |
+| ネタ関連機能 | 投稿・編集・削除・検索機能 |
+| カテゴリ関連機能 | ネタに関連するカテゴリーごとに閲覧する機能 |
+| ネタ いいね機能 | - |
+| ネタ コメント機能 | - |
+| 単体・E2Eテスト機能 | PHPUnit, Cypress |
 
 ### アクション実行権限 一覧
 - ログインユーザー・管理者に関して、特記なき場合はログインをしているユーザー自身が行なった投稿に対してのみ実行できることとします。
@@ -95,12 +95,6 @@ WIP
 <a id="anchor4"></a>
 
 ## 使用言語、環境、テクノロジー
-WIP
-
-### 意識したポイント
-
-- 「リーダブルコード」を読んだ知見を生かし、「意図がわかりやすい変数の命名」を意識してコーディングしました。
-- パフォーマンスを意識して、N+1問題が発生しないよう考慮しながらコーディングしました。
 
 ### バックエンド
 
@@ -108,27 +102,35 @@ WIP
 - Laravel 6.x
 - MySQL
 
-#### 使用した composer
+#### 使用した ライブラリー / フレームワーク
 | 名称 | 備考 |
 | --- | --- |
+| PHPUnit | 単体テスト |
+| laracasts / cypress | E2Eテストでのバックエンド側データ操作のため |
+| guzzle | メール認証で Mailgun API を使用するため |
 
 ### フロントエンド
 
-- Bootstrap 4
-- Font-Awesome
-- jQuery
 - JavaScript (ES6)
+- jQuery
+
+#### 使用した ライブラリー / フレームワーク 
+| 名称 | 備考 |
+| --- | --- |
+| Bootstrap4 | - |
+| FontAwesome | - |
+| jScroll | 無限スクロール |
 
 ### インフラ：AWS
-| 名称 |  | 備考 |
-| --- | --- | --- |
-| EC2 | App サーバー: Unicorn | - |
-|  | Web サーバー: Nginx | - |
-| RDS | RDBMS: MySQL | - |
-| Route 53 | DNSサービス | - |
-| S3 | ストレージ機能 | - |
-| ELB (ALB) | 負荷分散機能 | - |
-| Certificate Manager | SSL証明書 サービス | - |
+- Terraform を用いて環境構築を一部コード化しました。
+
+| 名称 |  | 備考 | Terraform化 |
+| --- | --- | --- | --- |
+| EC2 | Web サーバー: Nginx | - | o |
+| RDS | RDBMS: MySQL | - | o |
+| Route 53 | DNSサービス | - | - |
+| ELB (ALB) | 負荷分散機能 | - | - |
+| Certificate Manager | SSL証明書 サービス | - | - |
 
 
 ### 開発環境
@@ -143,13 +145,13 @@ WIP
 <a id="anchor5"></a>
 
 ## ER図
-![ER_diagram_211227](https://user-images.githubusercontent.com/61964919/147424112-95d274cc-f396-44ac-8018-b2e851d56ca2.jpg)
+![ER_diagram_220111](https://user-images.githubusercontent.com/61964919/148906463-2878a3dd-6914-45eb-8def-10ef7f29a0a6.png)
 
 <a id="anchor6"></a>
 
 ## システム構成図
 
-![Infrastracture_Diagram_20211227](https://user-images.githubusercontent.com/61964919/147424115-313326c3-55c0-4717-a018-600c48a9530a.jpg)
+![Infrastracture_Diagram_20220111_004](https://user-images.githubusercontent.com/61964919/148925218-6b799f58-7b8d-4041-8747-29e7d2e91c4e.png)
 
 <a id="anchor7"></a>
 
@@ -171,28 +173,32 @@ $ docker-compose up -d
 ### テスト方法
 
 - 正常系
-- 異常系: 入力フォームは異常値・境界値分析を行っています
+- 異常系: 入力フォームは境界値分析
+
+### テスト実施範囲
+
+| ユーザー \ テスト 種類 | 単体 | E2E | 備考 |
+| ---- | ---- | ---- | ---- |
+| User | x | x | - |
+| Auth | o | o | - |
+| Category | o | o | - |
+| Script | o | o | - |
+| Like | o | o | - |
+| Comment | o | o | - |
+- o : 実施
+- x : 未実施
+- WIP : 実施中
+- \- : 該当項目なし / 特になし
 
 ### デプロイ方法
 
-- Capistranoで自動デプロイ
+- 手動デプロイ
 
 <a id="anchor8"></a>
 
 ## こだわり・苦戦したポイント
 
-### 環境構築
-- Asset Pipeline 未使用にした環境構築に苦労しました。「Precompile が遅い」という記事を見て対応したのですが、環境を統一せず環境構築が完了する前に同時に作業を進めたために、手戻りが多数発生しました。
-
-### レビュー投稿機能
-
-- 自己プロフィール画面から口コミ投稿する際に、ブランドから製品を絞り込む Ajax処理を実装しました。
-- Ruby側の変数と、JavaScript側の変数の受渡しの方法がわからず長期間手詰まりを起こしました。jbuilderを利用することで解決しました。
-### 製品口コミ 平均値表示機能
-
-- レビュー数:1 の状態から、レビュー全削除をした際にレビュー平均値が nil になってしまうエラーが起きて手詰まりになったことがありました。その際に nilガード・デバックのことを学べました。
-
-- 評価の星表示部分は自作しています。
+### 
 
 
 <a id="anchor9"></a>
