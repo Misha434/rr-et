@@ -34,7 +34,7 @@
             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('ユーザー名') }}</label>
 
             <div class="col-md-6">
-              <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" autofocus data-e2e="name-input">
+              <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $user->name }}" required autocomplete="name" autofocus data-e2e="name-input">
               <!-- <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus data-e2e="name-input"> -->
 
               @error('name')
@@ -49,7 +49,7 @@
             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Emailアドレス') }}</label>
 
             <div class="col-md-6">
-              <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" data-e2e="email-input">
+              <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $user->email }}" required autocomplete="email" data-e2e="email-input">
               <!-- <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" data-e2e="email-input"> -->
 
               @error('email')
@@ -61,11 +61,11 @@
           </div>
 
           <div class="form-group row">
-            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('パスワード') }}</label>
+            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('新パスワード') }}</label>
 
             <div class="col-md-6">
-              <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" data-e2e="password-input" value="{{ $user->password }}">
-              <!-- <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" data-e2e="password-input"> -->
+              <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="password" data-e2e="password-input">
+              
 
               @error('password')
                 <span class="invalid-feedback" role="alert">
@@ -75,13 +75,27 @@
             </div>
           </div>
 
-          <!-- <div class="form-group row">
-            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('パスワード再入力') }}</label>
+          <div class="form-group row">
+            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('新パスワード再入力') }}</label>
 
             <div class="col-md-6">
-              <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" data-e2e="password-confirm-input">
+              <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="password" data-e2e="password-confirm-input">
             </div>
-          </div> -->
+          </div>
+
+          <div class="form-group row">
+            <label for="current_password" class="col-md-4 col-form-label text-md-right">{{ __('登録済パスワード 確認') }}</label>
+
+            <div class="col-md-6">
+              <input id="current_password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" autocomplete="current_password" data-e2e="current_password-input" required>
+
+              @error('current_password')
+                <span class="invalid-feedback" role="alert">
+                  <strong data-e2e="password-validate-message">{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
 
           <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">

@@ -148,6 +148,7 @@ return [
     'attributes' => [
         'name' => '名前',
         'password' => 'パスワード',
+        'current_password' => '登録済パスワード',
         'content' => '投稿ネタ',
         'category_id' => 'カテゴリー',
     ],
