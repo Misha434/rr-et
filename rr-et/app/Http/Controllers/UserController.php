@@ -6,7 +6,10 @@ use App\Http\Requests\EditUser;
 use App\Script;
 use Illuminate\Http\Request;
 use App\User;
+use App\Like;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -57,19 +60,31 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index');
         } else {
             $loggedInUser->name = $request->name;
             $loggedInUser->email = $request->email;
-            $loggedInUser->password = $request->password;
 
-            $loggedInUser->save();
+            if (Hash::Check($request->current_password, $loggedInUser->password)) {
+                if (!empty($request->password)) {
+                    $loggedInUser->password = Hash::make($request->password);
+                }
+
+                $loggedInUser->save();
+
+                return redirect()->route('users.show', ['id' => $loggedInUser->id])->with('status', '変更しました。');
+            } else {
+                throw ValidationException::withMessages([
+                    'alert' => '登録済パスワード が間違いです。',
+                ]);
+            }
 
             return redirect()->route('scripts.index')->with('status', '変更しました。');
+
+
+
         }
     }
 }
