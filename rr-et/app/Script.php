@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Like;
 
 class Script extends Model
 {
@@ -41,4 +42,13 @@ class Script extends Model
     protected $fillable = [
         'content', 'category_id',
     ];
+
+    protected static function boot() 
+    {
+        parent::boot();
+        self::deleting(function ($script) {
+            $script->likes()->delete();
+            $script->comments()->delete();
+        });
+    }
 }

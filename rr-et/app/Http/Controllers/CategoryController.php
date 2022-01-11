@@ -100,9 +100,18 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
+        $relatedScripts = $category->scripts()->get();
+
+        $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
+
+        foreach ($relatedScripts as $relatedScript) {
+            $relatedScript->category_id = $uncategorizeId;
+            $relatedScript->save();
+        }
+
         $category->delete();
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('status', 'カテゴリーを削除しました。');
     }
 }
