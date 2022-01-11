@@ -109,7 +109,16 @@
       </div>
     </div>
   </div>
-  
+
+  <div class="row mt-2">
+    <div class="col-12">
+      <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <input type="submit" value="退会" class="btn btn-block btn-outline-danger" onclick='return confirm("削除後に復元できません。本当に削除しますか？");'>
+      </form>
+    </div>
+  </div>
 </div>
 
 @endsection

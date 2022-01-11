@@ -82,9 +82,22 @@ class UserController extends Controller
             }
 
             return redirect()->route('scripts.index')->with('status', '変更しました。');
+        }
+    }
 
+    public function destroy(int $id)
+    {
+        $selectedUser = User::findOrFail($id);
+        $loggedInUser = Auth::user();
 
+        if ($selectedUser->id !== $loggedInUser->id) {
+            return redirect()->route('scripts.index');
+        } elseif ($loggedInUser->email === 'guest-user@example.com') {
+            return redirect()->route('scripts.index');
+        } else {
+            $selectedUser->delete();
 
+            return redirect()->route('home')->with('status', '退会しました。');
         }
     }
 }

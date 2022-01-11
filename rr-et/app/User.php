@@ -51,4 +51,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function boot() 
+    {
+        parent::boot();
+        self::deleting(function ($user) {
+            $user->likes()->delete();
+            $user->comments()->delete();
+            $user->scripts()->delete();
+        });
+    }
 }
