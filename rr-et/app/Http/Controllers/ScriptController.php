@@ -39,9 +39,9 @@ class ScriptController extends Controller
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
 
-        $scripts_count = $query->where('content', $statusPosted)->count();
+        $scripts_count = $query->where('status', $statusPosted)->count();
 
-        $filteredScripts = $query->where('content', $statusPosted)->withCount('likes')->withCount('comments')->with('user')->with('category');
+        $filteredScripts = $query->where('status', $statusPosted)->withCount('likes')->withCount('comments')->with('user')->with('category');
         $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
         $scripts = $sortedScripts->paginate(10);
 
@@ -78,7 +78,7 @@ class ScriptController extends Controller
         $script->content = $request->content;
         $script->user_id = $userId;
         $script->category_id = $request->category_id;
-        if ($request->has('submit')){
+        if ($request->has('store')){
             $script->status = $statusStore;
             $script->save();
 
@@ -90,6 +90,12 @@ class ScriptController extends Controller
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
+        } else {
+            $script->status = $statusStore;
+            $script->save();
+
+            session()->regenerateToken();
+            session()->flash('status', '投稿しました。');
         }
 
         return redirect()->route('scripts.index');
@@ -138,6 +144,8 @@ class ScriptController extends Controller
     public function update(EditScript $request, int $id)
     {
         $script = Script::findOrFail($id);
+        $statusStore = 1;
+        $statusDraft = 2;
 
         $loggedInUser = Auth::user();
         if ($script->user_id !== $loggedInUser->id) {
@@ -151,6 +159,27 @@ class ScriptController extends Controller
         }
 
         $script->category_id = $request->category_id;
+
+        if ($request->has('store')){
+            $script->status = $statusStore;
+            $script->save();
+
+            session()->regenerateToken();
+            session()->flash('status',  '編集しました。');
+        } elseif ($request->has('draft')){
+            $script->status = $statusDraft;
+            $script->save();
+
+            session()->regenerateToken();
+            session()->flash('status', '下書きに保存しました。');
+        } else {
+            $script->status = $statusStore;
+            $script->save();
+
+            session()->regenerateToken();
+            session()->flash('status', '編集しました。');
+        }
+
         $script->save();
 
         return redirect()->route('scripts.index')->with('status', '編集完了しました。');

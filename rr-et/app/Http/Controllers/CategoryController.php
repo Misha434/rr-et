@@ -115,11 +115,13 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $relatedScripts = $category->scripts()->get();
 
-        $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
-
-        foreach ($relatedScripts as $relatedScript) {
-            $relatedScript->category_id = $uncategorizeId;
-            $relatedScript->save();
+        if (count($relatedScripts)) {
+            $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
+    
+            foreach ($relatedScripts as $relatedScript) {
+                $relatedScript->category_id = $uncategorizeId;
+                $relatedScript->save();
+            }
         }
 
         $category->delete();
