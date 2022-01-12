@@ -31,6 +31,7 @@ class ScriptController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->input('keyword');
+        $statusPosted = 1;
 
         $query = Script::query();
 
@@ -38,9 +39,9 @@ class ScriptController extends Controller
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
 
-        $scripts_count = $query->count();
+        $scripts_count = $query->where('content', $statusPosted)->count();
 
-        $filteredScripts = $query->withCount('likes')->withCount('comments')->with('user')->with('category');
+        $filteredScripts = $query->where('content', $statusPosted)->withCount('likes')->withCount('comments')->with('user')->with('category');
         $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
         $scripts = $sortedScripts->paginate(10);
 
@@ -69,15 +70,29 @@ class ScriptController extends Controller
     {
         $user = Auth::user();
         $userId = $user->id;
+        $statusStore = 1;
+        $statusDraft = 2;
 
         $script = new Script();
 
         $script->content = $request->content;
         $script->user_id = $userId;
         $script->category_id = $request->category_id;
-        $script->save();
+        if ($request->has('submit')){
+            $script->status = $statusStore;
+            $script->save();
 
-        return redirect()->route('scripts.index')->with('status', '投稿しました。');
+            session()->regenerateToken();
+            session()->flash('status', '投稿しました。');
+        } elseif ($request->has('draft')){
+            $script->status = $statusDraft;
+            $script->save();
+
+            session()->regenerateToken();
+            session()->flash('status', '下書きに保存しました。');
+        }
+
+        return redirect()->route('scripts.index');
     }
 
     /**
