@@ -68,7 +68,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $statusPosted = 1;
 
-        $scripts = $category->scripts()->where('content', $statusPosted)->with('user')->with('likes')->with('comments')->paginate(10);
+        $scripts = $category->scripts()->where('status', $statusPosted)->with('user')->with('likes')->with('comments')->paginate(10);
 
         return view('categories.show', compact('category', 'scripts'));
     }
