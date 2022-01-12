@@ -22,11 +22,6 @@
                   <div class="d-block mb-1">
                     <div class="float-left">
                       <div class="d-flex">
-                        <!-- User Name Start -->
-                        <a href="{{ route('users.show', $script->user->id) }}"
-                        data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</a>
-                        <!-- User Name End -->
-
                         <!-- Posted Time Start -->
                         <p class="mx-2 my-0 d-none d-sm-block"
                         style="color:gray;">{{ $script->created_at->format('Y/m/d h:m') }}</p>
@@ -52,12 +47,11 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </a>
             </div>
-          </div>
-        @endforeach
+          @endforeach
+        </div>
       </div>
       <!-- Script End -->
 
@@ -66,6 +60,5 @@
           <p data-e2e="script-search-not-found">下書きの投稿はありません。</p>
         </div>
       @endif
-    </div>
   </div>
 @endsection
