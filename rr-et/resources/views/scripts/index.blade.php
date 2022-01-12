@@ -19,10 +19,23 @@
     <div class="row">
       <div class="col-12 offset-md-1 col-md-10 offset-md-1">
         @if($scripts->count())
-          <p data-e2e="script-search-count">{{ $scripts_count }} 件</p>
+        <p data-e2e="script-search-count">{{ $scripts_count }} 件</p>
         @else
-          <p data-e2e="script-search-not-found">見つかりませんでした。</p>
+        <p data-e2e="script-search-not-found">見つかりませんでした。</p>
         @endif
+      </div>
+      <div class="col-12 offset-md-1 col-md-10 offset-md-1">
+        <div class="float-right">
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              ソート
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="/scripts?sort=likes_count&direction=desc">いいね数</a>
+              <a class="dropdown-item" href="/scripts?sort=created_at&direction=desc">投稿日時</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

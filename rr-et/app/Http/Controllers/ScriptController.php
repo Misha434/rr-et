@@ -41,8 +41,8 @@ class ScriptController extends Controller
 
         $scripts_count = $query->where('status', $statusPosted)->count();
 
-        $filteredScripts = $query->where('status', $statusPosted)->withCount('likes')->withCount('comments')->with('user')->with('category');
-        $sortedScripts = $filteredScripts->orderBy('created_at', 'desc');
+        $filteredScripts = $query->where('status', $statusPosted)->with('likes')->withCount('comments')->with('user')->with('category');
+        $sortedScripts = $filteredScripts->sortable();
         $scripts = $sortedScripts->paginate(10);
 
         return view('scripts.index', compact('scripts', 'keyword', 'scripts_count'));

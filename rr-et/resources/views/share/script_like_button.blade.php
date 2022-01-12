@@ -3,7 +3,7 @@
     @csrf
     @method('DELETE')
     <button class="btn btn-danger btn-sm mr-3" id="destroyLike-disable" type="submit"><i class="fas fa-heart"></i>
-      <span class="likesCount">{{ $script->likes->count() }}</span>
+      <span class="likesCount">{{ $script->likes_count }}</span>
     </button>
     <script>
       $(function () {
