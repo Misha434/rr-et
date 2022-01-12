@@ -28,7 +28,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $statusPosted = 1;
 
-        $postedScripts = $user->scripts()->where('content', $statusPosted)->with('category')->withCount('likes')->withCount('comments')->paginate(10);
+        $postedScripts = $user->scripts()->where('status', $statusPosted)->with('category')->withCount('likes')->withCount('comments')->orderBy('created_at','desc')->paginate(10);
 
         $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
         $likedScripts = array();
