@@ -20,57 +20,13 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="script" role="tabpanel" aria-labelledby="script-tab">
-        <!-- Script Start -->
-        @if($postedScripts->count())
-        <div class="row">
-          @foreach($postedScripts as $key => $postedScript)
-            <div class="col-12">
-              <div class="card mt-2 px-3 pt-3">
-                <p data-e2e="script-{{ $key }}">{{ $postedScript->content }}</p>
-                <span class="border"></span>
-                <div class="d-block">
-                  <div class="float-left">
-                    <div class="d-flex">
-                      <p class="mt-2" data-e2e="postedScript-{{ $key }}-username">{{ $postedScript->user->name }}</p>
-                      <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $postedScript->created_at }}</p>
-                    </div>
-                  </div>
-                  @can('general-user')
-                    @if (($postedScript->user_id === auth()->user()->id) || $postedScript->user->role === 1)
-                    <div class="float-right">
-                      <!-- 削除ボタン Start -->
-                      <form action="{{ route('scripts.destroy', $postedScript->id) }}"
-                      method="post" class="float-right mt-1 mb-3"
-                      >
-                      @csrf
-                      @method('delete')
-                      <input type="submit" value="削除"
-                            class="btn btn-danger btn-sm"
-                            onclick='return confirm("削除しますか？");'
-                            data-e2e="postedScript-{{ $key }}-delete"
-                      >
-                    </form>
-                    <!-- 削除ボタン End -->
-
-                    <!-- 編集ボタン Start -->
-                    <a href="{{ route('scripts.edit', $postedScript->id) }}"
-                      class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2" data-e2e="postedScript-{{ $key }}-edit"
-                    >
-                    編集
-                    </a>
-                    <!-- 編集ボタン End -->
-                    </div>
-                  @endif
-                  @endcan
-                </div>
-            </div>
-          </div>
-          @endforeach
-        </div>
-        <!-- Script End -->
-
+        @if(count($postedScripts))
+          @include('share.script_part', ['scripts' => $postedScripts])
+          <div class="text-center mt-2">{{ $postedScripts->links() }}</div>
         @else
-          <p data-e2e="script-search-not-found">見つかりませんでした。</p>
+          <div class="col-12">
+            <p data-e2e="script-search-not-found">まだ投稿していません。</p>
+          </div>
         @endif
       </div>
 
@@ -82,42 +38,53 @@
             <div class="col-12">
               <div class="card mt-2 px-3 pt-3">
                 <p data-e2e="script-{{ $key }}">{{ $likedScript->content }}</p>
+
+                <div class="d-block mb-1">
+                  <div class="float-left">
+                    <div class="d-flex">
+                      <!-- User Name Start -->
+                      <a href="{{ route('users.show', $likedScript->user->id) }}"
+                      data-e2e="script-{{ $key }}-username">{{ $likedScript->user->name }}</a>
+                      <!-- User Name End -->
+
+                      <!-- Posted Time Start -->
+                      <p class="mx-2 my-0 d-none d-sm-block"
+                      style="color:gray;">{{ $likedScript->created_at->format('Y/m/d h:m') }}</p>
+                      <!-- Posted Time End -->
+                    </div>
+                  </div>
+
+                  <div class="float-right">
+                    <div class="d-flex">
+                      <!-- Category Start -->
+                      <p class="my-0">カテゴリー:</p>
+                      <a href="{{ route('categories.show', $likedScript->category->id) }}">{{ $likedScript->category->name }}</a>
+                      <!-- Category End -->
+                    </div>
+                  </div>
+                </div>
+
                 <span class="border"></span>
                 <div class="d-block">
                   <div class="float-left">
-                    <div class="d-flex">
-                      <p class="mt-2" data-e2e="likedScript-{{ $key }}-username">{{ $likedScript->user->name }}</p>
-                      <p class="mt-2 mx-2 d-none d-sm-block" style="color:gray;">{{ $likedScript->created_at }}</p>
+                    <div class="d-flex my-2">
+                      @include('share.script_like_button', ['script'=>$likedScript])
+                      @include('share.script_comment_button', ['script'=>$likedScript])
                     </div>
                   </div>
-                  @can('general-user')
-                    @if (($likedScript->user_id === auth()->user()->id) || $likedScript->user->role === 1)
-                    <div class="float-right">
-                      <!-- 削除ボタン Start -->
-                      <form action="{{ route('scripts.destroy', $likedScript->id) }}"
-                      method="post" class="float-right mt-1 mb-3"
-                      >
-                      @csrf
-                      @method('delete')
-                      <input type="submit" value="削除"
-                            class="btn btn-danger btn-sm"
-                            onclick='return confirm("削除しますか？");'
-                            data-e2e="likedScript-{{ $key }}-delete"
-                      >
-                    </form>
-                    <!-- 削除ボタン End -->
-
-                    <!-- 編集ボタン Start -->
-                    <a href="{{ route('scripts.edit', $likedScript->id) }}"
-                      class="btn btn-info btn-sm text-white float-right mt-1 mb-3 mx-2" data-e2e="likedScript-{{ $key }}-edit"
-                    >
-                    編集
-                    </a>
-                    <!-- 編集ボタン End -->
+                  <div class="float-right">
+                    <div class="d-flex my-2">
+                      @include('share.script_edit_button', ['script'=>$likedScript])
+                      @include('share.script_delete_button', ['script'=>$likedScript])
                     </div>
-                  @endif
-                  @endcan
+                  </div>
                 </div>
+
+                <div class="collapse" id="collapseComments-{{ $key }}">
+                  @include('share.script_comment_input_form', ['script'=>$likedScript])
+                  @include('share.script_comment_list', ['script'=>$likedScript])
+                </div>
+              </div>
             </div>
           </div>
           @endforeach
@@ -126,11 +93,11 @@
 
         @else
           <div class="col-12">
-            <p data-e2e="script-search-not-found">見つかりませんでした。</p>
+            <p data-e2e="script-search-not-found">まだいいねをしていません。</p>
           </div>
         @endif
       </div>
     </div>
-
+    @include('share.infinite_scroll_js')
   </div>
 @endsection
