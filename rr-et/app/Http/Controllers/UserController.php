@@ -26,12 +26,20 @@ class UserController extends Controller
     public function show(int $id)
     {
         $user = User::findOrFail($id);
-        $postedScripts = $user->scripts()->with('category')->withCount('likes')->withCount('comments')->get();
+        $postedScripts = $user->scripts()->with('category')->withCount('likes')->withCount('comments')->orderBy('created_at', 'desc')->paginate(10);
+
+        // dd($postedScripts);
 
         $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
-        $likedScripts = array();
-        for($i = 0; $i < count($pickingLikedScriptIds); $i++){
-            array_push($likedScripts, Script::find($pickingLikedScriptIds[$i]));
+
+        $pickLikedScripts = array();
+        if (count($pickingLikedScriptIds[0])) {
+            for($i = 0; $i < count($pickingLikedScriptIds); $i++){
+                array_push($likedScripts, Script::find($pickingLikedScriptIds[$i]));
+            }
+            $likedScripts = $pickLikedScripts[0]->paginate(10);
+        } else {
+            $likedScripts = $pickLikedScripts->paginate(10);
         }
 
         return view('users.show', compact('user', 'postedScripts', 'likedScripts'));
