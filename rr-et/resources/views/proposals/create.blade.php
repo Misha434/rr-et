@@ -18,15 +18,21 @@
 
   <div class="row">
     <div class="col-12">
-      <h1 class="my-2">あるあるを投稿しましょう!</h1>
+      <h1 class="my-2">カテゴリー提案</h1>
     </div>
   </div>
 
   <div class="row">
     <div class="col-12">
-      <form action="{{ route('scripts.store') }}" method="post">
+      <form action="{{ route('proposals.store') }}" method="post">
         @csrf
-        @include('share.script_form')
+        <div class="form-group">
+          <label for="name">カテゴリー</label>
+          <textarea class="form-control" id="name" rows="2" name="name" data-e2e="category-input">{{ old('name') }}</textarea>
+          <div class="text-right my-2">
+            <button type="submit" class="btn btn-primary" data-e2e="submit">送信</button>
+          </div>
+        </div>
       </form>
     </div>
   </div>

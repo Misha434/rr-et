@@ -75,6 +75,12 @@
                   aria-labelledby="dropdownMenuLink">
                 <a class="dropdown-item" href="{{ route('users.show', Auth::user()->id ) }}">{{ __('プロフィール') }}</a>
                 <a class="dropdown-item" href="{{ route('scripts.create') }}">{{ __('ネタ新規投稿') }}</a>
+                <a class="dropdown-item" href="{{ route('drafts.index', Auth::user()->id) }}">{{ __('ネタ下書き') }}</a>
+                <div class="dropdown-divider"></div>
+                @if(Auth::user()->role === 1)
+                  <a class="dropdown-item" href="{{ route('proposals.index') }}">{{ __('カテゴリー提案一覧') }}</a>
+                  <a class="dropdown-item" href="{{ route('categories.create') }}">{{ __('カテゴリー追加') }}</a>
+                @endif
                 <div class="dropdown-divider"></div>
                 @if(Auth::user()->email !== 'guest-user@example.com')
                   <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">{{ __('ユーザー設定') }}</a>

@@ -10,6 +10,16 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -56,7 +66,9 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::find($id);
-        $scripts = $category->scripts()->with('user')->with('likes')->with('comments')->paginate(10);
+        $statusPosted = 1;
+
+        $scripts = $category->scripts()->where('content', $statusPosted)->with('user')->with('likes')->with('comments')->paginate(10);
 
         return view('categories.show', compact('category', 'scripts'));
     }
@@ -103,11 +115,13 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $relatedScripts = $category->scripts()->get();
 
-        $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
-
-        foreach ($relatedScripts as $relatedScript) {
-            $relatedScript->category_id = $uncategorizeId;
-            $relatedScript->save();
+        if (count($relatedScripts)) {
+            $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
+    
+            foreach ($relatedScripts as $relatedScript) {
+                $relatedScript->category_id = $uncategorizeId;
+                $relatedScript->save();
+            }
         }
 
         $category->delete();

@@ -27,10 +27,14 @@ Route::get('/login/guest', 'Auth\LoginController@guestLogin');
 Route::group(['middleware' => ['auth', 'can:general-user']], function () {
   Route::resource('scripts', 'ScriptController');
   Route::resource('categories', 'CategoryController');
+  Route::resource('proposals', 'ProposalController', ['only' => ['index','create', 'store', 'destroy']]);
+
   Route::get('/users/{id}', 'UserController@show')->name('users.show');
   Route::get('/users/{id}/edit', 'UserController@edit')->name('users.edit');
   Route::put('/users/{id}', 'UserController@update')->name('users.update');
   Route::delete('/users/{id}', 'UserController@destroy')->name('users.destroy');
+  Route::get('/users/{id}/drafts', 'DraftController@index')->name('drafts.index');
+
   Route::group(['prefix'=>'scripts/{id}'],function(){
     Route::get('/like/store','LikeController@store');
     Route::post('/like/store','LikeController@store')->name('likes.store');
@@ -46,4 +50,7 @@ Route::group(['middleware' => ['auth', 'can:general-user']], function () {
 
 Route::group(['middleware' => ['auth', 'can:admin']], function () {
   Route::resource('categories', 'CategoryController', ['only' => ['create','store', 'edit', 'update', 'destroy']]);
+  Route::resource('proposals', 'ProposalController', ['only' => ['index', 'destroy']]);
+  Route::get('/proposals/{id}/aprove','ProposalController@aprove');
+  Route::post('/proposals/{id}/aprove','ProposalController@aprove')->name('proposals.aprove');
 });
