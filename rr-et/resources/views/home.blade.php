@@ -25,7 +25,7 @@
 <div class="container">
     <div class="row justify-content-center mt-3">
       @foreach($scripts as $script)
-        <div class="col-12 offset-md-1 col-md-5 offset-md-1">
+        <div class="col-12 offset-md-1 col-md-10 offset-md-1 offset-lg-1 col-lg-5 offset-lg-1">
           <div class="card mb-2 p-3">
             <p>{{ $script->content }}</p>
           </div>
