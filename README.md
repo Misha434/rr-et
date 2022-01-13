@@ -131,15 +131,32 @@
 
 ### インストール・開発環境下での実行方法
 
-#### 共通
 ```
 $ git clone https://github.com/Misha434/rr-et.git
-$ cd smar-003
-```
-
-#### Docker 環境
-```
+$ cd rr-et
+$ docker-compose build
 $ docker-compose up -d
+$ docker-compose exec app bash
+
+$ cd rr-et
+$ composer install
+
+$ cp .env.example .env
+$ vi .env
+
+## 以下を書き換え
+DB_DATABASE=sample
+DB_HOST=mysql
+DB_USERNAME=user
+DB_PASSWORD=password
+
+$ php artisan migrate
+
+## テストデータ挿入
+$ php artisan migrate:refresh
+$ php artisan db:seed
+
+## localhost:8000 にアクセス
 ```
 
 ### テスト方法
