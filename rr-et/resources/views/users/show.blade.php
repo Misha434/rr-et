@@ -22,7 +22,6 @@
       <div class="tab-pane fade show active" id="script" role="tabpanel" aria-labelledby="script-tab">
         @if(count($postedScripts))
           @include('share.script_part', ['scripts' => $postedScripts])
-          <div class="text-center mt-2">{{ $postedScripts->links() }}</div>
         @else
           <div class="col-12">
             <p data-e2e="script-search-not-found">まだ投稿していません。</p>
