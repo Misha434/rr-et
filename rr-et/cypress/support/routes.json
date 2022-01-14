@@ -114,8 +114,8 @@
   "": {
     "name": null,
     "domain": null,
-    "action": "App\\Http\\Controllers\\CommentController@destroy",
-    "uri": "scripts/{id}/comments/destroy",
+    "action": "App\\Http\\Controllers\\ProposalController@aprove",
+    "uri": "proposals/{id}/aprove",
     "method": [
       "GET",
       "HEAD"
@@ -344,6 +344,44 @@
       "DELETE"
     ]
   },
+  "proposals.index": {
+    "name": "proposals.index",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ProposalController@index",
+    "uri": "proposals",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "proposals.create": {
+    "name": "proposals.create",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ProposalController@create",
+    "uri": "proposals/create",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "proposals.store": {
+    "name": "proposals.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ProposalController@store",
+    "uri": "proposals",
+    "method": [
+      "POST"
+    ]
+  },
+  "proposals.destroy": {
+    "name": "proposals.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ProposalController@destroy",
+    "uri": "proposals/{proposal}",
+    "method": [
+      "DELETE"
+    ]
+  },
   "users.show": {
     "name": "users.show",
     "domain": null,
@@ -373,10 +411,29 @@
       "PUT"
     ]
   },
+  "users.destroy": {
+    "name": "users.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\UserController@destroy",
+    "uri": "users/{id}",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "drafts.index": {
+    "name": "drafts.index",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\DraftController@index",
+    "uri": "users/{id}/drafts",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
   "likes.store": {
     "name": "likes.store",
     "domain": null,
-    "action": "App\\Http\\Controllers\\likeController@store",
+    "action": "App\\Http\\Controllers\\LikeController@store",
     "uri": "scripts/{id}/like/store",
     "method": [
       "POST"
@@ -385,7 +442,7 @@
   "likes.destroy": {
     "name": "likes.destroy",
     "domain": null,
-    "action": "App\\Http\\Controllers\\likeController@destroy",
+    "action": "App\\Http\\Controllers\\LikeController@destroy",
     "uri": "scripts/{id}/like/destroy",
     "method": [
       "DELETE"
@@ -407,6 +464,15 @@
     "uri": "scripts/{id}/comments/destroy",
     "method": [
       "DELETE"
+    ]
+  },
+  "proposals.aprove": {
+    "name": "proposals.aprove",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\ProposalController@aprove",
+    "uri": "proposals/{id}/aprove",
+    "method": [
+      "POST"
     ]
   }
 }
