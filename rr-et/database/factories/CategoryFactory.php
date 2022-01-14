@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 
 $factory->define(Category::class, function (Faker $faker) {
     return [
-        'name' => $faker->countryCode(),
+        'name' => $faker->unique()->countryCode(),
         'created_at' => Carbon::now(),
         'updated_at' => Carbon::now(),
     ];
