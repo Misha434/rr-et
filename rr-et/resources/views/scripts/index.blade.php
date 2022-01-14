@@ -28,12 +28,15 @@
         <div class="float-right">
           <div class="dropdown">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              ソート
+              {{ $sortCondition ?? '新規投稿順' }}
             </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="/scripts?sort=likes_count&direction=desc">いいね数</a>
-              <a class="dropdown-item" href="/scripts?sort=created_at&direction=desc">投稿日時</a>
-            </div>
+            <form action="{{ route('scripts.index') }}" method="GET">
+              @csrf
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <button class="dropdown-item" type="submit" name="sort" value="新規投稿順">新規投稿順</button>
+                <button class="dropdown-item" type="submit" name="sort" value="いいね数">いいね数</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

@@ -8,8 +8,6 @@ use Kyslik\ColumnSortable\Sortable;
 
 class Script extends Model
 {
-    use Sortable;
-
     public function user()
     {
         return $this->belongsTo('App\User');
