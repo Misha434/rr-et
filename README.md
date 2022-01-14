@@ -117,7 +117,7 @@
 <a id="anchor5"></a>
 
 ## ER図
-![ER_diagram_220111](https://user-images.githubusercontent.com/61964919/149283399-3c623cb3-7967-4b3e-a717-234d73cfcddb.png)
+![ER_diagram_22014 drawio](https://user-images.githubusercontent.com/61964919/149484500-082c5741-1add-47ca-bd45-2dba26214c55.png)
 
 <a id="anchor6"></a>
 
