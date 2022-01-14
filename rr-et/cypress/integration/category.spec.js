@@ -51,15 +51,15 @@ describe('CategoryController:', () => {
     it('cannot access to categories#create page', () => {
       registration_user()
       
-      const catagoriesCreatePageUrl = '/categories/create'
+      const categoriesCreatePageUrl = '/categories/create'
       cy.request({
-        url: catagoriesCreatePageUrl,
+        url: categoriesCreatePageUrl,
         followRedirect: false,
         failOnStatusCode: false,
       }).then((resp) => {
         expect(resp.status).to.eq(403)
       })
-      cy.visit(catagoriesCreatePageUrl, { failOnStatusCode: false })
+      cy.visit(categoriesCreatePageUrl, { failOnStatusCode: false })
       cy.get("h1").should("contain", "403 Forbidden")
     })
     
@@ -67,15 +67,15 @@ describe('CategoryController:', () => {
       cy.create('App\\Category', { name: 'IT' })
       registration_user()
       
-      const catagoriesEditPageUrl = '/categories/1/edit'
+      const categoriesEditPageUrl = '/categories/1/edit'
       cy.request({
-        url: catagoriesEditPageUrl,
+        url: categoriesEditPageUrl,
         followRedirect: false,
         failOnStatusCode: false,
       }).then((resp) => {
         expect(resp.status).to.eq(403)
       })
-      cy.visit(catagoriesEditPageUrl, { failOnStatusCode: false })
+      cy.visit(categoriesEditPageUrl, { failOnStatusCode: false })
       cy.get("h1").should("contain", "403 Forbidden")
     })
   })
