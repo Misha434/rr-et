@@ -48,7 +48,7 @@
           <div class="col-12 offset-md-1 col-md-10 offset-md-1">
             <div class="infinite-scroll">
               @include('share.script_part')
-              <div class="text-center mt-2">{{ $scripts->links() }}</div>    
+              <div class="text-center mt-2">{{ $scripts->appends(request()->query())->links() }}</div>    
             </div>
           </div>
         </div>
