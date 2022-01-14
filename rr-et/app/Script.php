@@ -25,7 +25,7 @@ class Script extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Comment')->latest();
     }
 
     public function isLiked(int $scriptId, int $userId)
