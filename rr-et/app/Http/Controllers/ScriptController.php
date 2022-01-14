@@ -31,21 +31,33 @@ class ScriptController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->input('keyword');
+        $sortCondition = $request->get('sort');
         $statusPosted = 1;
 
         $query = Script::query();
-
         if (!empty($keyword)) {
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
+        switch ($sortCondition) {
+        case '新規投稿順':
+            $query->orderBy('created_at', 'desc');
+            break;
+        case 'いいね数':
+            $query->orderBy('likes_count', 'desc');
+            break;
+        default:
+            $query->orderBy('created_at', 'desc');
+        }
 
-        $scripts_count = $query->where('status', $statusPosted)->count();
+        $publisingScripts = $query->where('status', $statusPosted);
 
-        $filteredScripts = $query->where('status', $statusPosted)->with('likes')->withCount('comments')->with('user')->with('category');
-        $sortedScripts = $filteredScripts->sortable();
-        $scripts = $sortedScripts->paginate(10);
+        $scripts_count = $publisingScripts->count();
 
-        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count'));
+        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')->with('user')->with('category');
+
+        $scripts = $filteredScripts->paginate(10);
+
+        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'sortCondition'));
     }
 
     /**
