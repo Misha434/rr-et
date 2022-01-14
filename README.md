@@ -83,7 +83,6 @@
 | 名称 | 備考 |
 | --- | --- |
 | guzzle | メール認証で Mailgun API を使用するため |
-| column-sortable | ソート機能 |
 | PHPUnit | 単体テスト |
 | laracasts / cypress | E2Eテストでのバックエンド側データ操作のため |
 
