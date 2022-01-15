@@ -15,7 +15,7 @@
         <a class="nav-link active" id="script-tab" data-toggle="tab" href="#script" role="tab" aria-controls="script" aria-selected="true">投稿ネタ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="like-tab" data-toggle="tab" href="#like" role="tab" aria-controls="like" aria-selected="false">いいね</a>
+        <a class="nav-link" id="like-tab" data-toggle="tab" href="#like" role="tab" aria-controls="like" aria-selected="false" data-e2e="like-tab">いいね</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
