@@ -1,14 +1,14 @@
-@foreach($scripts as $key => $script) 
+@foreach($scripts as $script) 
   <div class="card mt-2 px-3 pt-3">
 
-    <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+    <p data-e2e="script-{{ $script->id }}">{{ $script->content }}</p>
 
     <div class="d-block mb-1">
       <div class="float-left">
         <div class="d-flex">
           <!-- User Name Start -->
           <a href="{{ route('users.show', $script->user->id) }}"
-          data-e2e="script-{{ $key }}-username">{{ $script->user->name }}</a>
+          data-e2e="script-{{ $script->id }}-username">{{ $script->user->name }}</a>
           <!-- User Name End -->
 
           <!-- Posted Time Start -->
@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <div class="collapse" id="collapseComments-{{ $key }}">
+    <div class="collapse" id="collapseComments-{{ $script->id }}">
       @include('share.script_comment_input_form')
       @include('share.script_comment_list')
     </div>
