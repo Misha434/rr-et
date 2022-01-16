@@ -14,11 +14,11 @@
     <!-- Script Start -->
       @if($scripts->count())
         <div class="row">
-          @foreach($scripts as $key => $script)
+          @foreach($scripts as $script)
             <div class="col-12">
               <a href="{{ route('scripts.edit', $script->id) }}" class="text-dark">
                 <div class="card mt-2 px-3 pt-3">
-                  <p data-e2e="script-{{ $key }}">{{ $script->content }}</p>
+                  <p data-e2e="script-{{ $script->id }}" data-e2e="script-{{ $script->id }}">{{ $script->content }}</p>
                   <div class="d-block mb-1">
                     <div class="float-left">
                       <div class="d-flex">

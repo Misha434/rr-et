@@ -34,7 +34,32 @@ describe('CategoryController:', () => {
       registration_user()
       cy.visit('/')
       cy.get('header').contains('カテゴリー').click()
-      cy.get('[data-e2e="category-0"]').should('have.text', 'IT')
+      cy.get('[data-e2e="category-1"]').should('have.text', 'IT')
+    })
+    
+    it('can use infinite scroll in categories#index page', () => {
+      cy.create('App\\Category', { name: 'IT' })
+      cy.create('App\\Category', { name: '建築' })
+      cy.create('App\\Category', { name: '設計' })
+      cy.create('App\\Category', { name: '設備' })
+      cy.create('App\\Category', { name: '構造設計' })
+      cy.create('App\\Category', { name: '食' })
+      cy.create('App\\Category', { name: 'イタリアン' })
+      cy.create('App\\Category', { name: '中華' })
+      cy.create('App\\Category', { name: '音楽' })
+      cy.create('App\\Category', { name: 'ギター' })
+
+      cy.create('App\\Category', { name: 'ベース' })
+      cy.create('App\\Category', { name: 'ドラム' })
+      cy.create('App\\Category', { name: 'キーボード' })
+
+      registration_user()
+      cy.visit('/')
+      cy.get('header').contains('カテゴリー').click()
+      cy.get('[data-e2e="category-10"]').should('have.text', 'ギター')
+      cy.wait(3000)
+      cy.get('[data-e2e="category-13"]')
+        .should('have.text','キーボード')
     })
     
     it('can access to access categories#show page', () => {
@@ -44,22 +69,22 @@ describe('CategoryController:', () => {
       cy.visit('/')
       
       cy.get('header').contains('カテゴリー').click()
-      cy.get('[data-e2e="category-0"]').click()
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
+      cy.get('[data-e2e="category-1"]').click()
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linuxチョットワカル')
     })
     
     it('cannot access to categories#create page', () => {
       registration_user()
       
-      const catagoriesCreatePageUrl = '/categories/create'
+      const categoriesCreatePageUrl = '/categories/create'
       cy.request({
-        url: catagoriesCreatePageUrl,
+        url: categoriesCreatePageUrl,
         followRedirect: false,
         failOnStatusCode: false,
       }).then((resp) => {
         expect(resp.status).to.eq(403)
       })
-      cy.visit(catagoriesCreatePageUrl, { failOnStatusCode: false })
+      cy.visit(categoriesCreatePageUrl, { failOnStatusCode: false })
       cy.get("h1").should("contain", "403 Forbidden")
     })
     
@@ -67,15 +92,15 @@ describe('CategoryController:', () => {
       cy.create('App\\Category', { name: 'IT' })
       registration_user()
       
-      const catagoriesEditPageUrl = '/categories/1/edit'
+      const categoriesEditPageUrl = '/categories/1/edit'
       cy.request({
-        url: catagoriesEditPageUrl,
+        url: categoriesEditPageUrl,
         followRedirect: false,
         failOnStatusCode: false,
       }).then((resp) => {
         expect(resp.status).to.eq(403)
       })
-      cy.visit(catagoriesEditPageUrl, { failOnStatusCode: false })
+      cy.visit(categoriesEditPageUrl, { failOnStatusCode: false })
       cy.get("h1").should("contain", "403 Forbidden")
     })
   })
@@ -93,7 +118,7 @@ describe('CategoryController:', () => {
       cy.get('[data-e2e="password-input"]').type(adminPassword)
       cy.get('[data-e2e="submit"]').contains('ログイン').click()
 
-      cy.get('[data-e2e="category-0"]').should('have.text', 'IT')
+      cy.get('[data-e2e="category-1"]').should('have.text', 'IT')
       cy.get('.card').should('contain', '編集')
     })
     
@@ -110,10 +135,10 @@ describe('CategoryController:', () => {
       cy.get('[data-e2e="password-input"]').type(adminPassword)
       cy.get('[data-e2e="submit"]').contains('ログイン').click()
 
-      cy.get('[data-e2e="category-0"]').click()
+      cy.get('[data-e2e="category-1"]').click()
       cy.get('h1').should('have.text', 'IT')
       
-      cy.get('[data-e2e="script-0"]').should('have.text', 'Linuxチョットワカル')
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linuxチョットワカル')
     })
     
     it('is available to create a category in categories#create page', () => {
@@ -131,7 +156,7 @@ describe('CategoryController:', () => {
       cy.get('h1').should('have.text', 'カテゴリー追加')
       cy.get('[data-e2e="category-input"]').type('音楽')
       cy.get('[data-e2e="submit"]').contains('送信').click()
-      cy.get('[data-e2e="category-0"]').should('have.text', '音楽')
+      cy.get('[data-e2e="category-1"]').should('have.text', '音楽')
     })
     
     it('can access to categories#edit page', () => {
@@ -152,7 +177,7 @@ describe('CategoryController:', () => {
       cy.get('[data-e2e="category-input"]').clear()
       cy.get('[data-e2e="category-input"]').type('音楽')
       cy.get('[data-e2e="submit"]').contains('送信').click()
-      cy.get('[data-e2e="category-0"]').should('have.text', '音楽')
+      cy.get('[data-e2e="category-1"]').should('have.text', '音楽')
     })
     
     it('can delete the category in categories#index page', () => {
@@ -168,12 +193,43 @@ describe('CategoryController:', () => {
       cy.get('[data-e2e="password-input"]').type(adminPassword)
       cy.get('[data-e2e="submit"]').contains('ログイン').click()
 
-      cy.get('[data-e2e="category-0"]').should('have.text', 'IT')
-      cy.get('[data-e2e="category-1"]').should('have.text', '音楽')
+      cy.get('[data-e2e="category-1"]').should('have.text', 'IT')
+      cy.get('[data-e2e="category-2"]').should('have.text', '音楽')
       
-      cy.get('[data-e2e="category-0-delete"]').contains('削除').click()
-      cy.get('[data-e2e="category-0"]').not('have.text', 'IT')
-      cy.get('[data-e2e="category-0"]').should('have.text', '音楽')
+      cy.get('[data-e2e="category-1-delete"]').contains('削除').click()
+      cy.get('[data-e2e="category-1"]').should('not.exist')
+      cy.get('[data-e2e="category-2"]').should('have.text', '音楽')
+    })
+    
+    it('can delete the category and change category IT to 未分類 related scripts', () => {
+      const adminEmail = 'foo@example.com'
+      const adminPassword = 'password'
+      
+      cy.create('App\\Category', { name: 'IT' })
+      cy.create('App\\Category', { name: '音楽' })
+      cy.seed('UsersTableSeeder');
+      cy.create('App\\Script', { 
+        content: 'Linuxチョットワカル',
+        category_id: 1,
+        user_id: 1,
+      })
+      
+      cy.get('header').contains('カテゴリー').click()
+      cy.get('[data-e2e="email-input"]').type(adminEmail)
+      cy.get('[data-e2e="password-input"]').type(adminPassword)
+      cy.get('[data-e2e="submit"]').contains('ログイン').click()
+
+      cy.get('[data-e2e="category-1"]').should('have.text', 'IT')
+      cy.get('[data-e2e="category-2"]').should('have.text', '音楽')
+      
+      cy.get('[data-e2e="category-1-delete"]').contains('削除').click()
+      cy.get('[data-e2e="category-1"]').should('not.exist')
+      cy.get('[data-e2e="category-2"]').should('have.text', '音楽')
+      cy.get('[data-e2e="category-3"]').should('have.text', '未分類')
+      cy.get('[data-e2e="category-3"]').click();
+
+      cy.get('h1').should('have.text', '未分類')
+      cy.get('[data-e2e="script-1"]').should('have.text', 'Linuxチョットワカル')
     })
   })
 })

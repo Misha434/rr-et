@@ -7,7 +7,7 @@
     <input type="submit" value="削除" 
     class="btn btn-danger btn-sm" 
     onclick='return confirm("削除しますか？");'
-    data-e2e="script-{{ $key }}-delete"
+    data-e2e="script-{{ $script->id }}-delete"
     >
   </form>
 @endif

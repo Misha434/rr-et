@@ -6,7 +6,7 @@
             id="destroyComment-disable"
             type="submit"
             onclick='return confirm("削除しますか？");'
-            data-e2e="comment-{{ $commentOrder }}-delete"
+            data-e2e="script-{{ $script->id }}-comment-{{ $comment->id }}-delete"
     >削除</button>
     <script>
       $(function () {

@@ -5,9 +5,7 @@
         <div class="row">
           <div class="col-12">
             <!-- Warning Start -->
-              <div class="alert alert-warning my-2" role="alert">
-                ネタ内容が変更される前のコメントです。
-              </div>
+              <div class="alert alert-warning my-2" role="alert" data-e2e="script-{{ $script->id }}-comment-{{ $comment->id }}-warning">ネタ内容が変更される前のコメントです。</div>
             <!-- Warning End -->
           </div>
         </div>
@@ -16,7 +14,7 @@
       <div class="row">
         <div class="col-12">
           <!-- Content Start -->
-            <p class="mt-3">{{$comment->content}}</p>
+            <p class="mt-3" data-e2e="script-{{ $script->id }}-comment-{{ $comment->id }}">{{$comment->content}}</p>
           <!-- Content End -->
         </div>
       </div>
