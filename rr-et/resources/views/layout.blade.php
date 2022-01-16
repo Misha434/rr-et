@@ -81,8 +81,8 @@
                 @if(Auth::user()->role === 1)
                   <a class="dropdown-item" href="{{ route('proposals.index') }}">{{ __('カテゴリー提案一覧') }}</a>
                   <a class="dropdown-item" href="{{ route('categories.create') }}">{{ __('カテゴリー追加') }}</a>
+                  <div class="dropdown-divider"></div>
                 @endif
-                <div class="dropdown-divider"></div>
                 @if(Auth::user()->email !== 'guest-user@example.com')
                   <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">{{ __('ユーザー設定') }}</a>
                 @endif
