@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class DraftController extends Controller
 {
-    
     public function index(int $id)
     {
         $selectedUser = User::findOrFail($id);

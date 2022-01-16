@@ -11,12 +11,12 @@ class Script extends Model
     {
         return $this->belongsTo('App\User');
     }
-    
+
     public function category()
     {
         return $this->belongsTo('App\Category');
     }
-    
+
     public function likes()
     {
         return $this->hasMany('App\Like');
@@ -43,7 +43,7 @@ class Script extends Model
         'content', 'category_id',
     ];
 
-    protected static function boot() 
+    protected static function boot()
     {
         parent::boot();
         self::deleting(function ($script) {

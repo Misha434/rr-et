@@ -24,7 +24,7 @@ class ScriptController extends Controller
         $this->middleware('auth');
     }
 
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -40,21 +40,23 @@ class ScriptController extends Controller
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
         switch ($sortCondition) {
-        case '新規投稿順':
-            $query->orderBy('created_at', 'desc');
-            break;
-        case 'いいね数':
-            $query->orderBy('likes_count', 'desc');
-            break;
-        default:
-            $query->orderBy('created_at', 'desc');
+            case '新規投稿順':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'いいね数':
+                $query->orderBy('likes_count', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
         }
 
         $publisingScripts = $query->where('status', config('const.statusPublished'));
 
         $scripts_count = $publisingScripts->count();
 
-        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')->with('comments')->with('comments.user')->with('user')->with('category');
+        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')
+        ->with('comments')->with('comments.user')
+        ->with('user')->with('category');
 
         $scripts = $filteredScripts->paginate(10);
 
@@ -86,13 +88,13 @@ class ScriptController extends Controller
         $script->content = $request->content;
         $script->user_id = Auth::user()->id;
         $script->category_id = $request->category_id;
-        if ($request->has('store')){
+        if ($request->has('store')) {
             $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '投稿しました。');
-        } elseif ($request->has('draft')){
+        } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
             $script->save();
 
@@ -156,7 +158,7 @@ class ScriptController extends Controller
             return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
         }
 
-        if ($script->content !== $request->content){
+        if ($script->content !== $request->content) {
             $script->content = $request->content;
             $script->likes()->delete();
             $script->content_updated_at = Carbon::now();
@@ -164,13 +166,13 @@ class ScriptController extends Controller
 
         $script->category_id = $request->category_id;
 
-        if ($request->has('store')){
+        if ($request->has('store')) {
             $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
-            session()->flash('status',  '編集しました。');
-        } elseif ($request->has('draft')){
+            session()->flash('status', '編集しました。');
+        } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
             $script->save();
 
@@ -213,13 +215,13 @@ class ScriptController extends Controller
     {
         $postUserId = Auth::user()->id;
         $scriptId = $request->script_id;
-        $like = new Like;
+        $like = new Like();
         $script = Script::findOrFail($scriptId);
 
-        if ($like->idLiked($postUserId, $scriptId)){
+        if ($like->idLiked($postUserId, $scriptId)) {
             $like = Like::where('script_id', $scriptId)->where('user_id', $postUserId)->delete();
         } else {
-            $like = new Like;
+            $like = new Like();
             $like->script_id = $request->script_id;
             $like->user_id = Auth::user()->id;
             $like->save();

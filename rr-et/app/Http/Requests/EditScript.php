@@ -13,7 +13,7 @@ class EditScript extends CreateScript
     {
         return true;
     }
-    
+
     /**
      * Get the validation rules that apply to the request.
      *

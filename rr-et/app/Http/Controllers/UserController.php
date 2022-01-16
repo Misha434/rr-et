@@ -27,12 +27,18 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $postedScripts = $user->scripts()->where('status', config('const.statusPublished'))->with('category')->with('user')->with('comments.user')->with('likes')->withCount('likes')->withCount('comments')->orderBy('created_at','desc')->paginate(10);
+        $postedScripts = $user->scripts()->where('status', config('const.statusPublished'))
+        ->with('category')->with('user')->with('comments.user')
+        ->with('likes')->withCount('likes')->withCount('comments')
+        ->orderBy('created_at', 'desc')->paginate(10);
 
-        $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
+        $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)
+        ->pluck('script_id'));
+
         $likedScripts = array();
-        for($i = 0; $i < count($pickingLikedScriptIds); $i++){
-            array_push($likedScripts, Script::findOrFail($pickingLikedScriptIds[$i])->where('status', config('const.statusPublished')));
+        for ($i = 0; $i < count($pickingLikedScriptIds); $i++) {
+            array_push($likedScripts, Script::findOrFail($pickingLikedScriptIds[$i])
+            ->where('status', config('const.statusPublished')));
         }
 
         return view('users.show', compact('user', 'postedScripts', 'likedScripts'));

@@ -13,7 +13,7 @@ class EditCategory extends CreateCategory
     {
         return true;
     }
-    
+
     /**
      * Get the validation rules that apply to the request.
      *

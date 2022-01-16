@@ -14,7 +14,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $scripts = Script::where('status', config('const.statusPublished'))->with('user')->with('category')->take(6)->get();
+        $scripts = Script::where('status', config('const.statusPublished'))
+        ->with('user')->with('category')
+        ->take(6)->get();
 
         return view('home', compact('scripts'));
     }

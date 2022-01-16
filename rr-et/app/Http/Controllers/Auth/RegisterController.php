@@ -22,7 +22,6 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
     use RegistersUsers;
 
     /**
@@ -57,7 +56,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email:filter,rfc', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9]+$/','confirmed'],
-            'role' => 'integer|'.$role_rule
+            'role' => 'integer|' . $role_rule
         ]);
     }
 
