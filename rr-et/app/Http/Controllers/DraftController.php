@@ -13,14 +13,11 @@ class DraftController extends Controller
     {
         $selectedUser = User::findOrFail($id);
         $loggedInUser = Auth::user();
-        $status_draft = 2;
 
         if ($loggedInUser->id !== $selectedUser->id) {
             return redirect()->route('scripts.index');
         }
-        $scripts = $loggedInUser->scripts()->where('status', $status_draft)->get();
-
-        // dd(count($scripts));
+        $scripts = $loggedInUser->scripts()->where('status', config('const.statusDraft'))->get();
 
         return view('drafts.index', compact('scripts'));
     }

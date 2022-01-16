@@ -32,7 +32,6 @@ class ScriptController extends Controller
     {
         $keyword = $request->input('keyword');
         $sortCondition = $request->get('sort');
-        $statusPosted = 1;
 
         $query = Script::query();
         if (!empty($keyword)) {
@@ -49,7 +48,7 @@ class ScriptController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $publisingScripts = $query->where('status', $statusPosted);
+        $publisingScripts = $query->where('status', config('const.statusPublished'));
 
         $scripts_count = $publisingScripts->count();
 
@@ -82,8 +81,6 @@ class ScriptController extends Controller
     {
         $user = Auth::user();
         $userId = $user->id;
-        $statusStore = 1;
-        $statusDraft = 2;
 
         $script = new Script();
 
@@ -91,19 +88,19 @@ class ScriptController extends Controller
         $script->user_id = $userId;
         $script->category_id = $request->category_id;
         if ($request->has('store')){
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '投稿しました。');
         } elseif ($request->has('draft')){
-            $script->status = $statusDraft;
+            $script->status = config('const.statusDraft');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
@@ -156,8 +153,6 @@ class ScriptController extends Controller
     public function update(EditScript $request, int $id)
     {
         $script = Script::findOrFail($id);
-        $statusStore = 1;
-        $statusDraft = 2;
 
         $loggedInUser = Auth::user();
         if ($script->user_id !== $loggedInUser->id) {
@@ -173,19 +168,19 @@ class ScriptController extends Controller
         $script->category_id = $request->category_id;
 
         if ($request->has('store')){
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status',  '編集しました。');
         } elseif ($request->has('draft')){
-            $script->status = $statusDraft;
+            $script->status = config('const.statusDraft');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
@@ -208,7 +203,7 @@ class ScriptController extends Controller
         $script = Script::findOrFail($id);
 
         $loggedInUser = Auth::user();
-        if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== 1)) {
+        if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== config('const.roleAdmin'))) {
             return redirect()->route('scripts.index');
         }
 

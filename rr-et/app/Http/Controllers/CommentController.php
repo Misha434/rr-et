@@ -37,7 +37,7 @@ class CommentController extends Controller
     {
         $comment = Comment::where('id', $id)->with('user')->with('script')->first();
 
-        if (($comment->user->id !== Auth::user()->id) && (Auth::user()->role !== 1 )) {
+        if (($comment->user->id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin') )) {
             return redirect()->route('scripts.index')->with('errors', 'ユーザーが不正です。');
         }
 

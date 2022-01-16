@@ -1,4 +1,4 @@
-@if (($script->user_id === auth()->user()->id) || auth()->user()->role === 1)
+@if (($script->user_id === auth()->user()->id) || auth()->user()->role === config('const.roleAdmin'))
   <form action="{{ route('scripts.destroy', $script->id) }}"
     method="post"
     >

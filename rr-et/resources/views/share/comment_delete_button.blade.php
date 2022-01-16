@@ -1,4 +1,4 @@
-@if((Auth::user()->id === $comment->user->id) || Auth::user()->role === 1)
+@if((Auth::user()->id === $comment->user->id) || Auth::user()->role === config('const.roleAdmin'))
   <form action="{{ route('comments.destroy', ['id' => $comment->id]) }}" method="POST">
     @csrf
     @method('DELETE')
