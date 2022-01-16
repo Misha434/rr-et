@@ -53,7 +53,7 @@ class ScriptController extends Controller
 
         $scripts_count = $publisingScripts->count();
 
-        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')->with('user')->with('category');
+        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')->with('comments')->with('comments.user')->with('user')->with('category');
 
         $scripts = $filteredScripts->paginate(10);
 
