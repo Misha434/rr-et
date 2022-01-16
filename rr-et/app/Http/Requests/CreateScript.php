@@ -28,7 +28,7 @@ class CreateScript extends FormRequest
         $invaild_category_id = Category::getAllCategoryId();
         $category_id_rule = Rule::in($invaild_category_id);
         return [
-            'category_id' => 'required|'.$category_id_rule,
+            'category_id' => 'required|' . $category_id_rule,
             'content' => 'required|max:100'
         ];
     }

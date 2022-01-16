@@ -72,8 +72,7 @@ class ProposalController extends Controller
      */
     public function destroy(int $id)
     {
-        $roleAdmin = 1;
-        if (Auth::user()->role !== $roleAdmin) {
+        if (Auth::user()->role !== config('const.roleAdmin')) {
             return redirect()->route('scripts.index')->with('error', 'アクセス権限がありません。');
         }
 
@@ -86,8 +85,7 @@ class ProposalController extends Controller
 
     public function aprove(int $id)
     {
-        $roleAdmin = 1;
-        if (Auth::user()->role ==! $roleAdmin) {
+        if (Auth::user()->role == ! config('const.roleAdmin')) {
             return redirect()->route('scripts.index')->with('error', 'アクセス権限がありません。');
         }
 
@@ -95,13 +93,13 @@ class ProposalController extends Controller
 
         $aprovedCategory = new Category();
         $aprovedCategory->name = $proposal->name;
-        
+
         $duplicatedProposals = Proposal::where('name', $aprovedCategory->name)->get();
-        
+
         if (count($duplicatedProposals)) {
             DB::beginTransaction();
             try {
-                foreach($duplicatedProposals as $duplicatedProposal) {
+                foreach ($duplicatedProposals as $duplicatedProposal) {
                     $duplicatedProposal->delete();
                 }
                 $aprovedCategory->save();

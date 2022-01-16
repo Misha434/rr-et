@@ -81,7 +81,7 @@ class ScriptTest extends TestCase
         $result = $validator->passes();
         $this->assertTrue($result);
     }
-    
+
     /**
      * カテゴリ名が101文字の場合はバリデーションエラー
      * @test

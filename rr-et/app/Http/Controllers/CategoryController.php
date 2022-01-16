@@ -65,10 +65,12 @@ class CategoryController extends Controller
      */
     public function show(int $id)
     {
-        $category = Category::find($id);
-        $statusPosted = 1;
+        $category = Category::findOrFail($id);
 
-        $scripts = $category->scripts()->where('status', $statusPosted)->with('user')->with('category')->with('likes')->with('comments.user')->withCount('comments')->paginate(10);
+        $scripts = $category->scripts()
+        ->where('status', config('const.statusPublished'))
+        ->with('user')->with('category')->with('likes')->with('comments.user')
+        ->withCount('comments')->paginate(10);
 
         return view('categories.show', compact('category', 'scripts'));
     }
@@ -116,7 +118,7 @@ class CategoryController extends Controller
 
         if (count($relatedScripts)) {
             $uncategorizeId = Category::firstOrCreate(['name' => '未分類'])->id;
-    
+
             foreach ($relatedScripts as $relatedScript) {
                 $relatedScript->category_id = $uncategorizeId;
                 $relatedScript->save();

@@ -21,7 +21,7 @@ class CommentController extends Controller
 
     public function store(CreateComment $request, int $id)
     {
-        $comment = new Comment;
+        $comment = new Comment();
         $comment->user_id = Auth::user()->id;
         $comment->script_id = $id;
         $comment->content = $request->content;
@@ -32,12 +32,12 @@ class CommentController extends Controller
 
         return redirect()->back();
     }
-    
+
     public function destroy(int $id)
     {
         $comment = Comment::where('id', $id)->with('user')->with('script')->first();
 
-        if (($comment->user->id !== Auth::user()->id) && (Auth::user()->role !== 1 )) {
+        if (($comment->user->id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin') )) {
             return redirect()->route('scripts.index')->with('errors', 'ユーザーが不正です。');
         }
 

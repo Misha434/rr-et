@@ -19,7 +19,7 @@ class LikeController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Create a new controller instance.
      *
@@ -36,7 +36,7 @@ class LikeController extends Controller
         $likesCount = $likedScript->likes()->count();
         $likedScript->likes_count = $likesCount;
         $likedScript->save();
-        
+
         session()->regenerateToken();
         session()->flash('status', 'いいねしました。');
 

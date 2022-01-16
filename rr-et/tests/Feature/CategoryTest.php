@@ -78,7 +78,7 @@ class CategoryTest extends TestCase
         $result = $validator->passes();
         $this->assertTrue($result);
     }
-    
+
     /**
      * カテゴリ名が３１文字の場合はバリデーションエラー
      * @test

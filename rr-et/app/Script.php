@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Like;
-use Kyslik\ColumnSortable\Sortable;
 
 class Script extends Model
 {
@@ -12,12 +11,12 @@ class Script extends Model
     {
         return $this->belongsTo('App\User');
     }
-    
+
     public function category()
     {
         return $this->belongsTo('App\Category');
     }
-    
+
     public function likes()
     {
         return $this->hasMany('App\Like');
@@ -44,7 +43,7 @@ class Script extends Model
         'content', 'category_id',
     ];
 
-    protected static function boot() 
+    protected static function boot()
     {
         parent::boot();
         self::deleting(function ($script) {

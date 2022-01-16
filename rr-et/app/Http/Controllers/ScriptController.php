@@ -10,6 +10,7 @@ use App\Http\Requests\EditScript;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
 
 class ScriptController extends Controller
 {
@@ -22,7 +23,8 @@ class ScriptController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
+
     /**
      * Display a listing of the resource.
      *
@@ -32,28 +34,29 @@ class ScriptController extends Controller
     {
         $keyword = $request->input('keyword');
         $sortCondition = $request->get('sort');
-        $statusPosted = 1;
 
         $query = Script::query();
         if (!empty($keyword)) {
             $query->where('content', 'LIKE', "%{$keyword}%");
         }
         switch ($sortCondition) {
-        case '新規投稿順':
-            $query->orderBy('created_at', 'desc');
-            break;
-        case 'いいね数':
-            $query->orderBy('likes_count', 'desc');
-            break;
-        default:
-            $query->orderBy('created_at', 'desc');
+            case '新規投稿順':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'いいね数':
+                $query->orderBy('likes_count', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
         }
 
-        $publisingScripts = $query->where('status', $statusPosted);
+        $publisingScripts = $query->where('status', config('const.statusPublished'));
 
         $scripts_count = $publisingScripts->count();
 
-        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')->with('comments')->with('comments.user')->with('user')->with('category');
+        $filteredScripts = $publisingScripts->with('likes')->withCount('comments')
+        ->with('comments')->with('comments.user')
+        ->with('user')->with('category');
 
         $scripts = $filteredScripts->paginate(10);
 
@@ -80,30 +83,25 @@ class ScriptController extends Controller
      */
     public function store(CreateScript $request)
     {
-        $user = Auth::user();
-        $userId = $user->id;
-        $statusStore = 1;
-        $statusDraft = 2;
-
         $script = new Script();
 
         $script->content = $request->content;
-        $script->user_id = $userId;
+        $script->user_id = Auth::user()->id;
         $script->category_id = $request->category_id;
-        if ($request->has('store')){
-            $script->status = $statusStore;
+        if ($request->has('store')) {
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '投稿しました。');
-        } elseif ($request->has('draft')){
-            $script->status = $statusDraft;
+        } elseif ($request->has('draft')) {
+            $script->status = config('const.statusDraft');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
@@ -136,9 +134,8 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $loggedInUser = Auth::user();
-        if ($script->user_id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+        if ($script->user_id !== Auth::user()->id) {
+            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
         }
 
         $categories = Category::all();
@@ -156,15 +153,12 @@ class ScriptController extends Controller
     public function update(EditScript $request, int $id)
     {
         $script = Script::findOrFail($id);
-        $statusStore = 1;
-        $statusDraft = 2;
 
-        $loggedInUser = Auth::user();
-        if ($script->user_id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+        if ($script->user_id !== Auth::user()->id) {
+            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
         }
 
-        if ($script->content !== $request->content){
+        if ($script->content !== $request->content) {
             $script->content = $request->content;
             $script->likes()->delete();
             $script->content_updated_at = Carbon::now();
@@ -172,20 +166,20 @@ class ScriptController extends Controller
 
         $script->category_id = $request->category_id;
 
-        if ($request->has('store')){
-            $script->status = $statusStore;
+        if ($request->has('store')) {
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
-            session()->flash('status',  '編集しました。');
-        } elseif ($request->has('draft')){
-            $script->status = $statusDraft;
+            session()->flash('status', '編集しました。');
+        } elseif ($request->has('draft')) {
+            $script->status = config('const.statusDraft');
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
-            $script->status = $statusStore;
+            $script->status = config('const.statusPublished');
             $script->save();
 
             session()->regenerateToken();
@@ -207,12 +201,13 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $loggedInUser = Auth::user();
-        if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== 1)) {
+        if (($script->user_id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin'))) {
             return redirect()->route('scripts.index');
         }
 
         $script->delete();
+        session()->regenerateToken();
+
         return redirect()->route('scripts.index')->with('status', '削除しました。');
     }
 
@@ -220,13 +215,13 @@ class ScriptController extends Controller
     {
         $postUserId = Auth::user()->id;
         $scriptId = $request->script_id;
-        $like = new Like;
+        $like = new Like();
         $script = Script::findOrFail($scriptId);
 
-        if ($like->idLiked($postUserId, $scriptId)){
+        if ($like->idLiked($postUserId, $scriptId)) {
             $like = Like::where('script_id', $scriptId)->where('user_id', $postUserId)->delete();
         } else {
-            $like = new Like;
+            $like = new Like();
             $like->script_id = $request->script_id;
             $like->user_id = Auth::user()->id;
             $like->save();

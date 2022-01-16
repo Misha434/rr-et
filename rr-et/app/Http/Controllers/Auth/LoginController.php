@@ -20,7 +20,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
 
     /**
@@ -55,7 +54,7 @@ class LoginController extends Controller
 
         if ($guestUser = User::where('email', $email)->first()) {
             Auth::loginUsingID($guestUser->id, true);
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('status', 'ゲストユーザーとしてログインしました。');;
         } else {
             $createdGuestUser = User::create([
                 'name' => "Guest",

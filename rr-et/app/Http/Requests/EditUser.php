@@ -16,7 +16,7 @@ class EditUser extends FormRequest
     {
         return true;
     }
-    
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,13 +27,13 @@ class EditUser extends FormRequest
         $admin_num = 1;
         $general_user_num = 10;
         $role_rule = Rule::in($admin_num, $general_user_num);
-        
+
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email:filter,rfc|max:255|unique:users,email,'.$this->user()->id,
+            'email' => 'required|string|email:filter,rfc|max:255|unique:users,email,' . $this->user()->id,
             'password' => 'nullable|string|min:8|regex:/^[a-zA-Z0-9]+$/|confirmed',
             'current_password' => 'required|string|min:8|regex:/^[a-zA-Z0-9]+$/',
-            'role' => 'integer|'.$role_rule
+            'role' => 'integer|' . $role_rule
         ];
     }
 }

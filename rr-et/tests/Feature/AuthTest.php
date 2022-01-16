@@ -38,7 +38,7 @@ class AuthTest extends TestCase
 
         $response->assertRedirect('/scripts');
     }
-    
+
     /**
      * ログインユーザーのパスワードと同じパスワードだとログインできること
      *
@@ -49,16 +49,16 @@ class AuthTest extends TestCase
         $user = factory(User::class)->state('FeatureTestUser')->create([
             'password' => bcrypt($password = 'topSecret'),
         ]);
-        
+
         $response = $this->post('/login', [
             'email' => $user->email,
             'password' => $password,
         ]);
-        
+
         $response->assertRedirect('/scripts');
         $this->assertAuthenticatedAs($user);
     }
-    
+
     /**
      * ログインユーザーのパスワードと異なる値のパスワードだとログイン不可となること
      *
@@ -70,7 +70,7 @@ class AuthTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        $response = $this->from('/login')->post('/login',[
+        $response = $this->from('/login')->post('/login', [
             'email' => $user->email,
             'password' => bcrypt('passwords'),
         ]);
@@ -109,7 +109,7 @@ class AuthTest extends TestCase
         $response->assertRedirect('/scripts');
         $this->assertTrue(Auth::check());
     }
-    
+
     /**
      * ユーザーを新規登録できること
      *
@@ -118,13 +118,13 @@ class AuthTest extends TestCase
     public function user_registration_is_available()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
             'password_confirmation' => $user->password,
         ]);
-        
+
         $response->assertRedirect('/scripts');
         $this->assertTrue(Auth::check());
     }
@@ -137,13 +137,13 @@ class AuthTest extends TestCase
     public function user_registration_is_available_with_registrated_user_name()
     {
         $user = factory(User::class)->state('FeatureTestUser')->create();
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => 'doe@example.com',
             'password' => $user->password,
             'password_confirmation' => $user->password,
         ]);
-        
+
         $response->assertRedirect('/scripts');
         $this->assertTrue(Auth::check());
     }
@@ -156,14 +156,14 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_empty_name_form()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-    
-        $response = $this->from('/register')->post('/register',[
+
+        $response = $this->from('/register')->post('/register', [
             'name' => '',
             'email' => $user->email,
             'password' => $user->password,
             'password_confirmation' => $user->password,
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
@@ -176,15 +176,15 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_registrated_email()
     {
         $user = factory(User::class)->state('FeatureTestUser')->create();
-    
+
         $password = 'topsecret';
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => 'Alice',
             'email' => $user->email,
             'password' => $password,
             'password_confirmation' => $password,
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
@@ -197,14 +197,14 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_empty_email_form()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-    
-        $response = $this->from('/register')->post('/register',[
+
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => '',
             'password' => $user->password,
             'password_confirmation' => $user->password,
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
@@ -216,24 +216,24 @@ class AuthTest extends TestCase
      */
     public function user_registration_is_not_available_with_invalid_format_email()
     {
-        $invalidEmails = Array(
+        $invalidEmails = array(
             "user@example,com",
             "user_at_foo.org",
             "user.name@example.",
             "foo@bar_baz.com",
             "foo@bar+baz.com",
         );
-        
+
         for ($i = 0; $i < count($invalidEmails) - 1; $i++) {
             $user = factory(User::class)->state('FeatureTestUser')->make();
-        
-            $response = $this->from('/register')->post('/register',[
+
+            $response = $this->from('/register')->post('/register', [
                 'name' => $user->name,
                 'email' => $invalidEmails[$i],
                 'password' => $user->password,
                 'password_confirmation' => $user->password,
             ]);
-            
+
             $response->assertRedirect('/register');
             $this->assertFalse(Auth::check());
         }
@@ -247,14 +247,14 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_empty_password_form()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-    
-        $response = $this->from('/register')->post('/register',[
+
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => '',
             'password_confirmation' => $user->password,
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
@@ -269,7 +269,7 @@ class AuthTest extends TestCase
         $user = factory(User::class)->state('FeatureTestUser')->make();
         $invalidPassword = 'a';
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $invalidPassword,
@@ -288,9 +288,9 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_7_charactors_password()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-        $invalidPassword = 'aaaaa'.'aa';
+        $invalidPassword = 'aaaaa' . 'aa';
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $invalidPassword,
@@ -309,9 +309,9 @@ class AuthTest extends TestCase
     public function user_registration_is_available_with_8_charactors_password()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-        $validPassword = 'aaaaa'.'aaa';
+        $validPassword = 'aaaaa' . 'aaa';
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $validPassword,
@@ -330,9 +330,9 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_japanese_charactor_password()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-        $invalidPassword = 'aaaaa'.'aaあ';
+        $invalidPassword = 'aaaaa' . 'aaあ';
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $invalidPassword,
@@ -351,14 +351,14 @@ class AuthTest extends TestCase
     public function user_registration_is_not_available_with_empty_password_confirmation_form()
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
-    
-        $response = $this->from('/register')->post('/register',[
+
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
             'password_confirmation' => '',
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
@@ -372,7 +372,7 @@ class AuthTest extends TestCase
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
@@ -392,16 +392,14 @@ class AuthTest extends TestCase
     {
         $user = factory(User::class)->state('FeatureTestUser')->make();
 
-        $response = $this->from('/register')->post('/register',[
+        $response = $this->from('/register')->post('/register', [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
             'password_confirmation' => bcrypt('PaSsWoRd'),
         ]);
-        
+
         $response->assertRedirect('/register');
         $this->assertFalse(Auth::check());
     }
-    
-
 }

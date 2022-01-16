@@ -78,7 +78,7 @@
                 <a class="dropdown-item" href="{{ route('scripts.create') }}">{{ __('ネタ新規投稿') }}</a>
                 <a class="dropdown-item" href="{{ route('drafts.index', Auth::user()->id) }}">{{ __('ネタ下書き') }}</a>
                 <div class="dropdown-divider"></div>
-                @if(Auth::user()->role === 1)
+                @if(Auth::user()->role === config('const.roleAdmin'))
                   <a class="dropdown-item" href="{{ route('proposals.index') }}">{{ __('カテゴリー提案一覧') }}</a>
                   <a class="dropdown-item" href="{{ route('categories.create') }}">{{ __('カテゴリー追加') }}</a>
                   <div class="dropdown-divider"></div>
@@ -105,6 +105,11 @@
     @if (session('status'))
       <div class="alert alert-success" role="alert">
         {{ session('status') }}
+      </div>
+    @endif
+    @if(session('alert'))
+      <div class="alert alert-danger" role="alert">
+        {{ session('alert') }}
       </div>
     @endif
     @yield('content')

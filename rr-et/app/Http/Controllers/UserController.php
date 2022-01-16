@@ -26,14 +26,19 @@ class UserController extends Controller
     public function show(int $id)
     {
         $user = User::findOrFail($id);
-        $statusPosted = 1;
 
-        $postedScripts = $user->scripts()->where('status', $statusPosted)->with('category')->with('user')->with('comments.user')->with('likes')->withCount('likes')->withCount('comments')->orderBy('created_at','desc')->paginate(10);
+        $postedScripts = $user->scripts()->where('status', config('const.statusPublished'))
+        ->with('category')->with('user')->with('comments.user')
+        ->with('likes')->withCount('likes')->withCount('comments')
+        ->orderBy('created_at', 'desc')->paginate(10);
 
-        $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
+        $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)
+        ->pluck('script_id'));
+
         $likedScripts = array();
-        for($i = 0; $i < count($pickingLikedScriptIds); $i++){
-            array_push($likedScripts, Script::find($pickingLikedScriptIds[$i]));
+        for ($i = 0; $i < count($pickingLikedScriptIds); $i++) {
+            array_push($likedScripts, Script::findOrFail($pickingLikedScriptIds[$i])
+            ->where('status', config('const.statusPublished')));
         }
 
         return view('users.show', compact('user', 'postedScripts', 'likedScripts'));
@@ -45,11 +50,9 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $user = $loggedInUser;
             return view('users.edit', compact('user'));
@@ -62,9 +65,9 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $loggedInUser->name = $request->name;
             $loggedInUser->email = $request->email;
@@ -75,6 +78,7 @@ class UserController extends Controller
                 }
 
                 $loggedInUser->save();
+                session()->regenerateToken();
 
                 return redirect()->route('users.show', ['id' => $loggedInUser->id])->with('status', '変更しました。');
             } else {
@@ -93,11 +97,12 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $selectedUser->delete();
+            session()->regenerateToken();
 
             return redirect()->route('home')->with('status', '退会しました。');
         }
