@@ -28,7 +28,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $statusPosted = 1;
 
-        $postedScripts = $user->scripts()->where('status', $statusPosted)->with('category')->withCount('likes')->withCount('comments')->orderBy('created_at','desc')->get();
+        $postedScripts = $user->scripts()->where('status', $statusPosted)->with('category')->with('user')->with('comments.user')->with('likes')->withCount('likes')->withCount('comments')->orderBy('created_at','desc')->paginate(10);
 
         $pickingLikedScriptIds = array(\App\Like::where('user_id', $user->id)->pluck('script_id'));
         $likedScripts = array();
@@ -56,7 +56,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(EditUser $request, $id)
+    public function update(EditUser $request, int $id)
     {
         $selectedUser = User::findOrFail($id);
         $loggedInUser = Auth::user();
