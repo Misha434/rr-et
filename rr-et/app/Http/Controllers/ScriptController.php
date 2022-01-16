@@ -22,17 +22,6 @@ class ScriptController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        parent::__construct();
-        $this->beforeFilter('@filterCollectUser',[
-            'only' => ['edit', 'update', 'destroy']
-        ]);
-    }
-
-    public function filterCollectUser($script)
-    {
-        if ($script->user_id !== Auth::user()->id) {
-            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
-        }
     }
 
     
@@ -143,7 +132,9 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $script->checkCorrectUser($script);
+        if ($script->user_id !== Auth::user()->id) {
+            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
+        }
 
         $categories = Category::all();
 
@@ -161,7 +152,9 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $script->checkCorrectUser($script);
+        if ($script->user_id !== Auth::user()->id) {
+            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
+        }
 
         if ($script->content !== $request->content){
             $script->content = $request->content;

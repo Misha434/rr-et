@@ -65,7 +65,7 @@ class CategoryController extends Controller
      */
     public function show(int $id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
 
         $scripts = $category->scripts()->where('status', config('const.statusPublished'))->with('user')->with('category')->with('likes')->with('comments.user')->withCount('comments')->paginate(10);
 
