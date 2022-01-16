@@ -72,8 +72,7 @@ class ProposalController extends Controller
      */
     public function destroy(int $id)
     {
-        $roleAdmin = 1;
-        if (Auth::user()->role !== $roleAdmin) {
+        if (Auth::user()->role !== config('const.roleAdmin')) {
             return redirect()->route('scripts.index')->with('error', 'アクセス権限がありません。');
         }
 
@@ -86,8 +85,7 @@ class ProposalController extends Controller
 
     public function aprove(int $id)
     {
-        $roleAdmin = 1;
-        if (Auth::user()->role == ! $roleAdmin) {
+        if (Auth::user()->role == ! config('const.roleAdmin')) {
             return redirect()->route('scripts.index')->with('error', 'アクセス権限がありません。');
         }
 
