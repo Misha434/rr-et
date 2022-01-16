@@ -10,6 +10,7 @@ use App\Http\Requests\EditScript;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
 
 class ScriptController extends Controller
 {
@@ -21,7 +22,19 @@ class ScriptController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        parent::__construct();
+        $this->beforeFilter('@filterCollectUser',[
+            'only' => ['edit', 'update', 'destroy']
+        ]);
     }
+
+    public function filterCollectUser($script)
+    {
+        if ($script->user_id !== Auth::user()->id) {
+            return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
+        }
+    }
+
     
     /**
      * Display a listing of the resource.
@@ -79,13 +92,10 @@ class ScriptController extends Controller
      */
     public function store(CreateScript $request)
     {
-        $user = Auth::user();
-        $userId = $user->id;
-
         $script = new Script();
 
         $script->content = $request->content;
-        $script->user_id = $userId;
+        $script->user_id = Auth::user()->id;
         $script->category_id = $request->category_id;
         if ($request->has('store')){
             $script->status = config('const.statusPublished');
@@ -133,10 +143,7 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $loggedInUser = Auth::user();
-        if ($script->user_id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
-        }
+        $script->checkCorrectUser($script);
 
         $categories = Category::all();
 
@@ -154,10 +161,7 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $loggedInUser = Auth::user();
-        if ($script->user_id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
-        }
+        $script->checkCorrectUser($script);
 
         if ($script->content !== $request->content){
             $script->content = $request->content;
@@ -202,12 +206,13 @@ class ScriptController extends Controller
     {
         $script = Script::findOrFail($id);
 
-        $loggedInUser = Auth::user();
-        if (($script->user_id !== $loggedInUser->id) && ($loggedInUser->role !== config('const.roleAdmin'))) {
+        if (($script->user_id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin'))) {
             return redirect()->route('scripts.index');
         }
 
         $script->delete();
+        session()->regenerateToken();
+
         return redirect()->route('scripts.index')->with('status', '削除しました。');
     }
 

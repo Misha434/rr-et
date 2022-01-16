@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Like;
-use Kyslik\ColumnSortable\Sortable;
 
 class Script extends Model
 {
