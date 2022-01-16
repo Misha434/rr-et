@@ -50,11 +50,9 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            $scripts = Script::all();
-            return redirect()->route('scripts.index', compact('scripts'));
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $user = $loggedInUser;
             return view('users.edit', compact('user'));
@@ -67,9 +65,9 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $loggedInUser->name = $request->name;
             $loggedInUser->email = $request->email;
@@ -80,6 +78,7 @@ class UserController extends Controller
                 }
 
                 $loggedInUser->save();
+                session()->regenerateToken();
 
                 return redirect()->route('users.show', ['id' => $loggedInUser->id])->with('status', '変更しました。');
             } else {
@@ -98,11 +97,12 @@ class UserController extends Controller
         $loggedInUser = Auth::user();
 
         if ($selectedUser->id !== $loggedInUser->id) {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ユーザー情報が不正です。');
         } elseif ($loggedInUser->email === 'guest-user@example.com') {
-            return redirect()->route('scripts.index');
+            return redirect()->route('scripts.index')->with('alart', 'ゲストユーザーは編集できません。');
         } else {
             $selectedUser->delete();
+            session()->regenerateToken();
 
             return redirect()->route('home')->with('status', '退会しました。');
         }
