@@ -66,7 +66,7 @@
 
     @else
       <p>登録なし</p>
-      <a href="{{ route('proposals.create') }}">
+      <a href="{{ route('proposals.create') }}" data-e2e="proposal-link">
         <p>カテゴリの提案をしませんか？</p>
       </a>
     @endif
