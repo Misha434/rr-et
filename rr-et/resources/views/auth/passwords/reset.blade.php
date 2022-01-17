@@ -38,6 +38,9 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+
+                                <small id="passwordHelp" class="form-text text-muted">・文字数: 8〜255文字</small>
+                                <small id="passwordHelp" class="form-text text-muted">・使用可能文字: 英大小文字・数字・記号(!@#%^&*)</small>
                             </div>
                         </div>
 

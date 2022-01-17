@@ -49,13 +49,11 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $admin_num = 1;
-        $general_user_num = 10;
-        $role_rule = Rule::in($admin_num, $general_user_num);
+        $role_rule = Rule::in(config('const.roleAdmin'), config('const.roleGeneral'));
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email:filter,rfc', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9]+$/','confirmed'],
+            'password' => ['required', 'string', 'min:8', 'regex:/^[a-zA-Z0-9!@#%^&*]+$/','confirmed'],
             'role' => 'integer|' . $role_rule
         ]);
     }
