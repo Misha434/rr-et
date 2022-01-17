@@ -118,12 +118,10 @@ class ScriptController extends Controller
             $script->status = config('const.statusPublished');
 
             if ($file = $request->script_img) {
-                if ($file = $request->script_img) {
-                    $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                }
+                $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
+                $targetPath = public_path('/uploads/');
+                $file->move($targetPath, $fileName);
+                $script->script_img = $fileName;
             }
             $script->save();
 
@@ -179,6 +177,21 @@ class ScriptController extends Controller
 
         if ($script->user_id !== Auth::user()->id) {
             return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
+        }
+
+        if ($request->boolean('deleting') === true) {
+            $uploadedImageName = $script->script_img;
+            $targetPath = public_path('/uploads/');
+            File::delete($targetPath . $uploadedImageName);
+            $script->script_img = null;
+        }
+
+        if ($request->script_img !== null) {
+            $file = $request->script_img;
+            $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
+            $targetPath = public_path('/uploads/');
+            $file->move($targetPath, $fileName);
+            $script->script_img = $fileName;
         }
 
         if ($script->content !== $request->content) {
