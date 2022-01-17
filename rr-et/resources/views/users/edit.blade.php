@@ -65,13 +65,15 @@
 
             <div class="col-md-6">
               <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password"  autocomplete="password" data-e2e="password-input">
-              
 
               @error('password')
                 <span class="invalid-feedback" role="alert">
                   <strong data-e2e="password-validate-message">{{ $message }}</strong>
                 </span>
               @enderror
+
+              <small id="passwordHelp" class="form-text text-muted">・文字数: 8〜255文字</small>
+              <small id="passwordHelp" class="form-text text-muted">・使用可能文字: 英大小文字・数字・記号(!@#%^&*)</small>
             </div>
           </div>
 

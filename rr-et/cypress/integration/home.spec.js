@@ -141,9 +141,22 @@ describe('HomeController:', () => {
       cy.get('.card-header').should('have.text','新規登録')
     });
 
-    it('validator is working when password has symbols', () => {
+    it('is working when password has valid symbols', () => {
+      const symbolTestData = '!@#%^&*p'
       cy.get('[data-e2e="password-input"]').clear()
-      cy.get('[data-e2e="password-input"]').type('password#')
+      cy.get('[data-e2e="password-input"]').type(symbolTestData)
+      cy.get('[data-e2e="password-confirm-input"]').clear()
+      cy.get('[data-e2e="password-confirm-input"]').type(symbolTestData)
+      cy.get('[data-e2e="submit"]').click()
+      cy.get('h1').should('have.text','ネタ一覧')
+    });
+
+    it('validator is working when password has invalid symbols', () => {
+      const invalidSymbolTestData = '!@#%^&*/'
+      cy.get('[data-e2e="password-input"]').clear()
+      cy.get('[data-e2e="password-input"]').type(invalidSymbolTestData)
+      cy.get('[data-e2e="password-confirm-input"]').clear()
+      cy.get('[data-e2e="password-confirm-input"]').type(invalidSymbolTestData)
       cy.get('[data-e2e="submit"]').click()
       cy.get('[data-e2e="password-validate-message"]').should('have.text','パスワードは正しい形式で入力してください。')
       cy.get('.card-header').should('have.text','新規登録')
