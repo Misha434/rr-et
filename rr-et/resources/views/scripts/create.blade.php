@@ -24,7 +24,7 @@
 
   <div class="row">
     <div class="col-12">
-      <form action="{{ route('scripts.store') }}" method="post">
+      <form action="{{ route('scripts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         @include('share.script_form')
       </form>
