@@ -11,6 +11,8 @@ use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 class ScriptController extends Controller
 {
     /**
@@ -93,9 +95,20 @@ class ScriptController extends Controller
             
             if ($file = $request->script_img) {
                 $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-                $targetPath = public_path('/uploads/');
-                $file->move($targetPath, $fileName);
-                $script->script_img = $fileName;
+
+                if (app('env') === 'local') {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                } elseif (app('env') === 'production') {
+                    $image = $request->file('script_img');
+                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
+                    $script->script_img = $path;
+                } else {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                }
             }
             $script->save();
 
@@ -106,9 +119,19 @@ class ScriptController extends Controller
 
             if ($file = $request->script_img) {
                 $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-                $targetPath = public_path('/uploads/');
-                $file->move($targetPath, $fileName);
-                $script->script_img = $fileName;
+                if (app('env') === 'local') {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                } elseif (app('env') === 'production') {
+                    $image = $request->file('script_img');
+                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
+                    $script->script_img = $path;
+                } else {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                }
             }
             $script->save();
 
@@ -119,9 +142,20 @@ class ScriptController extends Controller
 
             if ($file = $request->script_img) {
                 $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-                $targetPath = public_path('/uploads/');
-                $file->move($targetPath, $fileName);
-                $script->script_img = $fileName;
+
+                if (app('env') === 'local') {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                } elseif (app('env') === 'production') {
+                    $image = $request->file('script_img');
+                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
+                    $script->script_img = $path;
+                } else {
+                    $targetPath = public_path('/uploads/');
+                    $file->move($targetPath, $fileName);
+                    $script->script_img = $fileName;
+                }
             }
             $script->save();
 
@@ -242,9 +276,14 @@ class ScriptController extends Controller
         }
 
         if ($script->script_img !== null) {
-            $uploadedImageName = $script->script_img;
-            $targetPath = public_path('/uploads/');
-            File::delete($targetPath . $uploadedImageName);
+            if (app('env') === 'local') {
+                $uploadedImageName = $script->script_img;
+                $targetPath = public_path('/uploads/');
+                File::delete($targetPath . $uploadedImageName);
+            } elseif (app('env') === 'production') {
+                $image = $script->script_img;
+                Storage::disk('s3')->delete($image);
+            }
         }
 
         $script->delete();
