@@ -10,8 +10,7 @@ use App\Http\Requests\EditScript;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
 
 class ScriptController extends Controller
 {
@@ -89,74 +88,20 @@ class ScriptController extends Controller
         $script->content = $request->content;
         $script->user_id = Auth::user()->id;
         $script->category_id = $request->category_id;
-
         if ($request->has('store')) {
             $script->status = config('const.statusPublished');
-            
-            if ($file = $request->script_img) {
-                $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-
-                if (app('env') === 'local') {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                } elseif (app('env') === 'production') {
-                    $image = $request->file('script_img');
-                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
-                    $script->script_img = $path;
-                } else {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                }
-            }
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '投稿しました。');
         } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
-
-            if ($file = $request->script_img) {
-                $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-                if (app('env') === 'local') {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                } elseif (app('env') === 'production') {
-                    $image = $request->file('script_img');
-                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
-                    $script->script_img = $path;
-                } else {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                }
-            }
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
             $script->status = config('const.statusPublished');
-
-            if ($file = $request->script_img) {
-                $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-
-                if (app('env') === 'local') {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                } elseif (app('env') === 'production') {
-                    $image = $request->file('script_img');
-                    $path = Storage::disk('s3')->putFile('scripts', $image, 'public');
-                    $script->script_img = $path;
-                } else {
-                    $targetPath = public_path('/uploads/');
-                    $file->move($targetPath, $fileName);
-                    $script->script_img = $fileName;
-                }
-            }
             $script->save();
 
             session()->regenerateToken();
@@ -213,21 +158,6 @@ class ScriptController extends Controller
             return redirect()->route('scripts.index')->with('alert', 'ユーザー情報が不正です');
         }
 
-        if ($request->boolean('deleting') === true) {
-            $uploadedImageName = $script->script_img;
-            $targetPath = public_path('/uploads/');
-            File::delete($targetPath . $uploadedImageName);
-            $script->script_img = null;
-        }
-
-        if ($request->script_img !== null) {
-            $file = $request->script_img;
-            $fileName = time() . '_' . $script->user_id . '.' . $file->getClientOriginalExtension();
-            $targetPath = public_path('/uploads/');
-            $file->move($targetPath, $fileName);
-            $script->script_img = $fileName;
-        }
-
         if ($script->content !== $request->content) {
             $script->content = $request->content;
             $script->likes()->delete();
@@ -273,17 +203,6 @@ class ScriptController extends Controller
 
         if (($script->user_id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin'))) {
             return redirect()->route('scripts.index');
-        }
-
-        if ($script->script_img !== null) {
-            if (app('env') === 'local') {
-                $uploadedImageName = $script->script_img;
-                $targetPath = public_path('/uploads/');
-                File::delete($targetPath . $uploadedImageName);
-            } elseif (app('env') === 'production') {
-                $image = $script->script_img;
-                Storage::disk('s3')->delete($image);
-            }
         }
 
         $script->delete();
