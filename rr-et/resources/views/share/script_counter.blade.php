@@ -1,0 +1,1 @@
+<div id="count_area"><span class="now_counter">0</span> / 100 文字</div>
