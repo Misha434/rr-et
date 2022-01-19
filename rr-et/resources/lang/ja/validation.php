@@ -150,7 +150,7 @@ return [
         'password' => 'パスワード',
         'password_confirm' => 'パスワード再入力',
         'current_password' => '登録済パスワード',
-        'content' => '投稿ネタ',
+        'content' => '投稿内容',
         'category_id' => 'カテゴリー',
     ],
 

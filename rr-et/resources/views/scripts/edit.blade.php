@@ -40,7 +40,7 @@
           <label for="content">投稿ネタ</label>
           <span class="badge badge-danger pt-1">※必須</span>
           <textarea class="form-control" id="content" rows="3" name="content" required>{{ old('content') ?? $script->content }}</textarea>
-          @include('share.counter')
+          @include('share.script_counter')
           @include('share.script_counter_js')
           <div class="text-right my-2">
             <button type="submit" class="btn btn-success" name="draft" data-e2e="draft">下書き</button>
