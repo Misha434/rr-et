@@ -101,7 +101,7 @@
 
           <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">
-              <button id="register-submit" type="submit" class="btn btn-primary" data-e2e="submit">
+              <button id="register-submit" type="submit" class="btn btn-primary btn-block" data-e2e="submit">
                 {{ __('登録') }}
               </button>
             </div>
@@ -112,7 +112,7 @@
     </div>
   </div>
 
-  <div class="row mt-2">
+  <div class="row mt-4">
     <div class="col-12">
       <form action="{{ route('users.destroy', $user->id) }}" method="POST">
         @csrf
