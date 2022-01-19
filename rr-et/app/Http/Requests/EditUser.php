@@ -30,6 +30,7 @@ class EditUser extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email:filter,rfc|max:255|unique:users,email,' . $this->user()->id,
             'password' => 'nullable|string|min:8|regex:/^[a-zA-Z0-9!@#%^&*]+$/|confirmed',
+            'password_confirm' => 'required_with:password|nullable|string|min:8|regex:/^[a-zA-Z0-9!@#%^&*]+$/',
             'current_password' => 'required|string|min:8|regex:/^[a-zA-Z0-9!@#%^&*]+$/',
             'role' => 'integer|' . $role_rule
         ];
