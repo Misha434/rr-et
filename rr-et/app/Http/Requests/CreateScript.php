@@ -29,7 +29,8 @@ class CreateScript extends FormRequest
         $category_id_rule = Rule::in($invaild_category_id);
         return [
             'category_id' => 'required|' . $category_id_rule,
-            'content' => 'required|max:100'
+            'content' => 'required|max:100',
+            'script_img' => 'nullable|image|file|mimes:jpg,png,gif|max:5120'
         ];
     }
 }
