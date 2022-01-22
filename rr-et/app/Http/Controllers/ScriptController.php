@@ -178,9 +178,10 @@ class ScriptController extends Controller
         if ($request->has('store')) {
             $script->status = config('const.statusPublished');
 
-            if ($script->script_img !== null) {
+            if ($request->boolean('deleting') === true) {
                 $image = $script->script_img;
                 Storage::disk('s3')->delete($image);
+                $script->script_img = null;
             }
 
             $script->save();
