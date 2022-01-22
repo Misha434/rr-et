@@ -44,7 +44,7 @@
           @include('share.script_counter_js')
 
           @unless($script->script_img === null)
-            <img src="{{ $script->script_img }}" class="img-fluid mt-1">
+            <img src="https://bucket-rr-et.s3-ap-northeast-1.amazonaws.com/{{ $script->script_img }}" class="img-fluid mt-1">
           @endunless
 
           @unless($script->script_img === null)
