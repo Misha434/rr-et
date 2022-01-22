@@ -13,6 +13,10 @@
   <textarea class="form-control" id="content" rows="3" name="content" required>{{ old('content') }}</textarea>
   @include('share.script_counter')
   @include('share.script_counter_js')
+
+  <label for="script_img" class="mt-3">投稿画像</label><br>
+  <input type="file" accept="image/jpeg,image/gif,image/png" name="script_img">
+
   <div class="text-right my-2">
     <button type="submit" class="btn btn-success" name="draft" data-e2e="draft">下書き</button>
     <button type="submit" class="btn btn-primary" name="store" data-e2e="submit">送信</button>

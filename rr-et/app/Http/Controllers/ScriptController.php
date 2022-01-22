@@ -10,6 +10,8 @@ use App\Http\Requests\EditScript;
 use App\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
 
 class ScriptController extends Controller
@@ -90,6 +92,13 @@ class ScriptController extends Controller
         $script->category_id = $request->category_id;
         if ($request->has('store')) {
             $script->status = config('const.statusPublished');
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+                $path = Storage::disk('s3')->putFile('scripts', $image);
+                $script->script_img = Storage::disk('s3')->url($path);
+            }
+
             $script->save();
 
             session()->regenerateToken();
@@ -168,6 +177,12 @@ class ScriptController extends Controller
 
         if ($request->has('store')) {
             $script->status = config('const.statusPublished');
+
+            if ($script->script_img !== null) {
+                $image = $script->script_img;
+                Storage::disk('s3')->delete($image);
+            }
+
             $script->save();
 
             session()->regenerateToken();
@@ -203,6 +218,11 @@ class ScriptController extends Controller
 
         if (($script->user_id !== Auth::user()->id) && (Auth::user()->role !== config('const.roleAdmin'))) {
             return redirect()->route('scripts.index');
+        }
+
+        if ($script->script_img !== null) {
+            $image = $script->script_img;
+            Storage::disk('s3')->delete($image);
         }
 
         $script->delete();
