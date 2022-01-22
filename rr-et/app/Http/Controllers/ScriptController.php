@@ -96,7 +96,7 @@ class ScriptController extends Controller
             if ($request->script_img !== null) {
                 $image = $request->file('script_img');
                 $path = Storage::disk('s3')->putFile('scripts', $image);
-                $script->script_img = Storage::disk('s3')->url($path);
+                $script->script_img = $path;
             }
 
             $script->save();
