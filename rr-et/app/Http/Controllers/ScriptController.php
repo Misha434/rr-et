@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
+use Image;
 
 class ScriptController extends Controller
 {
@@ -95,8 +95,19 @@ class ScriptController extends Controller
 
             if ($request->script_img !== null) {
                 $image = $request->file('script_img');
-                $path = Storage::disk('s3')->putFile('scripts', $image);
-                $script->script_img = $path;
+
+                if (app()->isLocal()) {
+
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $compressedImage = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();});
+                    
+                    $path = Storage::disk('s3')->putFile('scripts', $compressedImage);
+                    $script->script_img = $path;
+                }
             }
 
             $script->save();
@@ -105,12 +116,42 @@ class ScriptController extends Controller
             session()->flash('status', '投稿しました。');
         } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    $image->move($target_path, $fileName);
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $path = Storage::disk('s3')->putFile('scripts', $image);
+                    $script->script_img = $path;
+                }
+            }
+
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
             $script->status = config('const.statusPublished');
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    $image->move($target_path, $fileName);
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $path = Storage::disk('s3')->putFile('scripts', $image);
+                    $script->script_img = $path;
+                }
+            }
+
             $script->save();
 
             session()->regenerateToken();
@@ -180,22 +221,45 @@ class ScriptController extends Controller
 
             if ($request->boolean('deleting') === true) {
                 $image = $script->script_img;
-                Storage::disk('s3')->delete($image);
-                $script->script_img = null;
+                if (app()->isLocal()) {
+                    $target_path = public_path();
+                    File::delete($target_path . $image);
+                } else {
+                    Storage::disk('s3')->delete($image);
+                }
             }
-
+            
+            $script->script_img = null;
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '編集しました。');
         } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
+
+            $image = $script->script_img;
+            if (app()->isLocal()) {
+                $target_path = public_path();
+                File::delete($target_path . $image);
+            } else {
+                Storage::disk('s3')->delete($image);
+            }
+
             $script->save();
 
             session()->regenerateToken();
             session()->flash('status', '下書きに保存しました。');
         } else {
             $script->status = config('const.statusPublished');
+
+            $image = $script->script_img;
+            if (app()->isLocal()) {
+                $target_path = public_path();
+                File::delete($target_path . $image);
+            } else {
+                Storage::disk('s3')->delete($image);
+            }
+
             $script->save();
 
             session()->regenerateToken();
@@ -222,8 +286,15 @@ class ScriptController extends Controller
         }
 
         if ($script->script_img !== null) {
-            $image = $script->script_img;
-            Storage::disk('s3')->delete($image);
+            if (app()->isLocal()) {
+                $target_path = public_path();
+                $fileName = $script->script_img;
+                File::delete($target_path . $fileName);
+            } else {
+                $image = $script->script_img;
+                Storage::disk('s3')->delete($image);
+            }
+
         }
 
         $script->delete();

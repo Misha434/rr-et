@@ -4,7 +4,11 @@
     <p data-e2e="script-{{ $script->id }}">{{ $script->content }}</p>
 
     @unless($script->script_img === null)
-      <img src="https://bucket-rr-et.s3-ap-northeast-1.amazonaws.com/{{ $script->script_img }}" class="img-fluid mt-1">
+      @if(!app()->isLocal())
+        <img src="https://bucket-rr-et.s3-ap-northeast-1.amazonaws.com/{{ $script->script_img }}" class="img-fluid mt-1">
+      @else
+        <img src="{{ $script->script_img }}" class="img-fluid mt-1">
+      @endif
     @endunless
 
     <div class="d-block mb-1">
