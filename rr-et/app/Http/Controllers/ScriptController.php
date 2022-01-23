@@ -103,7 +103,9 @@ class ScriptController extends Controller
                     Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $path = Storage::disk('s3')->putFile('scripts', $image);
+                    $compressedImage = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();});
+                    
+                    $path = Storage::disk('s3')->putFile('scripts', $compressedImage);
                     $script->script_img = $path;
                 }
             }
