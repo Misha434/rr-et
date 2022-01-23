@@ -43,8 +43,17 @@
           @include('share.script_counter')
           @include('share.script_counter_js')
 
+          @if($script->script_img === null)
+            <label for="script_img" class="mt-3">投稿画像</label><br>
+            <input type="file" accept="image/jpeg,image/gif,image/png" name="script_img">
+          @endif
+
           @unless($script->script_img === null)
-            <img src="https://bucket-rr-et.s3-ap-northeast-1.amazonaws.com/{{ $script->script_img }}" class="img-fluid mt-1">
+            @if(!app()->isLocal())
+              <img src="https://bucket-rr-et.s3-ap-northeast-1.amazonaws.com/{{ $script->script_img }}" class="img-fluid mt-1">
+            @else
+              <img src="{{ $script->script_img }}" class="img-fluid mt-1">
+            @endif
           @endunless
 
           @unless($script->script_img === null)
