@@ -103,7 +103,7 @@ class ScriptController extends Controller
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
                     $extension = $request->file('script_img')->getClientOriginalExtension();
-                    $fileName = $request->file('script_img')->getClientOriginalName();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
                     $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
                     $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
 
@@ -287,16 +287,12 @@ class ScriptController extends Controller
         }
 
         if ($script->script_img !== null) {
+            $fileName = $script->script_img;
             if (app()->isLocal()) {
-                $target_path = public_path();
-                $fileName = $script->script_img;
-                File::delete($target_path . $fileName);
+                File::delete(public_path() . $fileName);
             } else {
-                $image = $script->script_img;
-                $imagePath = "scripts/" . $image;
-                Storage::disk('s3')->delete($imagePath);
+                Storage::disk('s3')->delete($fileName);
             }
-
         }
 
         $script->delete();
