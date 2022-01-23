@@ -97,15 +97,17 @@ class ScriptController extends Controller
                 $image = $request->file('script_img');
 
                 if (app()->isLocal()) {
-
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
                     Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $compressedImage = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();});
-                    
-                    $path = Storage::disk('s3')->putFile('scripts', $compressedImage);
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(1200, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+                    // $url = Storage::disk('s3')->url('scripts/' . $fileName);
+
                     $script->script_img = $path;
                 }
             }
