@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Facade\Ignition\Http\Controllers\ScriptController\checkCorrectUser;
+use Image;
 
 class ScriptController extends Controller
 {
@@ -97,9 +97,10 @@ class ScriptController extends Controller
                 $image = $request->file('script_img');
 
                 if (app()->isLocal()) {
+
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    $image->move($target_path, $fileName);
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
                     $path = Storage::disk('s3')->putFile('scripts', $image);
