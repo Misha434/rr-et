@@ -23,12 +23,18 @@ RUN apt-get update \
     xvfb \
     locales \
     locales-all \
+    zlib1g-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
     && apt-get remove fonts-vlgothic \
     && apt-get install -y fonts-vlgothic \
     && locale-gen ja_JP.UTF-8 \
+    && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install \
+    -j$(nproc) gd \
     pdo_mysql \
     pdo_pgsql
+
 ENV LANG ja_JP.UTF-8
 ENV LC_CTYPE ja_JP.UTF-8
 RUN localedef -f UTF-8 -i ja_JP ja_JP.utf8
