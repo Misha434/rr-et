@@ -104,11 +104,10 @@ class ScriptController extends Controller
                 } else {
                     $extension = $request->file('script_img')->getClientOriginalExtension();
                     $fileName = $request->file('script_img')->getClientOriginalName();
-                    $resizeImg = Image::make($image)->resize(1200, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
                     $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
-                    // $url = Storage::disk('s3')->url('scripts/' . $fileName);
 
-                    $script->script_img = $path;
+                    $script->script_img = "scripts/" . $fileName;
                 }
             }
 
@@ -294,7 +293,8 @@ class ScriptController extends Controller
                 File::delete($target_path . $fileName);
             } else {
                 $image = $script->script_img;
-                Storage::disk('s3')->delete($image);
+                $imagePath = "scripts/" . $image;
+                Storage::disk('s3')->delete($imagePath);
             }
 
         }
