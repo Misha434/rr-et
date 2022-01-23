@@ -293,7 +293,8 @@ class ScriptController extends Controller
                 File::delete($target_path . $fileName);
             } else {
                 $image = $script->script_img;
-                Storage::disk('s3')->delete($image);
+                $imagePath = "scripts/" . $image;
+                Storage::disk('s3')->delete($imagePath);
             }
 
         }
