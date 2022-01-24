@@ -26,7 +26,6 @@ class ScriptController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -99,7 +98,7 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
                     $extension = $request->file('script_img')->getClientOriginalExtension();
@@ -124,11 +123,15 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    $image->move($target_path, $fileName);
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $path = Storage::disk('s3')->putFile('scripts', $image);
-                    $script->script_img = $path;
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
                 }
             }
 
@@ -145,11 +148,15 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    $image->move($target_path, $fileName);
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $path = Storage::disk('s3')->putFile('scripts', $image);
-                    $script->script_img = $path;
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
                 }
             }
 
@@ -228,9 +235,27 @@ class ScriptController extends Controller
                 } else {
                     Storage::disk('s3')->delete($image);
                 }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
             
-            $script->script_img = null;
             $script->save();
 
             session()->regenerateToken();
@@ -238,12 +263,33 @@ class ScriptController extends Controller
         } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
 
-            $image = $script->script_img;
-            if (app()->isLocal()) {
-                $target_path = public_path();
-                File::delete($target_path . $image);
-            } else {
-                Storage::disk('s3')->delete($image);
+            if ($request->boolean('deleting') === true) {
+                $image = $script->script_img;
+                if (app()->isLocal()) {
+                    $target_path = public_path();
+                    File::delete($target_path . $image);
+                } else {
+                    Storage::disk('s3')->delete($image);
+                }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
 
             $script->save();
@@ -253,12 +299,33 @@ class ScriptController extends Controller
         } else {
             $script->status = config('const.statusPublished');
 
-            $image = $script->script_img;
-            if (app()->isLocal()) {
-                $target_path = public_path();
-                File::delete($target_path . $image);
-            } else {
-                Storage::disk('s3')->delete($image);
+            if ($request->boolean('deleting') === true) {
+                $image = $script->script_img;
+                if (app()->isLocal()) {
+                    $target_path = public_path();
+                    File::delete($target_path . $image);
+                } else {
+                    Storage::disk('s3')->delete($image);
+                }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
 
             $script->save();
