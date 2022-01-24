@@ -24,7 +24,7 @@
 
   <div class="row">
     <div class="col-12">
-      <form action="{{ route('scripts.update', ['script' => $script]) }}" method="POST">
+      <form action="{{ route('scripts.update', ['script' => $script]) }}" method="POST" enctype="multipart/form-data">
         @method('PUT')
         @csrf
         <div class="form-group">
