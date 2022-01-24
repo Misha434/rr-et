@@ -45,7 +45,7 @@
 
           @if($script->script_img === null)
             <label for="script_img" class="mt-3">投稿画像</label><br>
-            <input type="file" accept="image/jpeg,image/gif,image/png" name="script_img">
+            <input type="file" accept="image/jpeg,image/gif,image/png" name="script_img" id="script_img">
           @endif
 
           @unless($script->script_img === null)
@@ -74,7 +74,8 @@
       </form>
     </div>
   </div>
-  
+
+  @include('share.script_img_validation')
 </div>
 
 @endsection

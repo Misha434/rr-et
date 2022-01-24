@@ -31,6 +31,7 @@
     </div>
   </div>
   
+  @include('share.script_img_validation')
 </div>
 
 @endsection
