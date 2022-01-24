@@ -30,7 +30,7 @@ class CreateScript extends FormRequest
         return [
             'category_id' => 'required|' . $category_id_rule,
             'content' => 'required|max:100',
-            'script_img' => 'nullable|image|file|mimes:jpg,png,gif|max:5120'
+            'script_img' => 'nullable|image|file|mimes:jpg,png,gif,jpeg|max:5120'
         ];
     }
 }
