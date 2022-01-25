@@ -3,12 +3,12 @@
   <div class="input-group">
     <input type="text" class="form-control" placeholder="ネタを検索" aria-label="ネタを検索" name="keyword" value="{{ $keyword }}" data-e2e="script-search-form">
     <div class="input-group-append">
-      <input class="btn btn-outline-secondary" type="submit" value="検索" data-e2e="script-search-submit">
+      <input class="btn btn-secondary" type="submit" value="検索" data-e2e="script-search-submit">
     </div>
   </div>
   <button class="btn btn-block btn-outline-secondary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">+ 詳細検索</button>
   <div class="collapse multi-collapse" id="multiCollapseExample2">
-    <div class="card p-3">
+    <div class="card px-3">
       <div class="form-group">
         <label for="advanced_search_category" class="col-form-label">カテゴリー</label>
         <select type="text" class="form-control" name="advanced_search_category">
@@ -24,7 +24,7 @@
         <label for="advanced_search_date_end" class="col-form-label">投稿日時 終了</label>
         <input type="text" class="form-control" id="advanced_search_date_end" name="advanced_search_date_end" placeholder="ex: 2022-01-02 まで">
 
-        <input class="btn btn-outline-secondary btn-block mt-4" type="submit" value="検索" data-e2e="script-search-submit">
+        <input class="btn btn-secondary btn-block mt-4" type="submit" value="詳細検索" data-e2e="script-advanced-search-submit">
       </div>
     </div>
   </div>

@@ -36,7 +36,6 @@ class ScriptController extends Controller
         $keyword = $request->input('keyword');
         $sortCondition = $request->get('sort');
 
-        // Simple Search Start
         $query = Script::query();
         
         switch ($sortCondition) {
@@ -49,7 +48,6 @@ class ScriptController extends Controller
             default:
                 $query->orderBy('created_at', 'desc');
         }
-        // Simple Search End
 
         // Advanved Search Start
         $categories = Category::all();
