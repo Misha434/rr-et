@@ -36,10 +36,9 @@ class ScriptController extends Controller
         $keyword = $request->input('keyword');
         $sortCondition = $request->get('sort');
 
+        // Simple Search Start
         $query = Script::query();
-        if (!empty($keyword)) {
-            $query->where('content', 'LIKE', "%{$keyword}%");
-        }
+        
         switch ($sortCondition) {
             case '新規投稿順':
                 $query->orderBy('created_at', 'desc');
@@ -50,6 +49,174 @@ class ScriptController extends Controller
             default:
                 $query->orderBy('created_at', 'desc');
         }
+        // Simple Search End
+
+        // Advanved Search Start
+        $categories = Category::all();
+
+        $advancedSearchFilters = [
+            'keyword' => $keyword,
+            'category' => $request->input('advanced_search_category'),
+            'dateStart' => $request->input('advanced_search_date_start'),
+            'dateEnd' => $request->input('advanced_search_date_end'),
+        ];
+
+        $keywordOnly = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $categoryOnly = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $startDayOnly = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $endDayOnly = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndCategory = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndStartDate = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndEndDate = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $categoryAndStartDate = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $categoryAndEndDate = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $startDateAndEndDate = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptKeyword = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptCategory = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptDateStart = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptDateEnd = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $searchAllOption = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $emptyAll = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        if ($keywordOnly) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%");
+        }
+
+        if ($categoryOnly) {
+            $query->where('category_id', $advancedSearchFilters['category']);
+        }
+
+        if ($startDayOnly) {
+            $query->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($endDayOnly) {
+            $query->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($keywordAndCategory) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->where('category_id', $advancedSearchFilters['category']);
+        }
+
+        if ($keywordAndStartDate) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($keywordAndEndDate) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($categoryAndStartDate) {
+            $query->where('category_id', $advancedSearchFilters['category'])->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($categoryAndEndDate) {
+            $query->where('category_id', $advancedSearchFilters['category'])->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($startDateAndEndDate) {
+            $query->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptKeyword) {
+            $query->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptCategory) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptDateStart) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptDateEnd) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($searchAllOption) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($emptyAll) {
+            // none
+        }
+
+        // advanced search end
 
         $publisingScripts = $query->where('status', config('const.statusPublished'));
 
@@ -61,7 +228,7 @@ class ScriptController extends Controller
 
         $scripts = $filteredScripts->paginate(10);
 
-        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'sortCondition'));
+        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'sortCondition', 'categories'));
     }
 
     /**
