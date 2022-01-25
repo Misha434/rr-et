@@ -35,6 +35,7 @@
 |  機能  |  概要 | 
 | ---- | ---- |
 | ネタ関連機能 | 投稿・編集・削除・検索機能 |
+| ネタ 画像投稿機能 | - |
 | ネタソート機能 | いいね・新規投稿順にソート |
 | ネタ いいね機能 | いいねしたネタをユーザー詳細ページで閲覧可 |
 | ネタ コメント機能 | 投稿ネタに関してコメント投稿・削除 |
@@ -52,6 +53,12 @@
 ### 投稿一覧
 - 無限スクロール・いいね・コメント・検索・ソート機能
 ![scripts_index_220113](https://user-images.githubusercontent.com/61964919/149282263-73255654-7beb-46d3-a2fa-e20f67aff071.gif)
+
+### ネタ 画像投稿機能
+
+- 画像アップロード時にリサイズ・圧縮をかけることで、表示時読込速度の向上を図りました。(5MB -> 82KB)
+
+![image_upload_220126](https://user-images.githubusercontent.com/61964919/151024478-d557ec34-a084-41bb-ac7a-b21959da0a9b.gif)
 
 ### ネタ投稿・投稿下書き機能
 ![draft_220113](https://user-images.githubusercontent.com/61964919/149282519-bd076fe6-b70f-49ee-925d-3288062e9fc9.gif)
@@ -82,9 +89,14 @@
 #### バックエンド側 使用ライブラリー/フレームワーク
 | 名称 | 備考 |
 | --- | --- |
-| guzzle | メール認証で Mailgun API を使用するため |
 | PHPUnit | 単体テスト |
+| PHP_CodeSniffer | 静的コード解析ツール |
 | laracasts / cypress | E2Eテストでのバックエンド側データ操作のため |
+| guzzle | メール認証で Mailgun API を使用するため |
+| laravel-breadcrumbs | パンくずリスト |
+| intervention/image | 画像圧縮・GD Library |
+| flysystem-aws-s3-v3 | S3バケットに保存 |
+| flysystem-cached-adapter | 画像アップロード パフォーマンス向上化 |
 
 ### フロントエンド
 
@@ -97,6 +109,7 @@
 | Bootstrap4 | - |
 | FontAwesome | アイコン |
 | jScroll | 無限スクロール |
+| flatpickr | 日付入力ツール |
 
 ### インフラ：AWS
 - Terraform を用いて環境構築を一部コード化しました。
@@ -116,13 +129,13 @@
 <a id="anchor5"></a>
 
 ## ER図
-![ER_diagram_22014 drawio](https://user-images.githubusercontent.com/61964919/149484500-082c5741-1add-47ca-bd45-2dba26214c55.png)
+![ER_diagram_220126](https://user-images.githubusercontent.com/61964919/151021268-f6d00d42-efdd-4721-ae82-04128cc7c5f4.png)
 
 <a id="anchor6"></a>
 
 ## システム構成図
 
-![Infrastracture_Diagram_20220111_004](https://user-images.githubusercontent.com/61964919/148925218-6b799f58-7b8d-4041-8747-29e7d2e91c4e.png)
+![Infrastracture_Diagram_20220126](https://user-images.githubusercontent.com/61964919/151021276-78541239-6620-40fc-9590-be34f63fbce4.png)
 
 <a id="anchor7"></a>
 
@@ -161,7 +174,7 @@ $ php artisan db:seed
 ### テスト方法
 
 - 正常系
-- 異常系: 入力フォームは境界値分析
+- 異常系: 入力フォーム一部 境界値分析
 
 ### デプロイ方法
 
@@ -194,6 +207,7 @@ $ php artisan db:seed
 - 変数などは意図が分かる命名を心がけ、アクションなどを実装する際には、実行内容のまとまりごとに空白を空けて段落分けしました。
 
 <a id="anchor9"></a>
+
 ### 実行権限 一覧
 - ログインユーザー・管理者に関して、特記なき場合はログインをしているユーザー自身が行なった投稿に対してのみ実行できることとします。
 
@@ -253,6 +267,6 @@ $ php artisan db:seed
 
 ## 今後の課題
 - インフラの完全Terraform化 
-- 画像投稿機能
+- ~~画像投稿機能~~ 
 - リファクタリング
 - いいね機能 非同期化
