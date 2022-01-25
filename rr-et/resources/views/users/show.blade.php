@@ -71,7 +71,14 @@
                   <div class="float-left">
                     <div class="d-flex my-2">
                       @include('share.script_like_button', ['script'=>$likedScript])
-                      @include('share.script_comment_button', ['script'=>$likedScript])
+
+                      <button class="btn btn-outline-secondary btn-sm"
+                        type="button" data-toggle="collapse"
+                        data-target="#collapseLikedComments-{{ $likedScript->id }}"
+                        aria-expanded="false" aria-controls="collapseComments"
+                        data-e2e="script-{{ $likedScript->id }}-comment-button"
+
+                      ><i class="fas fa-comment"></i> {{ $likedScript->comments->count() }} </button>
                     </div>
                   </div>
                   <div class="float-right">
@@ -82,7 +89,7 @@
                   </div>
                 </div>
 
-                <div class="collapse" id="collapseComments-{{ $key }}">
+                <div class="collapse" id="collapseLikedComments-{{ $likedScript->id }}">
                   @include('share.script_comment_input_form', ['script'=>$likedScript])
                   @include('share.script_comment_list', ['script'=>$likedScript])
                 </div>
