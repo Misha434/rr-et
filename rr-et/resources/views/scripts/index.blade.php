@@ -25,7 +25,7 @@
     <div class="row">
       <div class="col-12 offset-md-1 col-md-10 offset-md-1">
         @if($scripts->count())
-        <p data-e2e="script-search-count">{{ $scripts_count }} 件</p>
+        <p class="mt-2" data-e2e="script-search-count">{{ $scripts_count }} 件</p>
         @else
         <p data-e2e="script-search-not-found">見つかりませんでした。</p>
         @endif

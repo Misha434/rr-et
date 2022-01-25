@@ -15,7 +15,7 @@
   @include('share.script_counter_js')
 
   <label for="script_img" class="mt-3">投稿画像</label><br>
-  <input type="file" accept="image/jpeg,image/gif,image/png" name="script_img">
+  <input id="script_img" type="file" accept="image/jpeg,image/gif,image/png" name="script_img">
 
   <div class="text-right my-2">
     <button type="submit" class="btn btn-success" name="draft" data-e2e="draft">下書き</button>

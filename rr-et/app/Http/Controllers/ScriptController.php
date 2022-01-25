@@ -26,7 +26,6 @@ class ScriptController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +37,7 @@ class ScriptController extends Controller
         $sortCondition = $request->get('sort');
 
         $query = Script::query();
-        if (!empty($keyword)) {
-            $query->where('content', 'LIKE', "%{$keyword}%");
-        }
+        
         switch ($sortCondition) {
             case '新規投稿順':
                 $query->orderBy('created_at', 'desc');
@@ -52,6 +49,173 @@ class ScriptController extends Controller
                 $query->orderBy('created_at', 'desc');
         }
 
+        // Advanved Search Start
+        $categories = Category::all();
+
+        $advancedSearchFilters = [
+            'keyword' => $keyword,
+            'category' => $request->input('advanced_search_category'),
+            'dateStart' => $request->input('advanced_search_date_start'),
+            'dateEnd' => $request->input('advanced_search_date_end'),
+        ];
+
+        $keywordOnly = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $categoryOnly = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $startDayOnly = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $endDayOnly = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndCategory = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndStartDate = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $keywordAndEndDate = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $categoryAndStartDate = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $categoryAndEndDate = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $startDateAndEndDate = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptKeyword = empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptCategory = !empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptDateStart = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $exceptDateEnd = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        $searchAllOption = !empty($advancedSearchFilters['keyword']) 
+                    && !empty($advancedSearchFilters['category'])
+                    && !empty($advancedSearchFilters['dateStart'])
+                    && !empty($advancedSearchFilters['dateEnd']);
+
+        $emptyAll = empty($advancedSearchFilters['keyword']) 
+                    && empty($advancedSearchFilters['category'])
+                    && empty($advancedSearchFilters['dateStart'])
+                    && empty($advancedSearchFilters['dateEnd']);
+
+        if ($keywordOnly) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%");
+        }
+
+        if ($categoryOnly) {
+            $query->where('category_id', $advancedSearchFilters['category']);
+        }
+
+        if ($startDayOnly) {
+            $query->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($endDayOnly) {
+            $query->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($keywordAndCategory) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->where('category_id', $advancedSearchFilters['category']);
+        }
+
+        if ($keywordAndStartDate) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($keywordAndEndDate) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($categoryAndStartDate) {
+            $query->where('category_id', $advancedSearchFilters['category'])->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($categoryAndEndDate) {
+            $query->where('category_id', $advancedSearchFilters['category'])->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($startDateAndEndDate) {
+            $query->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptKeyword) {
+            $query->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptCategory) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptDateStart) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($exceptDateEnd) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart']);
+        }
+
+        if ($searchAllOption) {
+            $query->where('content', 'LIKE', "%{$advancedSearchFilters['keyword']}%")
+            ->where('category_id', $advancedSearchFilters['category'])
+            ->whereDate('created_at', '>=', $advancedSearchFilters['dateStart'])
+            ->whereDate('created_at', '<=', $advancedSearchFilters['dateEnd']);
+        }
+
+        if ($emptyAll) {
+            // none
+        }
+
+        // advanced search end
+
         $publisingScripts = $query->where('status', config('const.statusPublished'));
 
         $scripts_count = $publisingScripts->count();
@@ -62,7 +226,7 @@ class ScriptController extends Controller
 
         $scripts = $filteredScripts->paginate(10);
 
-        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'sortCondition'));
+        return view('scripts.index', compact('scripts', 'keyword', 'scripts_count', 'sortCondition', 'categories'));
     }
 
     /**
@@ -99,7 +263,7 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
                     $extension = $request->file('script_img')->getClientOriginalExtension();
@@ -124,11 +288,15 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    $image->move($target_path, $fileName);
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $path = Storage::disk('s3')->putFile('scripts', $image);
-                    $script->script_img = $path;
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
                 }
             }
 
@@ -145,11 +313,15 @@ class ScriptController extends Controller
                 if (app()->isLocal()) {
                     $fileName = time() . $image->getClientOriginalName();
                     $target_path = public_path('uploads/');
-                    $image->move($target_path, $fileName);
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName);
                     $script->script_img = '/uploads/' . $fileName;
                 } else {
-                    $path = Storage::disk('s3')->putFile('scripts', $image);
-                    $script->script_img = $path;
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
                 }
             }
 
@@ -228,9 +400,27 @@ class ScriptController extends Controller
                 } else {
                     Storage::disk('s3')->delete($image);
                 }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
             
-            $script->script_img = null;
             $script->save();
 
             session()->regenerateToken();
@@ -238,12 +428,33 @@ class ScriptController extends Controller
         } elseif ($request->has('draft')) {
             $script->status = config('const.statusDraft');
 
-            $image = $script->script_img;
-            if (app()->isLocal()) {
-                $target_path = public_path();
-                File::delete($target_path . $image);
-            } else {
-                Storage::disk('s3')->delete($image);
+            if ($request->boolean('deleting') === true) {
+                $image = $script->script_img;
+                if (app()->isLocal()) {
+                    $target_path = public_path();
+                    File::delete($target_path . $image);
+                } else {
+                    Storage::disk('s3')->delete($image);
+                }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
 
             $script->save();
@@ -253,12 +464,33 @@ class ScriptController extends Controller
         } else {
             $script->status = config('const.statusPublished');
 
-            $image = $script->script_img;
-            if (app()->isLocal()) {
-                $target_path = public_path();
-                File::delete($target_path . $image);
-            } else {
-                Storage::disk('s3')->delete($image);
+            if ($request->boolean('deleting') === true) {
+                $image = $script->script_img;
+                if (app()->isLocal()) {
+                    $target_path = public_path();
+                    File::delete($target_path . $image);
+                } else {
+                    Storage::disk('s3')->delete($image);
+                }
+                $script->script_img = null;
+            }
+
+            if ($request->script_img !== null) {
+                $image = $request->file('script_img');
+
+                if (app()->isLocal()) {
+                    $fileName = time() . $image->getClientOriginalName();
+                    $target_path = public_path('uploads/');
+                    Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->save($target_path . $fileName );
+                    $script->script_img = '/uploads/' . $fileName;
+                } else {
+                    $extension = $request->file('script_img')->getClientOriginalExtension();
+                    $fileName = time() . "_" . $request->file('script_img')->getClientOriginalName();
+                    $resizeImg = Image::make($image)->resize(600, null, function ($constraint) {$constraint->aspectRatio();})->encode($extension);
+                    $path = Storage::disk('s3')->put('/scripts/' . $fileName,(string)$resizeImg);
+
+                    $script->script_img = "scripts/" . $fileName;
+                }
             }
 
             $script->save();
