@@ -10,6 +10,7 @@
 /rr-et/Homestead.yaml
 /rr-et/npm-debug.log
 /rr-et/yarn-error.log
+/rr-et/.DS*
 
 /rr-et/cypress/.DS*
 /rr-et/cypress/videos/**/*

@@ -242,9 +242,13 @@ class ScriptController extends Controller
      */
     public function create()
     {
+        $script = new Script(); 
         $categories = Category::all();
 
-        return view('scripts/create', compact('categories'));
+        return view('scripts/create', [
+            'categories' => $categories,
+            'script' => $script,
+        ]);
     }
 
     /**
