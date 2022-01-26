@@ -21,7 +21,7 @@
 
           <!-- Posted Time Start -->
           <p class="mx-2 my-0 d-none d-sm-block"
-          style="color:gray;">{{ $script->created_at->format('Y/m/d h:i') }}</p>
+          style="color:gray;">{{ $script->created_at->format('Y/m/d H:i') }}</p>
           <!-- Posted Time End -->
         </div>
       </div>
