@@ -51,7 +51,7 @@
 
                       <!-- Posted Time Start -->
                       <p class="mx-2 my-0 d-none d-sm-block"
-                      style="color:gray;">{{ $likedScript->created_at->format('Y/m/d h:m') }}</p>
+                      style="color:gray;">{{ $likedScript->created_at->format('Y/m/d H:m') }}</p>
                       <!-- Posted Time End -->
                     </div>
                   </div>

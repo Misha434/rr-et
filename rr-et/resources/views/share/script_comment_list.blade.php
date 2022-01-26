@@ -29,7 +29,7 @@
                 </a>
               <!-- User link End -->
               <!-- Comment Time Start -->
-                <p class="mx-2 my-0 d-none d-sm-block" style="color:gray;">{{ $comment->created_at->format('Y/m/d h:m') }}</p>
+                <p class="mx-2 my-0 d-none d-sm-block" style="color:gray;">{{ $comment->created_at->format('Y/m/d H:m') }}</p>
               <!-- Comment Time End -->
             </div>
           </div>
